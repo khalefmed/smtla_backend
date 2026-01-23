@@ -1,8 +1,7 @@
-# api/storage.py
-from cloudinary_storage.storage import RawMediaCloudinaryStorage
+# from cloudinary_storage.storage import MediaCloudinaryStorage
 
-class PublicCloudinaryStorage(RawMediaCloudinaryStorage):
-    def _save(self, name, content):
-        # Override to add public access
-        self.TAG = 'public'
-        return super()._save(name, content)
+# class PublicMediaCloudinaryStorage(MediaCloudinaryStorage):
+#     resource_type = 'media'
+#     upload_params = {
+#         "access_mode": "public"
+#     }

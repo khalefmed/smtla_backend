@@ -1,37 +1,57 @@
-
 from django.urls import path
 from .views import *
 
-
 urlpatterns = [
 
+    path('dashboard/stats/', DashboardStatsView.as_view(), name='dashboard-stats'),
 
-    # Dossier
-    path('dossiers/', DossierListCreateView.as_view()),
-    path('dossiers/<int:pk>/', DossierRetrieveUpdateDeleteView.as_view()),
-    path('dossiers/par-etape/', DossierParEtapeView.as_view()),
+    
+    # ==================== PRODUITS ====================
+    path('produits/', ProduitListCreateView.as_view(), name='produit-list-create'),
+    path('produits/<int:pk>/', ProduitRetrieveUpdateDeleteView.as_view(), name='produit-detail'),
+    path('produits/par-statut/', ProduitParStatutView.as_view(), name='produits-par-statut'),
+    path('produits/<int:pk>/changer-statut/', ProduitChangerStatutView.as_view(), name='produit-changer-statut'),
+    
+    # ==================== CLIENTS ====================
+    path('clients/', ClientListCreateView.as_view(), name='client-list-create'),
+    path('clients/<int:pk>/', ClientRetrieveUpdateDeleteView.as_view(), name='client-detail'),
+    path('clients/recherche/', ClientRechercheView.as_view(), name='client-recherche'),
+    
+    # ==================== NOTES DE FRAIS ====================
+    path('notes-frais/', NoteDeFraisListCreateView.as_view(), name='note-frais-list-create'),
+    path('notes-frais/<int:pk>/', NoteDeFraisRetrieveUpdateDeleteView.as_view(), name='note-frais-detail'),
+    path('notes-frais/par-devise/', NoteDeFraisParDeviseView.as_view(), name='notes-frais-par-devise'),
+    path('notes-frais/<int:pk>/ajouter-item/', NoteDeFraisAjouterItemView.as_view(), name='note-frais-ajouter-item'),
+    path('notes-frais/<int:pk>/status/', NoteDeFraisStatusUpdateView.as_view(), name='note-status-update'),
 
-    # Gestion des boîtes d'archive
-    path('boites/', BoiteArchiveListCreateView.as_view(), name='boite-list-create'),
-    path('boites/<int:pk>/', BoiteArchiveRetrieveUpdateDeleteView.as_view(), name='boite-detail'),
-    path('boites/disponibles/', BoiteArchiveDisponiblesView.as_view(), name='boites-disponibles'),
-    path('boites/assigner/', AssignerBoiteView.as_view(), name='assigner-boite'),
-    path('boites/retirer/', RetirerBoiteView.as_view(), name='retirer-boite'),
-    path('boites/obtenir-ou-creer/', ObtenirOuCreerBoiteView.as_view(), name='obtenir-ou-creer-boite'), 
-
-    # Étape
-    path('dossiers/<int:pk>/etape/', DossierEtapeUpdateView.as_view()),
-
-    # Pièces jointes
-    path('pieces/', PieceJointeListCreateView.as_view()),
-    path('pieces/<int:pk>/', PieceJointeRetrieveUpdateDeleteView.as_view()),
-
-    # Utilisateur
-    path('utilisateurs/', UtilisateurListCreateView.as_view()),
-    path('utilisateurs/<int:pk>/', UtilisateurRetrieveUpdateDeleteView.as_view()),
-
+    path('notes-frais/<int:pk>/export-xlsx/', NoteDeFraisExportXlsxView.as_view(), name='note-frais-export-xlsx'),
+    path('notes-frais/<int:pk>/export-pdf/', NoteDeFraisExportPdfView.as_view(), name='note-frais-export-pdf'),
+    
+    # ==================== DEVIS ====================
+    path('devis/', DevisListCreateView.as_view(), name='devis-list-create'),
+    path('devis/<int:pk>/', DevisRetrieveUpdateDeleteView.as_view(), name='devis-detail'),
+    path('devis/client/<int:client_id>/', DevisParClientView.as_view(), name='devis-par-client'),
+    path('devis/<int:pk>/ajouter-item/', DevisAjouterItemView.as_view(), name='devis-ajouter-item'),
+    path('devis/<int:pk>/convertir-en-facture/', DevisConvertirEnFactureView.as_view(), name='devis-convertir-facture'),
+    
+    # ==================== FACTURES ====================
+    path('factures/', FactureListCreateView.as_view(), name='facture-list-create'),
+    path('factures/<int:pk>/', FactureRetrieveUpdateDeleteView.as_view(), name='facture-detail'),
+    path('factures/client/<int:client_id>/', FactureParClientView.as_view(), name='factures-par-client'),
+    path('factures/<int:pk>/ajouter-item/', FactureAjouterItemView.as_view(), name='facture-ajouter-item'),
+    
+    # ==================== UTILISATEURS ====================
+    path('utilisateurs/', UtilisateurListCreateView.as_view(), name='utilisateur-list-create'),
+    path('utilisateurs/<int:pk>/', UtilisateurRetrieveUpdateDeleteView.as_view(), name='utilisateur-detail'),
+    path('utilisateurs/par-type/', UtilisateurParTypeView.as_view(), name='utilisateurs-par-type'),
+    
+    # ==================== AUTHENTIFICATION ====================
     path('connexion/', SeConnecter.as_view(), name='connexion'),
-    path('profil/', Utilisateur_profil, name='profile-view'),
-    path('modifier_informations/', modifier_informations, name='modifier-informations'),
-    path('modifier_mot_de_passe/', modifier_mot_de_passe, name='modifier-mot-passe'),
+    path('profil/', utilisateur_profil, name='profil-view'),
+    path('modifier-informations/', modifier_informations, name='modifier-informations'),
+    path('modifier-mot-de-passe/', modifier_mot_de_passe, name='modifier-mot-passe'),
+    
+    # ==================== STATISTIQUES ====================
+    path('statistiques/', StatistiquesGeneralesView.as_view(), name='statistiques-generales'),
+    path('statistiques/client/<int:client_id>/', StatistiquesClientView.as_view(), name='statistiques-client'),
 ]

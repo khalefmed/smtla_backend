@@ -1,197 +1,309 @@
+from decimal import Decimal
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.hashers import make_password
-
+from django.db.models import Max
 from datetime import datetime
-from django.db.models import Max  
-from cloudinary_storage.storage import RawMediaCloudinaryStorage 
 
 
-import cloudinary
-import cloudinary.utils
-import os
-from urllib.parse import urlparse
-
-
-
-
-class Dossier(models.Model):
-
-    ETAPES = [
-        ('numerisation', 'Numérisation'),
-        ('validation', 'Validation'),
-        ('archive_temporaire', 'Archive temporaire'),
-        ('archive_physique', 'Archive physique'),
-        ('archive_final', 'Archive final'),
-        ('archive_finale', 'Archive finale'),
+class Produit(models.Model):
+    STATUTS = [
+        ('arrive', 'Arrivé'),
+        ('sortie', 'Sorti'),
     ]
-
-    numero = models.CharField(max_length=15, unique=True, editable=False)
-
-    titre = models.CharField(max_length=255)
-
-    date_creation = models.DateTimeField(auto_now_add=True)
-
-    type = models.CharField(max_length=100, blank=True, null=True, default='Annotation')
     
-
-    libelle = models.TextField()
-
-    etape = models.CharField(
-        max_length=30,
-        choices=ETAPES,
-        default='numerisation'
+    nom = models.CharField(max_length=255)
+    quantite = models.IntegerField()
+    camion = models.CharField(max_length=100)
+    date_arrivee = models.DateTimeField()
+    date_sortie = models.DateTimeField(null=True, blank=True)
+    statut = models.CharField(
+        max_length=20,
+        choices=STATUTS,
+        default='arrive'
     )
+    
+    def __str__(self):
+        return f"{self.nom} - {self.camion}"
+    
+    class Meta:
+        verbose_name_plural = "Produits"
 
-    boite = models.ForeignKey(
-        'BoiteArchive',
+
+class Client(models.Model):
+    nom = models.CharField(max_length=255)
+    telephone = models.CharField(max_length=20)
+    email = models.EmailField()
+    adresse = models.TextField()
+    nif = models.CharField(max_length=50, unique=True, verbose_name="NIF")
+    
+    def __str__(self):
+        return self.nom
+    
+    class Meta:
+        ordering = ['nom']
+
+
+class ItemNoteDeFrais(models.Model):
+    TYPES = [
+        ('nourriture', 'Nourriture'),
+        ('hebergement', 'Hébergement'),
+        ('medicament', 'Médicament'),
+        ('carburant', 'Carburant'),
+        ('entretien', 'Entretien'),
+        ('telecom', 'Télécom'),
+        ('avance', 'Avance'),
+        ('divers', 'Divers'),
+    ]
+    
+    note_de_frais = models.ForeignKey(
+        'NoteDeFrais',
         on_delete=models.CASCADE,
-        related_name='dossiers',
-        null=True,
-        blank=True
+        related_name='items'
     )
+    libelle = models.CharField(max_length=255, default='Essence')
+    type = models.CharField(max_length=20, choices=TYPES)
+    montant = models.DecimalField(max_digits=12, decimal_places=2)
 
-    def generer_numero(self):
+    @property
+    def montant_total(self):
+        return self.montant or Decimal('0.00')
+    
+    def __str__(self):
+        return f"{self.get_type_display()} - {self.montant}"
+
+
+class NoteDeFrais(models.Model):
+    DEVISES = [
+        ('EUR', 'Euro'),
+        ('DOLLAR', 'Dollar'),
+        ('MRU', 'Ouguiya'),
+        ('XOF', 'Franc CFA'),
+    ]
+    STATUS = [
+        ('attente', 'En attente'),
+        ('valide', 'Validé'),
+        ('rejete', 'Rejeté'),
+    ]
+    status = models.CharField(max_length=20, choices=STATUS, default='attente')
+    reference = models.CharField(max_length=15, unique=True, editable=False)
+    date_creation = models.DateTimeField(auto_now_add=True)
+    tva = models.BooleanField(default=False, verbose_name="TVA")
+    devise = models.CharField(max_length=10, choices=DEVISES, default='MRU')
+    
+    def generer_reference(self):
         annee = datetime.now().year
-
-        dernier = Dossier.objects.filter(
-            numero__endswith=f"/{annee}"
-        ).aggregate(max_num=Max('numero'))
-
+        dernier = NoteDeFrais.objects.filter(
+            reference__endswith=f"/{annee}"
+        ).aggregate(max_num=Max('reference'))
+        
         if dernier['max_num']:
-            last_counter = int(dernier['max_num'].split('/')[0])
+            last_counter = int(dernier['max_num'].split('/')[0].replace('NF', ''))
             compteur = last_counter + 1
         else:
             compteur = 1
-
-        return f"{compteur:04d}/{annee}"
-
-    def save(self, *args, **kwargs):
-        if not self.numero:
-            self.numero = self.generer_numero()
-
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return f"{self.numero} - {self.titre}"
-
-
-
-
-
-class PieceJointe(models.Model):
-    fichier = models.FileField(
-        upload_to='dossiers/pieces/',
-        storage=RawMediaCloudinaryStorage()
-    )
-    titre = models.CharField(max_length=255)
-    date_creation = models.DateTimeField(auto_now_add=True)
-    dossier = models.ForeignKey(
-        Dossier,
-        on_delete=models.CASCADE,
-        related_name='pieces'
-    )
-
-    @property
-    def path(self):
-        if not self.fichier:
-            return ""
         
-        try:
-            # Get the original URL
-            url = self.fichier.url
-            
-            # Extract public_id from URL
-            # Example: https://res.cloudinary.com/djcpxnvbl/raw/upload/v1/dossiers/pieces/Cryptomonnaies_F_nfwljs.pdf
-            parsed = urlparse(url)
-            path_parts = parsed.path.split('/upload/')
-            
-            if len(path_parts) == 2:
-                # Get everything after /upload/ and remove version (v1, v1767791195, etc)
-                after_upload = path_parts[1]
-                # Remove version number (v followed by digits and /)
-                import re
-                public_id_with_ext = re.sub(r'^v\d+/', '', after_upload)
-                
-                # Remove file extension to get public_id
-                public_id = os.path.splitext(public_id_with_ext)[0]
-                
-                # Get file extension
-                file_extension = os.path.splitext(public_id_with_ext)[1].lower()
-                
-                # Determine resource type
-                image_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.svg']
-                resource_type = 'image' if file_extension in image_extensions else 'raw'
-                
-                # Generate signed URL with type='authenticated' instead of sign_url
-                signed_url, options = cloudinary.utils.cloudinary_url(
-                    public_id,
-                    resource_type=resource_type,
-                    type='upload',
-                    sign_url=True,
-                    secure=True
-                )
-                
-                return signed_url
-        except Exception as e:
-            print(f"Error generating signed URL: {e}")
-            pass
-        
-        # Fallback to original URL
-        return self.fichier.url
-
-    def __str__(self):
-        return self.titre
-    
-
-
-
-class BoiteArchive(models.Model):
-    reference = models.IntegerField(unique=True, editable=False)
-    taille = models.IntegerField(help_text="Taille en nombre de dossiers", default=50)
-    date_creation = models.DateTimeField(auto_now_add=True)
-    
-    def generer_reference(self):
-        """Génère la prochaine référence disponible"""
-        dernier = BoiteArchive.objects.aggregate(max_ref=Max('reference'))
-        
-        if dernier['max_ref'] is not None:
-            return dernier['max_ref'] + 1
-        else:
-            return 1  # Première boîte commence à 1
+        return f"NF{compteur:03d}/{annee}"
     
     def save(self, *args, **kwargs):
-        if not self.pk and not self.reference:  # Seulement lors de la création
+        if not self.reference:
             self.reference = self.generer_reference()
         super().save(*args, **kwargs)
     
     def __str__(self):
-        return f"Boîte {self.reference}"
+        return self.reference
+ 
+    @property
+    def montant_total(self):
+        total = sum(
+            (item.montant_total for item in self.items.all()),
+            Decimal('0.00')
+        )
+        if self.tva:
+            total *= Decimal('1.16')  # TVA 16%
+        return total
     
+    class Meta:
+        verbose_name = "Note de frais"
+        verbose_name_plural = "Notes de frais"
+        ordering = ['-date_creation']
 
+
+class ItemDevis(models.Model):
+    devis = models.ForeignKey(
+        'Devis',
+        on_delete=models.CASCADE,
+        related_name='items'
+    )
+    libelle = models.CharField(max_length=255)
+    prix_unitaire = models.DecimalField(max_digits=12, decimal_places=2)
+    quantite = models.IntegerField()
+    
+    @property
+    def montant_total(self):
+        return self.prix_unitaire * self.quantite
+    
+    def __str__(self):
+        return f"{self.libelle} - {self.quantite} x {self.prix_unitaire}"
+
+
+class Devis(models.Model):
+    DEVISES = [
+        ('EUR', 'Euro'),
+        ('DOLLAR', 'Dollar'),
+        ('MRU', 'Ouguiya'),
+        ('XOF', 'Franc CFA'),
+    ]
+    
+    reference = models.CharField(max_length=15, unique=True, editable=False)
+    client = models.ForeignKey(
+        Client,
+        on_delete=models.PROTECT,
+        related_name='devis'
+    )
+    port_arrive = models.CharField(max_length=255, verbose_name="Port d'arrivée")
+    vessel = models.CharField(max_length=255)
+    voyage = models.CharField(max_length=100)
+    eta = models.DateTimeField(verbose_name="ETA (Estimated Time of Arrival)")
+    etd = models.DateTimeField(verbose_name="ETD (Estimated Time of Departure)")
+    bl = models.CharField(max_length=100, verbose_name="Bill of Lading")
+    date_creation = models.DateTimeField(auto_now_add=True)
+    tva = models.BooleanField(default=False, verbose_name="TVA")
+    devise = models.CharField(max_length=10, choices=DEVISES, default='MRU')
+    
+    def generer_reference(self):
+        annee = datetime.now().year
+        dernier = Devis.objects.filter(
+            reference__endswith=f"/{annee}"
+        ).aggregate(max_num=Max('reference'))
+        
+        if dernier['max_num']:
+            last_counter = int(dernier['max_num'].split('/')[0].replace('DV', ''))
+            compteur = last_counter + 1
+        else:
+            compteur = 1
+        
+        return f"DV{compteur:03d}/{annee}"
+    
+    def save(self, *args, **kwargs):
+        if not self.reference:
+            self.reference = self.generer_reference()
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return f"{self.reference} - {self.client.nom}"
+    
+    @property
+    def montant_total(self):
+        total = sum(
+            (item.montant_total for item in self.items.all()),
+            Decimal('0.00')
+        )
+        if self.tva:
+            total *= Decimal('1.16')  # TVA 16%
+        return total
+    
+    class Meta:
+        verbose_name_plural = "Devis"
+        ordering = ['-date_creation']
+
+
+class ItemFacture(models.Model):
+    facture = models.ForeignKey(
+        'Facture',
+        on_delete=models.CASCADE,
+        related_name='items'
+    )
+    libelle = models.CharField(max_length=255)
+    prix_unitaire = models.DecimalField(max_digits=12, decimal_places=2)
+    quantite = models.IntegerField()
+    
+    @property
+    def montant_total(self):
+        return self.prix_unitaire * self.quantite
+    
+    def __str__(self):
+        return f"{self.libelle} - {self.quantite} x {self.prix_unitaire}"
+
+
+class Facture(models.Model):
+    DEVISES = [
+        ('EUR', 'Euro'),
+        ('DOLLAR', 'Dollar'),
+        ('MRU', 'Ouguiya'),
+        ('XOF', 'Franc CFA'),
+    ]
+    
+    reference = models.CharField(max_length=15, unique=True, editable=False)
+    client = models.ForeignKey(
+        Client,
+        on_delete=models.PROTECT,
+        related_name='factures'
+    )
+    port_arrive = models.CharField(max_length=255, verbose_name="Port d'arrivée")
+    vessel = models.CharField(max_length=255)
+    voyage = models.CharField(max_length=100)
+    eta = models.DateTimeField(verbose_name="ETA (Estimated Time of Arrival)")
+    etd = models.DateTimeField(verbose_name="ETD (Estimated Time of Departure)")
+    bl = models.CharField(max_length=100, verbose_name="Bill of Lading")
+    date_creation = models.DateTimeField(auto_now_add=True)
+    tva = models.BooleanField(default=False, verbose_name="TVA")
+    devise = models.CharField(max_length=10, choices=DEVISES, default='MRU')
+    
+    def generer_reference(self):
+        annee = datetime.now().year
+        dernier = Facture.objects.filter(
+            reference__endswith=f"/{annee}"
+        ).aggregate(max_num=Max('reference'))
+        
+        if dernier['max_num']:
+            last_counter = int(dernier['max_num'].split('/')[0].replace('FA', ''))
+            compteur = last_counter + 1
+        else:
+            compteur = 1
+        
+        return f"FA{compteur:03d}/{annee}"
+    
+    def save(self, *args, **kwargs):
+        if not self.reference:
+            self.reference = self.generer_reference()
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return f"{self.reference} - {self.client.nom}"
+    
+    @property
+    def montant_total(self):
+        total = sum(
+            (item.montant_total for item in self.items.all()),
+            Decimal('0.00')
+        )
+        if self.tva:
+            total *= Decimal('1.16')  # TVA 16%
+        return total
+    
+    class Meta:
+        ordering = ['-date_creation']
 
 
 class Utilisateur(AbstractUser):
-    telephone = models.CharField(max_length=8, unique=True)
-    type = models.CharField(
-        max_length=20,
-        choices=[
-            ('admin', 'Administrateur'),
-            ('numerisateur', 'Numérisateur'),
-            ('validateur', 'Validateur'),
-            ('archiviste', 'Archiviste'),
-        ],
-        default='numerisateur'
-    )
-
-    USERNAME_FIELD = 'telephone'
-    REQUIRED_FIELDS = ['username']
-
+    TYPES = [
+        ('assistant', 'Assistant'),
+        ('agent_port', 'Agent Port'),
+        ('comptable', 'Comptable'),
+        ('directeur_operations', 'Directeur des Opérations'),
+        ('directeur_general', 'Directeur Général'),
+    ]
+    
+    prenom = models.CharField(max_length=100)
+    nom = models.CharField(max_length=100)
+    telephone = models.CharField(max_length=20, unique=True)
+    type = models.CharField(max_length=30, choices=TYPES)
+    
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['telephone', 'prenom', 'nom']
+    
     def __str__(self):
-        return self.username
-
-    # def save(self, *args, **kwargs):
-    #     # hash password only during first creation
-    #     if not self.pk and self.password:
-    #         self.password = make_password(self.password)
-    #     super().save(*args, **kwargs)
+        return f"{self.prenom} {self.nom} ({self.get_type_display()})"
+    
+    class Meta:
+        verbose_name_plural = "Utilisateurs"
