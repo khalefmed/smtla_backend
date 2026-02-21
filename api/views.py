@@ -48,8 +48,10 @@ from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 
 
+# ==================== DASHBOARD ====================
 
 class DashboardStatsView(APIView):
+    """Statistiques du tableau de bord - Spec 8"""
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -57,113 +59,315 @@ class DashboardStatsView(APIView):
         role = user.type
         stats = {}
 
-        # 1. Statistiques Produits (Agent Port, DO, DG)
+        # Statistiques Rotations (Spec 8)
         if role in ['agent_port', 'directeur_operations', 'directeur_general']:
-            stats['produits'] = {
-                'total': Produit.objects.count(),
-                'en_stock': Produit.objects.filter(statut='arrive').count(),
-                'sortis': Produit.objects.filter(statut='sortie').count(),
+            stats['rotations'] = {
+                'total_entrantes': RotationEntrante.objects.count(),
+                'total_sortantes': RotationSortante.objects.count(),
             }
+            
+            # Stock par client et type de matériel (Spec 8)
+            stocks = []
+            for client in Client.objects.all():
+                client_stock = {'client': client.nom, 'types': []}
+                
+                for type_mat in TypeMateriel.objects.all():
+                    entrees = RotationEntrante.objects.filter(
+                        client=client, 
+                        type_materiel=type_mat
+                    ).aggregate(Sum('quantite'))['quantite__sum'] or 0
+                    
+                    sorties = RotationSortante.objects.filter(
+                        client=client,
+                        type_materiel=type_mat
+                    ).aggregate(Sum('quantite'))['quantite__sum'] or 0
+                    
+                    disponible = entrees - sorties
+                    
+                    if disponible > 0:
+                        client_stock['types'].append({
+                            'type_materiel': type_mat.nom,
+                            'quantite_disponible': disponible
+                        })
+                
+                if client_stock['types']:
+                    stocks.append(client_stock)
+            
+            stats['stocks_par_client'] = stocks
 
-        # 2. Statistiques Clients (Agent Port, Comptable, DO, DG)
+        # Statistiques Clients
         if role in ['agent_port', 'comptable', 'directeur_operations', 'directeur_general']:
             stats['clients'] = {
                 'total': Client.objects.count(),
             }
 
-        # 3. Statistiques Note de Frais (Assistant, Comptable, DO, DG)
+        # Statistiques Expression de Besoin (Spec 1)
+        if role in ['assistant', 'comptable', 'directeur_operations', 'directeur_general']:
+            stats['expressions_besoin'] = {
+                'en_attente': ExpressionBesoin.objects.filter(status='attente').count(),
+                'en_cours': ExpressionBesoin.objects.filter(status='en_cours').count(),
+                'validees': ExpressionBesoin.objects.filter(status='valide').count(),
+                'rejetees': ExpressionBesoin.objects.filter(status='rejete').count(),
+            }
+
+        # Statistiques Note de Frais (Spec 2)
         if role in ['assistant', 'comptable', 'directeur_operations', 'directeur_general']:
             stats['notes_frais'] = {
                 'en_attente': NoteDeFrais.objects.filter(status='attente').count(),
                 'validees': NoteDeFrais.objects.filter(status='valide').count(),
-                'total_montant': NoteDeFrais.objects.filter(status='valide').aggregate(Sum('items__montant'))['items__montant__sum'] or 0
+                'total_montant': NoteDeFrais.objects.filter(status='valide').aggregate(
+                    Sum('items__montant'))['items__montant__sum'] or 0
             }
 
-        # 4. Statistiques Devis & Factures (Comptable, DO, DG)
+        # Statistiques Devis & Factures (Spec 3 & 4)
         if role in ['comptable', 'directeur_operations', 'directeur_general']:
             stats['devis'] = {
+                'en_attente': Devis.objects.filter(status='attente').count(),
+                'valides': Devis.objects.filter(status='valide').count(),
                 'total': Devis.objects.count(),
                 'somme_totale': sum(d.montant_total for d in Devis.objects.all())
             }
+            
+            # Factures avec gestion des privées (Spec 3)
+            factures_query = Facture.objects.all()
+            if role != 'directeur_general':
+                factures_query = factures_query.filter(est_privee=False)
+            
             stats['factures'] = {
-                'total': Facture.objects.count(),
-                'somme_totale': sum(f.montant_total for f in Facture.objects.all())
+                'en_attente': factures_query.filter(status='attente').count(),
+                'validees': factures_query.filter(status='valide').count(),
+                'total': factures_query.count(),
+                'somme_totale': sum(f.montant_total for f in factures_query)
+            }
+
+        # Statistiques Bons de Commande (Spec 10)
+        if role in ['comptable', 'directeur_operations', 'directeur_general']:
+            stats['bons_commande'] = {
+                'en_attente': BonCommande.objects.filter(status='attente').count(),
+                'valides': BonCommande.objects.filter(status='valide').count(),
+                'total': BonCommande.objects.count(),
             }
 
         return Response(stats)
 
 
-# ==================== VUES PRODUIT ====================
+# ==================== TYPE MATERIEL (Spec 5) ====================
 
-class ProduitListCreateView(generics.ListCreateAPIView):
-    """Liste tous les produits ou crée un nouveau produit"""
-    queryset = Produit.objects.all().order_by('-date_arrivee')
-    serializer_class = ProduitSerializer
+class TypeMaterielListCreateView(generics.ListCreateAPIView):
+    """Liste tous les types de matériel ou crée un nouveau - Spec 5"""
+    queryset = TypeMateriel.objects.all().order_by('nom')
+    serializer_class = TypeMaterielSerializer
     permission_classes = [IsAuthenticated]
 
 
-class ProduitRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
-    """Récupère, modifie ou supprime un produit spécifique"""
-    queryset = Produit.objects.all()
-    serializer_class = ProduitSerializer
+class TypeMaterielRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    """Récupère, modifie ou supprime un type de matériel - Spec 5"""
+    queryset = TypeMateriel.objects.all()
+    serializer_class = TypeMaterielSerializer
     permission_classes = [IsAuthenticated]
 
 
-class ProduitParStatutView(generics.ListAPIView):
-    """Liste les produits filtrés par statut"""
-    serializer_class = ProduitSerializer
+class TypeMaterielRechercheView(generics.ListAPIView):
+    """Recherche de types de matériel par nom - Spec 5"""
+    serializer_class = TypeMaterielSerializer
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
-        statut = self.request.query_params.get('statut')
-        queryset = Produit.objects.all().order_by('-date_arrivee')
+        query = self.request.query_params.get('q', '')
+        return TypeMateriel.objects.filter(
+            Q(nom__icontains=query) | Q(description__icontains=query)
+        ).order_by('nom')
+
+
+# ==================== ROTATION ====================
+
+class RotationListCreateView(generics.ListCreateAPIView):
+    """Liste toutes les rotations ou crée une nouvelle"""
+    queryset = Rotation.objects.all().order_by('-date_rotation')
+    permission_classes = [IsAuthenticated]
+    
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return RotationCreateSerializer
+        return RotationSerializer
+
+
+class RotationRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    """Récupère, modifie ou supprime une rotation"""
+    queryset = Rotation.objects.all()
+    permission_classes = [IsAuthenticated]
+    
+    def get_serializer_class(self):
+        if self.request.method in ['PUT', 'PATCH']:
+            return RotationCreateSerializer
+        return RotationSerializer
+
+
+class RotationParTypeView(generics.ListAPIView):
+    """Liste les rotations filtrées par type (entrée/sortie)"""
+    serializer_class = RotationSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        type_rotation = self.request.query_params.get('type')
+        queryset = Rotation.objects.all().order_by('-date_rotation')
         
-        if statut:
-            queryset = queryset.filter(statut=statut)
+        if type_rotation:
+            queryset = queryset.filter(type=type_rotation)
         
         return queryset
 
 
-class ProduitChangerStatutView(APIView):
-    """Change le statut d'un produit (arrive -> sortie)"""
+# ==================== ROTATIONS ENTRANTES (Spec 6) ====================
+
+class RotationEntranteListCreateView(generics.ListCreateAPIView):
+    """Liste toutes les rotations entrantes ou crée une nouvelle - Spec 6"""
+    queryset = RotationEntrante.objects.all().order_by('-date_arrivee')
     permission_classes = [IsAuthenticated]
     
-    def post(self, request, pk):
-        try:
-            produit = Produit.objects.get(pk=pk)
-        except Produit.DoesNotExist:
-            return Response(
-                {"detail": "Produit introuvable"},
-                status=status.HTTP_404_NOT_FOUND
-            )
-        
-        nouveau_statut = request.data.get('statut')
-        date_sortie = request.data.get('date_sortie')
-        
-        if not nouveau_statut:
-            return Response(
-                {"detail": "Le statut est requis"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
-        if nouveau_statut == 'sortie' and not date_sortie:
-            return Response(
-                {"detail": "La date de sortie est requise pour le statut 'sortie'"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
-        produit.statut = nouveau_statut
-        if date_sortie:
-            produit.date_sortie = date_sortie
-        produit.save()
-        
-        return Response(
-            ProduitSerializer(produit).data,
-            status=status.HTTP_200_OK
-        )
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return RotationEntranteCreateSerializer
+        return RotationEntranteSerializer
 
 
-# ==================== VUES CLIENT ====================
+class RotationEntranteRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    """Récupère, modifie ou supprime une rotation entrante - Spec 6"""
+    queryset = RotationEntrante.objects.all()
+    permission_classes = [IsAuthenticated]
+    
+    def get_serializer_class(self):
+        if self.request.method in ['PUT', 'PATCH']:
+            return RotationEntranteCreateSerializer
+        return RotationEntranteSerializer
+
+
+class RotationEntranteRapportView(APIView):
+    """Génère un rapport journalier des rotations entrantes - Spec 6"""
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        date_debut = request.query_params.get('date_debut')
+        date_fin = request.query_params.get('date_fin')
+        
+        queryset = RotationEntrante.objects.all()
+        
+        if date_debut:
+            queryset = queryset.filter(date_arrivee__gte=date_debut)
+        if date_fin:
+            queryset = queryset.filter(date_arrivee__lte=date_fin)
+        
+        # Grouper par client et type
+        rapport = {}
+        for rotation in queryset:
+            client_nom = rotation.client.nom
+            type_materiel = rotation.type_materiel.nom
+            
+            if client_nom not in rapport:
+                rapport[client_nom] = {}
+            
+            if type_materiel not in rapport[client_nom]:
+                rapport[client_nom][type_materiel] = {
+                    'quantite_totale': 0,
+                    'nombre_rotations': 0,
+                    'rotations': []
+                }
+            
+            rapport[client_nom][type_materiel]['quantite_totale'] += rotation.quantite
+            rapport[client_nom][type_materiel]['nombre_rotations'] += 1
+            rapport[client_nom][type_materiel]['rotations'].append({
+                'id': rotation.id,
+                'numero_bordereau': rotation.numero_bordereau,
+                'date_arrivee': rotation.date_arrivee,
+                'camion': rotation.camion,
+                'quantite': rotation.quantite,
+                'observation': rotation.observation
+            })
+        
+        return Response({
+            'date_debut': date_debut,
+            'date_fin': date_fin,
+            'rapport': rapport
+        })
+
+
+# ==================== ROTATIONS SORTANTES (Spec 7) ====================
+
+class RotationSortanteListCreateView(generics.ListCreateAPIView):
+    """Liste toutes les rotations sortantes ou crée une nouvelle - Spec 7"""
+    queryset = RotationSortante.objects.all().order_by('-date_sortie')
+    permission_classes = [IsAuthenticated]
+    
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return RotationSortanteCreateSerializer
+        return RotationSortanteSerializer
+
+
+class RotationSortanteRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    """Récupère, modifie ou supprime une rotation sortante - Spec 7"""
+    queryset = RotationSortante.objects.all()
+    permission_classes = [IsAuthenticated]
+    
+    def get_serializer_class(self):
+        if self.request.method in ['PUT', 'PATCH']:
+            return RotationSortanteCreateSerializer
+        return RotationSortanteSerializer
+
+
+class RotationSortanteRapportView(APIView):
+    """Génère un rapport de livraison des rotations sortantes - Spec 7"""
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        date_debut = request.query_params.get('date_debut')
+        date_fin = request.query_params.get('date_fin')
+        
+        queryset = RotationSortante.objects.all()
+        
+        if date_debut:
+            queryset = queryset.filter(date_sortie__gte=date_debut)
+        if date_fin:
+            queryset = queryset.filter(date_sortie__lte=date_fin)
+        
+        # Grouper par client et type
+        rapport = {}
+        total_rotations = queryset.count()
+        
+        for rotation in queryset:
+            client_nom = rotation.client.nom
+            type_materiel = rotation.type_materiel.nom
+            
+            if client_nom not in rapport:
+                rapport[client_nom] = {}
+            
+            if type_materiel not in rapport[client_nom]:
+                rapport[client_nom][type_materiel] = {
+                    'quantite_totale': 0,
+                    'nombre_rotations': 0,
+                    'rotations': []
+                }
+            
+            rapport[client_nom][type_materiel]['quantite_totale'] += rotation.quantite
+            rapport[client_nom][type_materiel]['nombre_rotations'] += 1
+            rapport[client_nom][type_materiel]['rotations'].append({
+                'id': rotation.id,
+                'numero_bordereau': rotation.numero_bordereau,
+                'date_sortie': rotation.date_sortie,
+                'camion': rotation.camion,
+                'quantite': rotation.quantite,
+                'observation': rotation.observation
+            })
+        
+        return Response({
+            'date_debut': date_debut,
+            'date_fin': date_fin,
+            'total_rotations': total_rotations,
+            'rapport': rapport
+        })
+
+
+# ==================== CLIENT ====================
 
 class ClientListCreateView(generics.ListCreateAPIView):
     """Liste tous les clients ou crée un nouveau client"""
@@ -194,43 +398,149 @@ class ClientRechercheView(generics.ListAPIView):
         ).order_by('nom')
 
 
-# ==================== VUES NOTE DE FRAIS ====================
+# ==================== FOURNISSEUR (Spec 9) ====================
+
+class FournisseurListCreateView(generics.ListCreateAPIView):
+    """Liste tous les fournisseurs ou crée un nouveau - Spec 9"""
+    queryset = Fournisseur.objects.all().order_by('nom')
+    serializer_class = FournisseurSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class FournisseurRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    """Récupère, modifie ou supprime un fournisseur - Spec 9"""
+    queryset = Fournisseur.objects.all()
+    serializer_class = FournisseurSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class FournisseurRechercheView(generics.ListAPIView):
+    """Recherche de fournisseurs - Spec 9"""
+    serializer_class = FournisseurSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        query = self.request.query_params.get('q', '')
+        return Fournisseur.objects.filter(
+            Q(nom__icontains=query) |
+            Q(raison_sociale__icontains=query) |
+            Q(nif__icontains=query) |
+            Q(email__icontains=query)
+        ).order_by('nom')
+
+
+# ==================== EXPRESSION DE BESOIN (Spec 1) ====================
+
+class ExpressionBesoinListCreateView(generics.ListCreateAPIView):
+    """Liste toutes les expressions de besoin ou crée une nouvelle - Spec 1"""
+    permission_classes = [IsAuthenticated]
+    
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return ExpressionBesoinCreateSerializer
+        return ExpressionBesoinSerializer
+    
+    def get_queryset(self):
+        user = self.request.user
+        queryset = ExpressionBesoin.objects.all().order_by('-date_creation')
+        
+        # Visibilité restreinte (Spec 1)
+        if user.type not in ['directeur_operations', 'comptable']:
+            # Utilisateur ne voit que ses propres expressions
+            queryset = queryset.filter(createur=user)
+        
+        return queryset
+
+
+class ExpressionBesoinRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    """Récupère, modifie ou supprime une expression de besoin - Spec 1"""
+    permission_classes = [IsAuthenticated]
+    
+    def get_serializer_class(self):
+        if self.request.method in ['PUT', 'PATCH']:
+            return ExpressionBesoinCreateSerializer
+        return ExpressionBesoinSerializer
+    
+    def get_queryset(self):
+        user = self.request.user
+        queryset = ExpressionBesoin.objects.all()
+        
+        # Visibilité restreinte (Spec 1)
+        if user.type not in ['directeur_operations', 'comptable']:
+            queryset = queryset.filter(createur=user)
+        
+        return queryset
+
+
+class ExpressionBesoinValiderView(APIView):
+    """Valide ou rejette une expression de besoin - Spec 1"""
+    permission_classes = [IsAuthenticated]
+    
+    def patch(self, request, pk):
+        # Seuls DO et Comptable peuvent valider (Spec 1)
+        if request.user.type not in ['directeur_operations', 'comptable', 'directeur_general']:
+            return Response(
+                {"error": "Vous n'avez pas la permission de valider"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        expression = get_object_or_404(ExpressionBesoin, pk=pk)
+        nouveau_statut = request.data.get('status')
+        
+        if nouveau_statut not in ['valide', 'rejete', 'en_cours']:
+            return Response(
+                {"error": "Statut invalide"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        expression.status = nouveau_statut
+        expression.valideur = request.user
+        expression.date_validation = datetime.now()
+        expression.save()
+        
+        return Response({
+            "message": f"Expression de besoin {nouveau_statut}e avec succès",
+            "status": expression.status
+        })
+
+
+# ==================== NOTE DE FRAIS (Spec 2) ====================
 
 class NoteDeFraisListCreateView(generics.ListCreateAPIView):
-    """Liste toutes les notes de frais ou crée une nouvelle"""
+    """Liste toutes les notes de frais ou crée une nouvelle - Spec 2"""
     permission_classes = [IsAuthenticated]
     
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return NoteDeFraisCreateSerializer
+        elif self.request.method == 'GET':
+            return NoteFraisDetailSerializer
         return NoteDeFraisSerializer
 
     def get_queryset(self):
         user = self.request.user
-        # Base queryset ordered by date
         queryset = NoteDeFrais.objects.all().order_by('-date_creation')
 
         # Logic for "Comptable": only show validated notes
         if hasattr(user, 'type') and user.type == 'comptable':
             return queryset.filter(status='valide')
         
-        # For all other user types, return everything
         return queryset
 
 
 class NoteDeFraisRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
-    """Récupère, modifie ou supprime une note de frais spécifique"""
+    """Récupère, modifie ou supprime une note de frais - Spec 2"""
     queryset = NoteDeFrais.objects.all()
     permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
         if self.request.method in ['PUT', 'PATCH']:
-            return NoteDeFraisCreateSerializer   # même serializer que l'ajout
+            return NoteDeFraisCreateSerializer
         return NoteDeFraisSerializer
 
 
-class NoteDeFraisStatusUpdateView(APIView):
-    """Permet de valider ou rejeter une note de frais"""
+class NoteDeFraisValiderView(APIView):
+    """Valide ou rejette une note de frais - Spec 2"""
     permission_classes = [IsAuthenticated]
 
     def patch(self, request, pk):
@@ -238,12 +548,15 @@ class NoteDeFraisStatusUpdateView(APIView):
         nouveau_statut = request.data.get('status')
 
         if nouveau_statut not in ['valide', 'rejete', 'attente']:
-            return Response({"error": "Statut invalide"}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Seuls certains rôles devraient pouvoir valider (ex: DG ou Comptable)
-        # Vous pouvez ajouter une vérification ici: if request.user.type != 'directeur_general': ...
+            return Response(
+                {"error": "Statut invalide"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         
         note.status = nouveau_statut
+        if nouveau_statut in ['valide', 'rejete']:
+            note.valideur = request.user
+            note.date_validation = datetime.now()
         note.save()
         
         return Response({
@@ -252,8 +565,40 @@ class NoteDeFraisStatusUpdateView(APIView):
         })
 
 
+class NoteDeFraisCreerDepuisExpressionView(APIView):
+    """Crée une note de frais à partir d'une expression de besoin - Spec 2"""
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request, expression_id):
+        expression = get_object_or_404(ExpressionBesoin, pk=expression_id)
+        
+        with db_transaction.atomic():
+            # Créer la note de frais (le client, navire, etc. sont portés par l'EB)
+            note = NoteDeFrais.objects.create(
+                expression_besoin=expression,
+                createur=request.user
+            )
+            
+            # Copier les items de l'EB vers la NF pour permettre l'ajustement ultérieur
+            for item_eb in expression.items.all():
+                ItemNoteDeFrais.objects.create(
+                    note_de_frais=note,
+                    libelle=item_eb.libelle,
+                    type=item_eb.type,
+                    montant=item_eb.montant
+                )
+        
+        return Response(
+            {
+                "message": "Note de frais générée avec succès",
+                "note": NoteDeFraisSerializer(note).data
+            },
+            status=status.HTTP_201_CREATED
+        )
+
+
 class NoteDeFraisParDeviseView(generics.ListAPIView):
-    """Liste les notes de frais par devise"""
+    """Liste les notes de frais filtrées par la devise de l'EB source"""
     serializer_class = NoteDeFraisSerializer
     permission_classes = [IsAuthenticated]
     
@@ -262,7 +607,8 @@ class NoteDeFraisParDeviseView(generics.ListAPIView):
         queryset = NoteDeFrais.objects.all().order_by('-date_creation')
         
         if devise:
-            queryset = queryset.filter(devise=devise)
+            # Filtrage à travers la relation ForeignKey
+            queryset = queryset.filter(expression_besoin__devise=devise)
         
         return queryset
 
@@ -289,79 +635,10 @@ class NoteDeFraisAjouterItemView(APIView):
             )
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-
-
-
-
-# views.py
 
 
 class NoteDeFraisExportXlsxView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, pk):
-        try:
-            note = NoteDeFrais.objects.get(pk=pk)
-        except NoteDeFrais.DoesNotExist:
-            return Response({"detail": "Note de frais introuvable"}, status=404)
-
-        template_path = os.path.join(settings.BASE_DIR, "templates", "NOTE-DE-DEPENSES-MRU.xlsx")
-        wb = load_workbook(template_path)
-        ws = wb.active  # Feuil1
-
-        # Header zone (adapt cells to your real template)
-        # In your sample: reference is at last column, date in header, etc. [file:1]
-        ws["J1"] = note.reference          # 0002/2025 in your example [file:1]
-        ws["J2"] = note.date_creation.date().strftime("%d/%m/%Y")  # Date [file:1]
-        # If you later have user fields (Nom & Prénom, Direction, etc.), fill them here.
-
-        # Table header line is "Désignation | Nourriture | Hebergement ..." [file:1]
-        # In your sample, the first data row is below that: "m'ain d'eouvre Fixation Aluminiun ..." [file:1]
-        # Suppose this is row 7 (adjust to your template).
-        start_row = 7
-
-        # Reset previous dynamic rows if needed (optional)
-
-        current_row = start_row
-        for item in note.items.all():
-            # Column mapping: A=Designation, C=Nourriture, D=Hebergement, E=Medicament, F=Carburant,
-            # G=Entretien, H=Telecom, I=Avance, J=Divers, per your header. [file:1]
-            ws[f"A{current_row}"] = item.get_type_display()  # or real description if you add it
-            col_map = {
-                "nourriture": "C",
-                "hebergement": "D",
-                "medicament": "E",
-                "carburant": "F",
-                "entretien": "G",
-                "telecom": "H",
-                "avance": "I",
-                "divers": "J",
-            }
-            col = col_map.get(item.type)
-            if col:
-                ws[f"{col}{current_row}"] = float(item.montant)
-
-            current_row += 1
-
-        # TOTAL row in your template already exists with formulas; if needed you can update cells
-        # In your sample: last TOTAL at bottom "TOTAL 400.00 [MRU]" etc. [file:1]
-        # Example: assume global total (all columns) is at J9, J10, J12:
-        total = float(note.montant_total)
-        ws["J9"] = total             # TOTAL ... [file:1]
-        ws["J10"] = f"{total} {note.devise}"  # MONTANT HT/MRU [file:1]
-        ws["J12"] = f"{total} {note.devise}"  # MONTANT TTC [file:1]
-
-        response = HttpResponse(
-            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        )
-        filename = f"{note.reference}.xlsx"
-        response["Content-Disposition"] = f'attachment; filename="{filename}"'
-        wb.save(response)
-        return response
-
-
-class NoteDeFraisExportPdfView(APIView):
+    """Export d'une note de frais en XLSX"""
     permission_classes = [IsAuthenticated]
 
     def get(self, request, pk):
@@ -374,7 +651,6 @@ class NoteDeFraisExportPdfView(APIView):
         wb = load_workbook(template_path)
         ws = wb.active
 
-        # Same filling as in XLSX view (copy/paste the mapping)
         ws["J1"] = note.reference
         ws["J2"] = note.date_creation.date().strftime("%d/%m/%Y")
 
@@ -391,7 +667,57 @@ class NoteDeFraisExportPdfView(APIView):
             "divers": "J",
         }
         for item in note.items.all():
-            ws[f"A{current_row}"] = item.get_type_display()
+            ws[f"A{current_row}"] = item.libelle
+            col = col_map.get(item.type)
+            if col:
+                ws[f"{col}{current_row}"] = float(item.montant)
+            current_row += 1
+
+        total = float(note.montant_total)
+        ws["J9"] = total
+        ws["J10"] = f"{total} {note.devise}"
+        ws["J12"] = f"{total} {note.devise}"
+
+        response = HttpResponse(
+            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+        filename = f"{note.reference}.xlsx"
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
+        wb.save(response)
+        return response
+
+
+class NoteDeFraisExportPdfView(APIView):
+    """Export d'une note de frais en PDF"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, pk):
+        try:
+            note = NoteDeFrais.objects.get(pk=pk)
+        except NoteDeFrais.DoesNotExist:
+            return Response({"detail": "Note de frais introuvable"}, status=404)
+
+        template_path = os.path.join(settings.BASE_DIR, "templates", "NOTE-DE-DEPENSES-MRU.xlsx")
+        wb = load_workbook(template_path)
+        ws = wb.active
+
+        ws["J1"] = note.reference
+        ws["J2"] = note.date_creation.date().strftime("%d/%m/%Y")
+
+        start_row = 7
+        current_row = start_row
+        col_map = {
+            "nourriture": "C",
+            "hebergement": "D",
+            "medicament": "E",
+            "carburant": "F",
+            "entretien": "G",
+            "telecom": "H",
+            "avance": "I",
+            "divers": "J",
+        }
+        for item in note.items.all():
+            ws[f"A{current_row}"] = item.libelle
             col = col_map.get(item.type)
             if col:
                 ws[f"{col}{current_row}"] = float(item.montant)
@@ -426,22 +752,23 @@ class NoteDeFraisExportPdfView(APIView):
             )
 
 
-
-# ==================== VUES DEVIS ====================
+# ==================== DEVIS (Spec 4) ====================
 
 class DevisListCreateView(generics.ListCreateAPIView):
-    """Liste tous les devis ou crée un nouveau devis"""
+    """Liste tous les devis ou crée un nouveau devis - Spec 4"""
     queryset = Devis.objects.all().order_by('-date_creation')
     permission_classes = [IsAuthenticated]
     
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return DevisCreateSerializer
+        elif self.request.method == 'GET':
+            return DevisDetailSerializer
         return DevisSerializer
 
 
 class DevisRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
-    """Récupère, modifie ou supprime un devis spécifique"""
+    """Récupère, modifie ou supprime un devis - Spec 4"""
     queryset = Devis.objects.all()
     permission_classes = [IsAuthenticated]
     
@@ -451,6 +778,31 @@ class DevisRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
         if self.request.method in ['PUT', 'PATCH']:
             return DevisCreateSerializer
         return DevisSerializer
+
+
+class DevisValiderView(APIView):
+    """Valide ou rejette un devis - Spec 4"""
+    permission_classes = [IsAuthenticated]
+    
+    def patch(self, request, pk):
+        devis = get_object_or_404(Devis, pk=pk)
+        nouveau_statut = request.data.get('status')
+        
+        if nouveau_statut not in ['valide', 'rejete']:
+            return Response(
+                {"error": "Statut invalide"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        devis.status = nouveau_statut
+        devis.valideur = request.user
+        devis.date_validation = datetime.now()
+        devis.save()
+        
+        return Response({
+            "message": f"Devis {nouveau_statut} avec succès",
+            "status": devis.status
+        })
 
 
 class DevisParClientView(generics.ListAPIView):
@@ -501,7 +853,6 @@ class DevisConvertirEnFactureView(APIView):
             )
         
         with db_transaction.atomic():
-            # Créer la facture
             facture = Facture.objects.create(
                 client=devis.client,
                 port_arrive=devis.port_arrive,
@@ -511,10 +862,10 @@ class DevisConvertirEnFactureView(APIView):
                 etd=devis.etd,
                 bl=devis.bl,
                 tva=devis.tva,
-                devise=devis.devise
+                devise=devis.devise,
+                createur=request.user
             )
             
-            # Copier les items
             for item_devis in devis.items.all():
                 ItemFacture.objects.create(
                     facture=facture,
@@ -532,22 +883,31 @@ class DevisConvertirEnFactureView(APIView):
         )
 
 
-# ==================== VUES FACTURE ====================
+# ==================== FACTURE (Spec 3) ====================
 
 class FactureListCreateView(generics.ListCreateAPIView):
-    """Liste toutes les factures ou crée une nouvelle facture"""
-    queryset = Facture.objects.all().order_by('-date_creation')
+    """Liste toutes les factures ou crée une nouvelle - Spec 3"""
     permission_classes = [IsAuthenticated]
     
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return FactureCreateSerializer
-        return FactureSerializer
+        elif self.request.method == 'GET':
+            return FactureDetailSerializer
+        return FactureDetailSerializer  
+    
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Facture.objects.all().order_by('-date_creation')
+        
+        if user.type != 'directeur_general':
+            queryset = queryset.filter(est_privee=False)
+        
+        return queryset
 
 
 class FactureRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
-    """Récupère, modifie ou supprime une facture spécifique"""
-    queryset = Facture.objects.all()
+    """Récupère, modifie ou supprime une facture - Spec 3"""
     permission_classes = [IsAuthenticated]
     
     def get_serializer_class(self):
@@ -556,6 +916,48 @@ class FactureRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
         if self.request.method in ['PUT', 'PATCH']:
             return FactureCreateSerializer 
         return FactureSerializer
+    
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Facture.objects.all()
+        
+        # Factures privées visibles uniquement par le DG (Spec 3)
+        if user.type != 'directeur_general':
+            queryset = queryset.filter(est_privee=False)
+        
+        return queryset
+
+
+class FactureValiderView(APIView):
+    """Valide ou rejette une facture - Spec 3"""
+    permission_classes = [IsAuthenticated]
+    
+    def patch(self, request, pk):
+        # Validation par DG ou Comptable (Spec 3)
+        if request.user.type not in ['directeur_general', 'comptable']:
+            return Response(
+                {"error": "Vous n'avez pas la permission de valider"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        facture = get_object_or_404(Facture, pk=pk)
+        nouveau_statut = request.data.get('status')
+        
+        if nouveau_statut not in ['valide', 'rejete']:
+            return Response(
+                {"error": "Statut invalide"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        facture.status = nouveau_statut
+        facture.valideur = request.user
+        facture.date_validation = datetime.now()
+        facture.save()
+        
+        return Response({
+            "message": f"Facture {nouveau_statut}e avec succès",
+            "status": facture.status
+        })
 
 
 class FactureParClientView(generics.ListAPIView):
@@ -565,7 +967,15 @@ class FactureParClientView(generics.ListAPIView):
     
     def get_queryset(self):
         client_id = self.kwargs.get('client_id')
-        return Facture.objects.filter(client_id=client_id).order_by('-date_creation')
+        user = self.request.user
+        
+        queryset = Facture.objects.filter(client_id=client_id).order_by('-date_creation')
+        
+        # Filtrer les factures privées
+        if user.type != 'directeur_general':
+            queryset = queryset.filter(est_privee=False)
+        
+        return queryset
 
 
 class FactureAjouterItemView(APIView):
@@ -592,7 +1002,84 @@ class FactureAjouterItemView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# ==================== VUES UTILISATEUR ====================
+# ==================== BON DE COMMANDE (Spec 10) ====================
+
+class BonCommandeListCreateView(generics.ListCreateAPIView):
+    """Liste tous les bons de commande ou crée un nouveau - Spec 10"""
+    queryset = BonCommande.objects.all().order_by('-date_creation')
+    permission_classes = [IsAuthenticated]
+    
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return BonCommandeCreateSerializer
+        elif self.request.method == 'GET':
+            return BonCommandeDetailSerializer
+        return BonCommandeSerializer
+
+
+class BonCommandeRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    """Récupère, modifie ou supprime un bon de commande - Spec 10"""
+    queryset = BonCommande.objects.all()
+    permission_classes = [IsAuthenticated]
+    
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return BonCommandeDetailSerializer
+        if self.request.method in ['PUT', 'PATCH']:
+            return BonCommandeCreateSerializer
+        return BonCommandeSerializer
+
+
+class BonCommandeValiderView(APIView):
+    """Valide ou rejette un bon de commande - Spec 10"""
+    permission_classes = [IsAuthenticated]
+    
+    def patch(self, request, pk):
+        bon_commande = get_object_or_404(BonCommande, pk=pk)
+        nouveau_statut = request.data.get('status')
+        
+        if nouveau_statut not in ['valide', 'rejete']:
+            return Response(
+                {"error": "Statut invalide"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        bon_commande.status = nouveau_statut
+        bon_commande.valideur = request.user
+        bon_commande.date_validation = datetime.now()
+        bon_commande.save()
+        
+        return Response({
+            "message": f"Bon de commande {nouveau_statut} avec succès",
+            "status": bon_commande.status
+        })
+
+
+class BonCommandeAjouterItemView(APIView):
+    """Ajoute un item à un bon de commande existant - Spec 10"""
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request, pk):
+        try:
+            bon_commande = BonCommande.objects.get(pk=pk)
+        except BonCommande.DoesNotExist:
+            return Response(
+                {"detail": "Bon de commande introuvable"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        serializer = ItemBonCommandeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(bon_commande=bon_commande)
+            return Response(
+                BonCommandeDetailSerializer(bon_commande).data,
+                status=status.HTTP_201_CREATED
+            )
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# ==================== UTILISATEUR ====================
 
 class UtilisateurListCreateView(generics.ListCreateAPIView):
     """Liste tous les utilisateurs ou crée un nouvel utilisateur"""
@@ -737,13 +1224,19 @@ class StatistiquesGeneralesView(APIView):
     
     def get(self, request):
         stats = {
-            'total_produits': Produit.objects.count(),
-            'produits_arrives': Produit.objects.filter(statut='arrive').count(),
-            'produits_sortis': Produit.objects.filter(statut='sortie').count(),
+            'total_rotations': Rotation.objects.count(),
+            'rotations_entree': Rotation.objects.filter(type='entree').count(),
+            'rotations_sortie': Rotation.objects.filter(type='sortie').count(),
+            'total_rotations_entrantes': RotationEntrante.objects.count(),
+            'total_rotations_sortantes': RotationSortante.objects.count(),
             'total_clients': Client.objects.count(),
+            'total_fournisseurs': Fournisseur.objects.count(),
+            'total_types_materiel': TypeMateriel.objects.count(),
+            'total_expressions_besoin': ExpressionBesoin.objects.count(),
             'total_devis': Devis.objects.count(),
             'total_factures': Facture.objects.count(),
             'total_notes_frais': NoteDeFrais.objects.count(),
+            'total_bons_commande': BonCommande.objects.count(),
             'total_utilisateurs': Utilisateur.objects.count(),
         }
         
@@ -800,3 +1293,144 @@ class StatistiquesClientView(APIView):
         }
         
         return Response(stats, status=status.HTTP_200_OK)
+
+
+
+
+
+# ==================== BON À DÉLIVRER (BAD) ====================
+
+class BADListCreateView(generics.ListCreateAPIView):
+    """Liste tous les BAD ou crée un nouveau BAD"""
+    permission_classes = [IsAuthenticated]
+    
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return BADCreateSerializer
+        elif self.request.method == 'GET':
+            return BADSerializer
+        return BADSerializer
+    
+    def get_queryset(self):
+        user = self.request.user
+        queryset = BAD.objects.all().order_by('-date_creation')
+        
+        # Filtre optionnel par client via query params
+        client_id = self.request.query_params.get('client')
+        if client_id:
+            queryset = queryset.filter(client_id=client_id)
+            
+        return queryset
+
+
+class BADRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    """Récupère, modifie ou supprime un BAD"""
+    queryset = BAD.objects.all()
+    permission_classes = [IsAuthenticated]
+    
+    def get_serializer_class(self):
+        if self.request.method in ['PUT', 'PATCH']:
+            return BADCreateSerializer
+        return BADSerializer
+
+
+class BADValiderItemView(APIView):
+    """Permet à un agent ou directeur de valider un item spécifique d'un BAD"""
+    permission_classes = [IsAuthenticated]
+    
+    def patch(self, request, item_id):
+        item = get_object_or_404(ItemBAD, pk=item_id)
+        
+        # Seuls certains rôles peuvent valider les items logistiques
+        if request.user.type not in ['agent_port', 'directeur_operations', 'directeur_general']:
+            return Response(
+                {"error": "Vous n'avez pas la permission de valider cet item"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+            
+        item.valideur = request.user
+        item.save()
+        
+        return Response({
+            "message": "Item validé avec succès",
+            "valideur": request.user.get_full_name()
+        })
+
+
+class BADParFactureView(generics.ListAPIView):
+    """Récupère les BAD associés à une facture spécifique"""
+    serializer_class = BADSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        facture_id = self.kwargs.get('facture_id')
+        return BAD.objects.filter(facture_id=facture_id)
+
+
+class BADExportPdfView(APIView):
+    """
+    Vue placeholder pour l'export PDF du BAD
+    Suit la logique de vos autres exports (soffice/template)
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, pk):
+        bad = get_object_or_404(BAD, pk=pk)
+        
+        # Ici vous pourriez utiliser un template Excel spécifique au BAD
+        # similaire à votre NoteDeFraisExportPdfView
+        
+        return Response({"message": "Fonctionnalité d'export en cours de déploiement pour le format BAD"})
+    
+
+
+
+# ==================== ARCHIVES DOCUMENTAIRES (GED) ====================
+
+class DocumentArchiveListCreateView(generics.ListCreateAPIView):
+    """Liste tous les documents archivés ou upload un nouveau document"""
+    permission_classes = [IsAuthenticated]
+    
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return DocumentArchiveCreateSerializer
+        return DocumentArchiveSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = DocumentArchive.objects.all().order_by('-date_upload')
+        
+        # Filtrage par type si spécifié dans l'URL (?type_doc=BL)
+        type_doc = self.request.query_params.get('type_doc')
+        if type_doc:
+            queryset = queryset.filter(type_doc=type_doc)
+            
+        # Optionnel : Si vous voulez que les assistants ne voient que leurs propres uploads
+        # if user.type == 'assistant':
+        #     queryset = queryset.filter(cree_par=user)
+            
+        return queryset
+
+
+class DocumentArchiveRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    """Récupère, modifie ou supprime un document archivé"""
+    queryset = DocumentArchive.objects.all()
+    permission_classes = [IsAuthenticated]
+    
+    def get_serializer_class(self):
+        if self.request.method in ['PUT', 'PATCH']:
+            return DocumentArchiveCreateSerializer
+        return DocumentArchiveSerializer
+
+
+class DocumentArchiveRechercheView(generics.ListAPIView):
+    """Recherche de documents par titre ou description"""
+    serializer_class = DocumentArchiveSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        query = self.request.query_params.get('q', '')
+        return DocumentArchive.objects.filter(
+            Q(titre__icontains=query) | 
+            Q(description__icontains=query)
+        ).order_by('-date_upload')
