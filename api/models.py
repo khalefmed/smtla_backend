@@ -91,6 +91,7 @@ class RotationEntrante(models.Model):
     observation = models.TextField(blank=True, null=True)
     date_arrivee = models.DateTimeField()
     camion = models.CharField(max_length=100)
+    navire = models.CharField(max_length=100, default='MV-BRIALLANCE')
     quantite = models.IntegerField()
     date_creation = models.DateTimeField(auto_now_add=True)
     
@@ -119,6 +120,7 @@ class RotationSortante(models.Model):
     observation = models.TextField(blank=True, null=True)
     date_sortie = models.DateTimeField()
     camion = models.CharField(max_length=100)
+    navire = models.CharField(max_length=100, default='MV-BRIALLANCE')
     quantite = models.IntegerField()
     date_creation = models.DateTimeField(auto_now_add=True)
     
@@ -744,8 +746,8 @@ class BAD(models.Model):
     facture = models.ForeignKey(Facture, on_delete=models.SET_NULL, null=True, blank=True, related_name='bads')
     
     reference = models.IntegerField(unique=True, verbose_name="Référence BAD", blank=True)
-    date = models.DateField(verbose_name="Date d'émission")
-    date_expiration = models.DateField(verbose_name="Date d'expiration")
+    date = models.DateField(verbose_name="Date d'émission", null=True, blank=True)
+    date_expiration = models.DateField(verbose_name="Date d'expiration", null=True, blank=True)
     
     # Nouveaux champs demandés
     navire = models.CharField(max_length=255, verbose_name="Navire", blank=True, null=True)

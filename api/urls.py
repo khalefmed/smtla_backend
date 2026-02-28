@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     # ==================== DASHBOARD ====================
     path('dashboard/stats/', DashboardStatsView.as_view(), name='dashboard-stats'),
+    path('stocks-status/', StockStatusView.as_view(), name='stocks-status'),
     
     # ==================== TYPE MATERIEL (Spec 5) ====================
     path('types-materiel/', TypeMaterielListCreateView.as_view(), name='type-materiel-list-create'),
@@ -99,5 +100,9 @@ urlpatterns = [
     # ==================== STATISTIQUES ====================
     path('statistiques/', StatistiquesGeneralesView.as_view(), name='statistiques-generales'),
     path('statistiques/client/<int:client_id>/', StatistiquesClientView.as_view(), name='statistiques-client'),
+
+
+    path('stats/journalier/', RapportJournalierStatsView.as_view(), name='stats-journalier'),
+    path('stats/global/', StatistiquesGlobalesView.as_view(), name='stats-global'),
 
 ]

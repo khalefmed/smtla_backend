@@ -12,6 +12,7 @@ from django.db import transaction as db_transaction
 from django.db.models.functions import TruncMonth
 
 import pandas as pd
+from django.db import transaction
 
 from rest_framework.decorators import api_view, permission_classes
 from django.utils.crypto import get_random_string
@@ -47,11 +48,14 @@ import subprocess
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 
+from django.db.models.functions import TruncDate
+from collections import defaultdict
+
 
 # ==================== DASHBOARD ====================
 
 class DashboardStatsView(APIView):
-    """Statistiques du tableau de bord - Spec 8"""
+    """Statistiques du tableau de bord enrichies - Spec 8"""
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -59,76 +63,65 @@ class DashboardStatsView(APIView):
         role = user.type
         stats = {}
 
-        # Statistiques Rotations (Spec 8)
+        # 1. Statistiques Rotations & Stocks
         if role in ['agent_port', 'directeur_operations', 'directeur_general']:
             stats['rotations'] = {
                 'total_entrantes': RotationEntrante.objects.count(),
                 'total_sortantes': RotationSortante.objects.count(),
             }
             
-            # Stock par client et type de matériel (Spec 8)
             stocks = []
             for client in Client.objects.all():
                 client_stock = {'client': client.nom, 'types': []}
-                
                 for type_mat in TypeMateriel.objects.all():
-                    entrees = RotationEntrante.objects.filter(
-                        client=client, 
-                        type_materiel=type_mat
-                    ).aggregate(Sum('quantite'))['quantite__sum'] or 0
-                    
-                    sorties = RotationSortante.objects.filter(
-                        client=client,
-                        type_materiel=type_mat
-                    ).aggregate(Sum('quantite'))['quantite__sum'] or 0
-                    
+                    entrees = RotationEntrante.objects.filter(client=client, type_materiel=type_mat).aggregate(Sum('quantite'))['quantite__sum'] or 0
+                    sorties = RotationSortante.objects.filter(client=client, type_materiel=type_mat).aggregate(Sum('quantite'))['quantite__sum'] or 0
                     disponible = entrees - sorties
-                    
                     if disponible > 0:
                         client_stock['types'].append({
                             'type_materiel': type_mat.nom,
                             'quantite_disponible': disponible
                         })
-                
                 if client_stock['types']:
                     stocks.append(client_stock)
-            
             stats['stocks_par_client'] = stocks
 
-        # Statistiques Clients
+        # 2. Statistiques Clients
         if role in ['agent_port', 'comptable', 'directeur_operations', 'directeur_general']:
-            stats['clients'] = {
-                'total': Client.objects.count(),
-            }
+            stats['clients'] = { 'total': Client.objects.count() }
 
-        # Statistiques Expression de Besoin (Spec 1)
+        # 3. Expression de Besoin (Compteurs + Liste en attente)
         if role in ['assistant', 'comptable', 'directeur_operations', 'directeur_general']:
+            eb_attente_query = ExpressionBesoin.objects.filter(status='attente')
             stats['expressions_besoin'] = {
-                'en_attente': ExpressionBesoin.objects.filter(status='attente').count(),
+                'en_attente': eb_attente_query.count(),
                 'en_cours': ExpressionBesoin.objects.filter(status='en_cours').count(),
                 'validees': ExpressionBesoin.objects.filter(status='valide').count(),
                 'rejetees': ExpressionBesoin.objects.filter(status='rejete').count(),
+                # On ajoute la liste détaillée ici
+                'liste_en_attente': ExpressionBesoinSerializer(eb_attente_query, many=True).data 
             }
 
-        # Statistiques Note de Frais (Spec 2)
+        # 4. Note de Frais
         if role in ['assistant', 'comptable', 'directeur_operations', 'directeur_general']:
             stats['notes_frais'] = {
                 'en_attente': NoteDeFrais.objects.filter(status='attente').count(),
                 'validees': NoteDeFrais.objects.filter(status='valide').count(),
-                'total_montant': NoteDeFrais.objects.filter(status='valide').aggregate(
-                    Sum('items__montant'))['items__montant__sum'] or 0
+                'total_montant': NoteDeFrais.objects.filter(status='valide').aggregate(Sum('items__montant'))['items__montant__sum'] or 0
             }
 
-        # Statistiques Devis & Factures (Spec 3 & 4)
+        # 5. Devis & Factures (Compteurs + Liste Devis en attente)
         if role in ['comptable', 'directeur_operations', 'directeur_general']:
+            devis_attente_query = Devis.objects.filter(status='attente')
             stats['devis'] = {
-                'en_attente': Devis.objects.filter(status='attente').count(),
+                'en_attente': devis_attente_query.count(),
                 'valides': Devis.objects.filter(status='valide').count(),
                 'total': Devis.objects.count(),
-                'somme_totale': sum(d.montant_total for d in Devis.objects.all())
+                'somme_totale': sum(d.montant_total for d in Devis.objects.all()),
+                # On ajoute la liste détaillée ici
+                'liste_en_attente': DevisSerializer(devis_attente_query, many=True).data
             }
             
-            # Factures avec gestion des privées (Spec 3)
             factures_query = Facture.objects.all()
             if role != 'directeur_general':
                 factures_query = factures_query.filter(est_privee=False)
@@ -140,7 +133,7 @@ class DashboardStatsView(APIView):
                 'somme_totale': sum(f.montant_total for f in factures_query)
             }
 
-        # Statistiques Bons de Commande (Spec 10)
+        # 6. Bons de Commande
         if role in ['comptable', 'directeur_operations', 'directeur_general']:
             stats['bons_commande'] = {
                 'en_attente': BonCommande.objects.filter(status='attente').count(),
@@ -149,6 +142,54 @@ class DashboardStatsView(APIView):
             }
 
         return Response(stats)
+
+
+
+class StockStatusView(APIView):
+    """
+    Retourne l'état des stocks actuel par client et par type de matériel.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        stocks = []
+        clients = Client.objects.all()
+        types_mat = TypeMateriel.objects.all()
+
+        for client in clients:
+            client_stock = {
+                'client': client.nom,
+                'types': []
+            }
+            
+            for type_mat in types_mat:
+                # Calcul des entrées
+                total_entrees = RotationEntrante.objects.filter(
+                    client=client, 
+                    type_materiel=type_mat
+                ).aggregate(Sum('quantite'))['quantite__sum'] or 0
+                
+                # Calcul des sorties
+                total_sorties = RotationSortante.objects.filter(
+                    client=client,
+                    type_materiel=type_mat
+                ).aggregate(Sum('quantite'))['quantite__sum'] or 0
+                
+                disponible = total_entrees - total_sorties
+                
+                # On n'ajoute que si le client a déjà eu ce matériel en stock
+                if total_entrees > 0:
+                    client_stock['types'].append({
+                        'type_materiel': type_mat.nom,
+                        'quantite_disponible': disponible,
+                        'total_entrees': total_entrees,
+                        'total_sorties': total_sorties
+                    })
+            
+            if client_stock['types']:
+                stocks.append(client_stock)
+
+        return Response(stocks)
 
 
 # ==================== TYPE MATERIEL (Spec 5) ====================
@@ -473,11 +514,11 @@ class ExpressionBesoinRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPI
 
 
 class ExpressionBesoinValiderView(APIView):
-    """Valide ou rejette une expression de besoin - Spec 1"""
+    """Valide ou rejette une expression de besoin et génère une Note de Frais - Spec 1 & 2"""
     permission_classes = [IsAuthenticated]
     
     def patch(self, request, pk):
-        # Seuls DO et Comptable peuvent valider (Spec 1)
+        # Vérification des permissions
         if request.user.type not in ['directeur_operations', 'comptable', 'directeur_general']:
             return Response(
                 {"error": "Vous n'avez pas la permission de valider"},
@@ -493,15 +534,58 @@ class ExpressionBesoinValiderView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
         
-        expression.status = nouveau_statut
-        expression.valideur = request.user
-        expression.date_validation = datetime.now()
-        expression.save()
-        
-        return Response({
-            "message": f"Expression de besoin {nouveau_statut}e avec succès",
-            "status": expression.status
-        })
+        try:
+            with transaction.atomic():
+                # 1. Mise à jour de l'expression de besoin
+                expression.status = nouveau_statut
+                expression.valideur = request.user
+                expression.date_validation = datetime.now()
+                expression.save()
+
+                note_frais = None
+                # 2. Création automatique de la Note de Frais si validée
+                if nouveau_statut == 'valide':
+                    # On vérifie si une note n'existe pas déjà pour éviter les doublons
+                    if not NoteDeFrais.objects.filter(expression_besoin=expression).exists():
+                        note_frais = NoteDeFrais.objects.create(
+                            expression_besoin=expression,
+                            createur=expression.createur, # Le créateur de l'EB reste le bénéficiaire de la NF
+                            status='attente' # La NF commence son propre cycle de validation
+                        )
+
+                        # 3. Duplication des items (EB -> NF)
+                        items_eb = expression.items.all()
+                        items_nf = []
+                        
+                        for item in items_eb:
+                            # Note: On mappe les types de l'EB vers les types de la NF
+                            # Si les types sont identiques, c'est direct.
+                            items_nf.append(ItemNoteDeFrais(
+                                note_de_frais=note_frais,
+                                libelle=item.libelle,
+                                type=item.type,
+                                montant=item.montant
+                            ))
+                        
+                        if items_nf:
+                            ItemNoteDeFrais.objects.bulk_create(items_nf)
+
+            # Préparation du message de retour
+            msg = f"Expression de besoin {nouveau_statut}e avec succès"
+            if note_frais:
+                msg += f". Note de frais {note_frais.reference} générée."
+
+            return Response({
+                "message": msg,
+                "status": expression.status,
+                "note_frais_ref": note_frais.reference if note_frais else None
+            }, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(
+                {"error": f"Erreur lors de la validation : {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 # ==================== NOTE DE FRAIS (Spec 2) ====================
@@ -781,7 +865,7 @@ class DevisRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class DevisValiderView(APIView):
-    """Valide ou rejette un devis - Spec 4"""
+    """Valide ou rejette un devis et génère une facture si validé - Spec 4"""
     permission_classes = [IsAuthenticated]
     
     def patch(self, request, pk):
@@ -793,17 +877,58 @@ class DevisValiderView(APIView):
                 {"error": "Statut invalide"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
-        devis.status = nouveau_statut
-        devis.valideur = request.user
-        devis.date_validation = datetime.now()
-        devis.save()
-        
-        return Response({
-            "message": f"Devis {nouveau_statut} avec succès",
-            "status": devis.status
-        })
 
+        try:
+            with transaction.atomic():
+                # 1. Mise à jour du devis
+                devis.status = nouveau_statut
+                devis.valideur = request.user
+                devis.date_validation = datetime.now()
+                devis.save()
+
+                facture = None
+                if nouveau_statut == 'valide':
+                    facture = Facture.objects.create(
+                        client=devis.client,
+                        port_arrive=devis.port_arrive,
+                        vessel=devis.vessel,
+                        voyage=devis.voyage,
+                        eta=devis.eta,
+                        etd=devis.etd,
+                        bl=devis.bl,
+                        tva=devis.tva,
+                        devise=devis.devise,
+                        createur=request.user,  
+                        status='attente',       
+                        est_privee=False        
+                    )
+
+                    items_devis = devis.items.all()
+                    items_facture = [
+                        ItemFacture(
+                            facture=facture,
+                            libelle=item.libelle,
+                            prix_unitaire=item.prix_unitaire,
+                            quantite=item.quantite
+                        ) for item in items_devis
+                    ]
+                    ItemFacture.objects.bulk_create(items_facture)
+
+            message = f"Devis {nouveau_statut} avec succès"
+            if facture:
+                message += f". Facture {facture.reference} générée automatiquement."
+
+            return Response({
+                "message": message,
+                "status": devis.status,
+                "facture_reference": facture.reference if facture else None
+            }, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(
+                {"error": f"Une erreur est survenue lors de la validation : {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 class DevisParClientView(generics.ListAPIView):
     """Liste les devis d'un client spécifique"""
@@ -1434,3 +1559,93 @@ class DocumentArchiveRechercheView(generics.ListAPIView):
             Q(titre__icontains=query) | 
             Q(description__icontains=query)
         ).order_by('-date_upload')
+    
+
+# --- Rapport Journalier ---
+class RapportJournalierStatsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        target_date = request.query_params.get('date')
+        mouvement = request.query_params.get('type_mouvement', 'sorties') # Default to sorties
+
+        if not target_date:
+            return Response({"error": "Date manquante"}, status=400)
+
+        # Filtrage selon le choix
+        if mouvement == 'entrees':
+            qs = RotationEntrante.objects.filter(date_arrivee__date=target_date)
+            label_field = 'date_arrivee'
+        else:
+            qs = RotationSortante.objects.filter(date_sortie__date=target_date)
+            label_field = 'date_sortie'
+
+        qs = qs.select_related('client', 'type_materiel')
+
+        # Agrégation pour le récapitulatif
+        stats_par_type = qs.values('type_materiel__nom').annotate(total=Sum('quantite'))
+        recapitulatif = {item['type_materiel__nom']: item['total'] for item in stats_par_type}
+
+        # Structure par client
+        clients_data = {}
+        for item in qs:
+            c_nom = item.client.nom
+            t_nom = item.type_materiel.nom
+            if c_nom not in clients_data:
+                clients_data[c_nom] = []
+            clients_data[c_nom].append({"type": t_nom, "quantite": item.quantite})
+
+        detailed_stats = [{"client": k, "mouvements": v} for k, v in clients_data.items()]
+
+        return Response({
+            "date_consultee": target_date,
+            "type_mouvement": mouvement,
+            "recapitulatif": recapitulatif,
+            "details_par_client": detailed_stats
+        })
+
+# --- Statistiques Globales ---
+class StatistiquesGlobalesView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        start_date = request.query_params.get('start_date')
+        end_date = request.query_params.get('end_date')
+        mouvement = request.query_params.get('type_mouvement', 'sorties')
+
+        if mouvement == 'entrees':
+            queryset = RotationEntrante.objects.filter(date_arrivee__date__range=[start_date, end_date]).annotate(jour=TruncDate('date_arrivee'))
+        else:
+            queryset = RotationSortante.objects.filter(date_sortie__date__range=[start_date, end_date]).annotate(jour=TruncDate('date_sortie'))
+
+        tous_les_clients = list(Client.objects.values_list('nom', flat=True))
+        matrice = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
+        totaux_colonnes = defaultdict(lambda: defaultdict(int))
+
+        for s in queryset.select_related('client', 'type_materiel'):
+            jour_str = str(s.jour)
+            client_nom = s.client.nom
+            type_nom = s.type_materiel.nom
+            matrice[jour_str][client_nom][type_nom] += s.quantite
+            totaux_colonnes[client_nom][type_nom] += s.quantite
+
+        lignes_tableau = []
+        for index, date_cle in enumerate(sorted(matrice.keys()), start=1):
+            ligne = {"label": f"DAY {index}", "date": date_cle, "clients": {}}
+            for client in tous_les_clients:
+                mvts = matrice[date_cle].get(client, {})
+                ligne["clients"][client] = "\n".join([f"{qty} {tp.upper()}" for tp, qty in mvts.items()])
+            lignes_tableau.append(ligne)
+
+        total_final = {"label": "TOTAL", "clients": {}}
+        for client in tous_les_clients:
+            mvts_totaux = totaux_colonnes.get(client, {})
+            total_final["clients"][client] = "\n".join([f"{qty} {tp.upper()}" for tp, qty in mvts_totaux.items()])
+
+        return Response({
+            "type_mouvement": mouvement,
+            "colonnes": tous_les_clients,
+            "lignes": lignes_tableau,
+            "total": total_final,
+            "mouvementType": mouvement
+        })

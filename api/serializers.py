@@ -145,7 +145,7 @@ class RotationEntranteSerializer(serializers.ModelSerializer):
     class Meta:
         model = RotationEntrante
         fields = ['id', 'client', 'client_nom', 'type_materiel', 'type_materiel_nom',
-                  'numero_bordereau', 'observation', 'date_arrivee', 'camion', 
+                  'numero_bordereau', 'observation', 'date_arrivee', 'camion', 'navire', 
                   'quantite', 'date_creation']
         read_only_fields = ['date_creation']
 
@@ -166,7 +166,7 @@ class RotationEntranteCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = RotationEntrante
         fields = ['client_id', 'type_materiel_id', 'numero_bordereau', 
-                  'observation', 'date_arrivee', 'camion', 'quantite']
+                  'observation', 'date_arrivee', 'camion', 'quantite', 'navire',]
 
 
 class RotationSortanteSerializer(serializers.ModelSerializer):
@@ -177,7 +177,7 @@ class RotationSortanteSerializer(serializers.ModelSerializer):
     class Meta:
         model = RotationSortante
         fields = ['id', 'client', 'client_nom', 'type_materiel', 'type_materiel_nom',
-                  'numero_bordereau', 'observation', 'date_sortie', 'camion', 
+                  'numero_bordereau', 'observation', 'date_sortie', 'camion', 'navire',
                   'quantite', 'date_creation']
         read_only_fields = ['date_creation']
 
@@ -198,7 +198,7 @@ class RotationSortanteCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = RotationSortante
         fields = ['client_id', 'type_materiel_id', 'numero_bordereau', 
-                  'observation', 'date_sortie', 'camion', 'quantite']
+                  'observation', 'date_sortie', 'camion', 'quantite', 'navire',]
 
     def validate(self, data):
         """
@@ -813,8 +813,7 @@ class BADCreateSerializer(serializers.ModelSerializer):
         model = BAD
         fields = [
             'id', 'client_id', 'client_nom', 'facture_id', 'facture_ref', 
-            'reference', 'navire', 'nombre_jours', 'date', 
-            'date_expiration', 'nom_representant', 'items'
+            'reference', 'navire', 'nombre_jours', 'nom_representant', 'items'
         ]
         read_only_fields = ['reference']
 
@@ -884,3 +883,6 @@ class DocumentArchiveCreateSerializer(serializers.ModelSerializer):
         # Récupération automatique de l'utilisateur connecté via le contexte de la requête
         validated_data['cree_par'] = self.context['request'].user
         return super().create(validated_data)
+
+
+
