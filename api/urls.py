@@ -17,6 +17,9 @@ urlpatterns = [
     path('rotations/', RotationListCreateView.as_view(), name='rotation-list-create'),
     path('rotations/<int:pk>/', RotationRetrieveUpdateDeleteView.as_view(), name='rotation-detail'),
     path('rotations/par-type/', RotationParTypeView.as_view(), name='rotations-par-type'),
+
+
+    path('rotations/tout-terminer/', TerminerToutesLesRotationsView.as_view(), name='rotations-tout-terminer'),
     
     # ==================== ROTATIONS ENTRANTES (Spec 6) ====================
     path('rotations-entrantes/', RotationEntranteListCreateView.as_view(), name='rotation-entrante-list-create'),

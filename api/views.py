@@ -259,12 +259,44 @@ class RotationParTypeView(generics.ListAPIView):
         return queryset
 
 
+
+class TerminerToutesLesRotationsView(APIView):
+    """
+    API pour passer TOUTES les rotations entrantes et sortantes à 'termine'
+    """
+    def post(self, request):
+        try:
+            # Mise à jour massive des entrantes
+            nb_entrantes = RotationEntrante.objects.filter(status='en_cours').update(status='termine')
+            
+            # Mise à jour massive des sortantes
+            nb_sortantes = RotationSortante.objects.filter(status='en_cours').update(status='termine')
+
+            return Response({
+                "message": "Toutes les rotations ont été clôturées.",
+                "details": {
+                    "entrantes_cloturees": nb_entrantes,
+                    "sortantes_cloturees": nb_sortantes
+                }
+            }, status=status.HTTP_200_OK)
+            
+        except Exception as e:
+            return Response(
+                {"error": str(e)}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
 # ==================== ROTATIONS ENTRANTES (Spec 6) ====================
 
 class RotationEntranteListCreateView(generics.ListCreateAPIView):
-    """Liste toutes les rotations entrantes ou crée une nouvelle - Spec 6"""
+    """Liste les rotations entrantes EN COURS ou crée une nouvelle - Spec 6"""
     queryset = RotationEntrante.objects.all().order_by('-date_arrivee')
     permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        # On filtre pour ne retourner que les rotations "en cours"
+        return RotationEntrante.objects.filter(status='en_cours').order_by('-date_arrivee')
     
     def get_serializer_class(self):
         if self.request.method == 'POST':
@@ -335,9 +367,13 @@ class RotationEntranteRapportView(APIView):
 # ==================== ROTATIONS SORTANTES (Spec 7) ====================
 
 class RotationSortanteListCreateView(generics.ListCreateAPIView):
-    """Liste toutes les rotations sortantes ou crée une nouvelle - Spec 7"""
+    """Liste les rotations sortantes EN COURS ou crée une nouvelle - Spec 7"""
     queryset = RotationSortante.objects.all().order_by('-date_sortie')
     permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        # On filtre pour ne retourner que les rotations "en cours"
+        return RotationSortante.objects.filter(status='en_cours').order_by('-date_sortie')
     
     def get_serializer_class(self):
         if self.request.method == 'POST':

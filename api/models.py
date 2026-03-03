@@ -74,9 +74,17 @@ class TypeMateriel(models.Model):
         verbose_name_plural = "Types de matériel"
         ordering = ['nom']
 
+from django.db import models
 
 class RotationEntrante(models.Model):
     """Modèle pour les rotations entrantes - Spec 6"""
+    
+    # Définition des choix de statut
+    STATUS_CHOICES = [
+        ('en_cours', 'En cours'),
+        ('termine', 'Terminé'),
+    ]
+
     client = models.ForeignKey(
         Client,
         on_delete=models.PROTECT,
@@ -93,10 +101,15 @@ class RotationEntrante(models.Model):
     camion = models.CharField(max_length=100)
     navire = models.CharField(max_length=100, default='MV-BRIALLANCE')
     quantite = models.IntegerField()
+    status = models.CharField(
+        max_length=20, 
+        choices=STATUS_CHOICES, 
+        default='en_cours'
+    )
     date_creation = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f"{self.numero_bordereau} - {self.client.nom} - {self.type_materiel.nom}"
+        return f"{self.numero_bordereau} - {self.client.nom} - {self.status}"
     
     class Meta:
         verbose_name = "Rotation entrante"
@@ -106,6 +119,12 @@ class RotationEntrante(models.Model):
 
 class RotationSortante(models.Model):
     """Modèle pour les rotations sortantes - Spec 7"""
+    
+    STATUS_CHOICES = [
+        ('en_cours', 'En cours'),
+        ('termine', 'Terminé'),
+    ]
+
     client = models.ForeignKey(
         Client,
         on_delete=models.PROTECT,
@@ -122,10 +141,15 @@ class RotationSortante(models.Model):
     camion = models.CharField(max_length=100)
     navire = models.CharField(max_length=100, default='MV-BRIALLANCE')
     quantite = models.IntegerField()
+    status = models.CharField(
+        max_length=20, 
+        choices=STATUS_CHOICES, 
+        default='en_cours'
+    )
     date_creation = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f"{self.numero_bordereau} - {self.client.nom} - {self.type_materiel.nom}"
+        return f"{self.numero_bordereau} - {self.client.nom} - {self.status}"
     
     class Meta:
         verbose_name = "Rotation sortante"
@@ -416,8 +440,8 @@ class Devis(models.Model):
     port_arrive = models.CharField(max_length=255, verbose_name="Port d'arrivée")
     vessel = models.CharField(max_length=255)
     voyage = models.CharField(max_length=100)
-    eta = models.DateTimeField(verbose_name="ETA (Estimated Time of Arrival)")
-    etd = models.DateTimeField(verbose_name="ETD (Estimated Time of Departure)")
+    eta = models.DateTimeField(verbose_name="ETA (Estimated Time of Arrival)", null=True, blank=True)
+    etd = models.DateTimeField(verbose_name="ETD (Estimated Time of Departure)", null=True, blank=True)
     bl = models.CharField(max_length=100, verbose_name="Bill of Lading")
     date_creation = models.DateTimeField(auto_now_add=True)
     tva = models.BooleanField(default=False, verbose_name="TVA")
