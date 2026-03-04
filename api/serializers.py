@@ -501,7 +501,7 @@ class DevisCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Devis
         fields = [
-            'client_id', 'port_arrive', 'vessel', 'voyage', 'bl', 'tva', 'devise', 'items'
+            'client_id', 'port_arrive', 'vessel', 'voyage', 'bl', 'eta', 'etd', 'tva', 'devise', 'items'
         ]
 
     def create(self, validated_data):

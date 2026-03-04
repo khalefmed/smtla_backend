@@ -63,12 +63,16 @@ class DashboardStatsView(APIView):
         role = user.type
         stats = {}
 
+        print(f"Utilisateur: {user.username}, Rôle: {role}")
+
         # 1. Statistiques Rotations & Stocks
         if role in ['agent_port', 'directeur_operations', 'directeur_general']:
             stats['rotations'] = {
                 'total_entrantes': RotationEntrante.objects.count(),
                 'total_sortantes': RotationSortante.objects.count(),
             }
+
+            print(stats['rotations'])
             
             stocks = []
             for client in Client.objects.all():
