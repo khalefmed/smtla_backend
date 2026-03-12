@@ -73,7 +73,7 @@ class DashboardStatsView(APIView):
             }
 
             print(stats['rotations'])
-            
+
             stocks = []
             for client in Client.objects.all():
                 client_stock = {'client': client.nom, 'types': []}
@@ -103,7 +103,7 @@ class DashboardStatsView(APIView):
                 'validees': ExpressionBesoin.objects.filter(status='valide').count(),
                 'rejetees': ExpressionBesoin.objects.filter(status='rejete').count(),
                 # On ajoute la liste détaillée ici
-                'liste_en_attente': ExpressionBesoinSerializer(eb_attente_query, many=True).data 
+                'liste_en_attente': ExpressionBesoinSerializer(eb_attente_query, many=True).data
             }
 
         # 4. Note de Frais
@@ -125,11 +125,11 @@ class DashboardStatsView(APIView):
                 # On ajoute la liste détaillée ici
                 'liste_en_attente': DevisSerializer(devis_attente_query, many=True).data
             }
-            
+
             factures_query = Facture.objects.all()
             if role != 'directeur_general':
                 factures_query = factures_query.filter(est_privee=False)
-            
+
             stats['factures'] = {
                 'en_attente': factures_query.filter(status='attente').count(),
                 'validees': factures_query.filter(status='valide').count(),
@@ -165,22 +165,22 @@ class StockStatusView(APIView):
                 'client': client.nom,
                 'types': []
             }
-            
+
             for type_mat in types_mat:
                 # Calcul des entrées
                 total_entrees = RotationEntrante.objects.filter(
-                    client=client, 
+                    client=client,
                     type_materiel=type_mat
                 ).aggregate(Sum('quantite'))['quantite__sum'] or 0
-                
+
                 # Calcul des sorties
                 total_sorties = RotationSortante.objects.filter(
                     client=client,
                     type_materiel=type_mat
                 ).aggregate(Sum('quantite'))['quantite__sum'] or 0
-                
+
                 disponible = total_entrees - total_sorties
-                
+
                 # On n'ajoute que si le client a déjà eu ce matériel en stock
                 if total_entrees > 0:
                     client_stock['types'].append({
@@ -189,7 +189,7 @@ class StockStatusView(APIView):
                         'total_entrees': total_entrees,
                         'total_sorties': total_sorties
                     })
-            
+
             if client_stock['types']:
                 stocks.append(client_stock)
 
@@ -216,7 +216,7 @@ class TypeMaterielRechercheView(generics.ListAPIView):
     """Recherche de types de matériel par nom - Spec 5"""
     serializer_class = TypeMaterielSerializer
     permission_classes = [IsAuthenticated]
-    
+
     def get_queryset(self):
         query = self.request.query_params.get('q', '')
         return TypeMateriel.objects.filter(
@@ -230,7 +230,7 @@ class RotationListCreateView(generics.ListCreateAPIView):
     """Liste toutes les rotations ou crée une nouvelle"""
     queryset = Rotation.objects.all().order_by('-date_rotation')
     permission_classes = [IsAuthenticated]
-    
+
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return RotationCreateSerializer
@@ -241,7 +241,7 @@ class RotationRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     """Récupère, modifie ou supprime une rotation"""
     queryset = Rotation.objects.all()
     permission_classes = [IsAuthenticated]
-    
+
     def get_serializer_class(self):
         if self.request.method in ['PUT', 'PATCH']:
             return RotationCreateSerializer
@@ -252,14 +252,14 @@ class RotationParTypeView(generics.ListAPIView):
     """Liste les rotations filtrées par type (entrée/sortie)"""
     serializer_class = RotationSerializer
     permission_classes = [IsAuthenticated]
-    
+
     def get_queryset(self):
         type_rotation = self.request.query_params.get('type')
         queryset = Rotation.objects.all().order_by('-date_rotation')
-        
+
         if type_rotation:
             queryset = queryset.filter(type=type_rotation)
-        
+
         return queryset
 
 
@@ -272,7 +272,7 @@ class TerminerToutesLesRotationsView(APIView):
         try:
             # Mise à jour massive des entrantes
             nb_entrantes = RotationEntrante.objects.filter(status='en_cours').update(status='termine')
-            
+
             # Mise à jour massive des sortantes
             nb_sortantes = RotationSortante.objects.filter(status='en_cours').update(status='termine')
 
@@ -283,10 +283,10 @@ class TerminerToutesLesRotationsView(APIView):
                     "sortantes_cloturees": nb_sortantes
                 }
             }, status=status.HTTP_200_OK)
-            
+
         except Exception as e:
             return Response(
-                {"error": str(e)}, 
+                {"error": str(e)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
@@ -297,11 +297,11 @@ class RotationEntranteListCreateView(generics.ListCreateAPIView):
     """Liste les rotations entrantes EN COURS ou crée une nouvelle - Spec 6"""
     queryset = RotationEntrante.objects.all().order_by('-date_arrivee')
     permission_classes = [IsAuthenticated]
-    
+
     def get_queryset(self):
         # On filtre pour ne retourner que les rotations "en cours"
         return RotationEntrante.objects.filter(status='en_cours').order_by('-date_arrivee')
-    
+
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return RotationEntranteCreateSerializer
@@ -312,7 +312,7 @@ class RotationEntranteRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPI
     """Récupère, modifie ou supprime une rotation entrante - Spec 6"""
     queryset = RotationEntrante.objects.all()
     permission_classes = [IsAuthenticated]
-    
+
     def get_serializer_class(self):
         if self.request.method in ['PUT', 'PATCH']:
             return RotationEntranteCreateSerializer
@@ -322,34 +322,34 @@ class RotationEntranteRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPI
 class RotationEntranteRapportView(APIView):
     """Génère un rapport journalier des rotations entrantes - Spec 6"""
     permission_classes = [IsAuthenticated]
-    
+
     def get(self, request):
         date_debut = request.query_params.get('date_debut')
         date_fin = request.query_params.get('date_fin')
-        
+
         queryset = RotationEntrante.objects.all()
-        
+
         if date_debut:
             queryset = queryset.filter(date_arrivee__gte=date_debut)
         if date_fin:
             queryset = queryset.filter(date_arrivee__lte=date_fin)
-        
+
         # Grouper par client et type
         rapport = {}
         for rotation in queryset:
             client_nom = rotation.client.nom
             type_materiel = rotation.type_materiel.nom
-            
+
             if client_nom not in rapport:
                 rapport[client_nom] = {}
-            
+
             if type_materiel not in rapport[client_nom]:
                 rapport[client_nom][type_materiel] = {
                     'quantite_totale': 0,
                     'nombre_rotations': 0,
                     'rotations': []
                 }
-            
+
             rapport[client_nom][type_materiel]['quantite_totale'] += rotation.quantite
             rapport[client_nom][type_materiel]['nombre_rotations'] += 1
             rapport[client_nom][type_materiel]['rotations'].append({
@@ -360,7 +360,7 @@ class RotationEntranteRapportView(APIView):
                 'quantite': rotation.quantite,
                 'observation': rotation.observation
             })
-        
+
         return Response({
             'date_debut': date_debut,
             'date_fin': date_fin,
@@ -374,11 +374,11 @@ class RotationSortanteListCreateView(generics.ListCreateAPIView):
     """Liste les rotations sortantes EN COURS ou crée une nouvelle - Spec 7"""
     queryset = RotationSortante.objects.all().order_by('-date_sortie')
     permission_classes = [IsAuthenticated]
-    
+
     def get_queryset(self):
         # On filtre pour ne retourner que les rotations "en cours"
         return RotationSortante.objects.filter(status='en_cours').order_by('-date_sortie')
-    
+
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return RotationSortanteCreateSerializer
@@ -389,7 +389,7 @@ class RotationSortanteRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPI
     """Récupère, modifie ou supprime une rotation sortante - Spec 7"""
     queryset = RotationSortante.objects.all()
     permission_classes = [IsAuthenticated]
-    
+
     def get_serializer_class(self):
         if self.request.method in ['PUT', 'PATCH']:
             return RotationSortanteCreateSerializer
@@ -399,36 +399,36 @@ class RotationSortanteRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPI
 class RotationSortanteRapportView(APIView):
     """Génère un rapport de livraison des rotations sortantes - Spec 7"""
     permission_classes = [IsAuthenticated]
-    
+
     def get(self, request):
         date_debut = request.query_params.get('date_debut')
         date_fin = request.query_params.get('date_fin')
-        
+
         queryset = RotationSortante.objects.all()
-        
+
         if date_debut:
             queryset = queryset.filter(date_sortie__gte=date_debut)
         if date_fin:
             queryset = queryset.filter(date_sortie__lte=date_fin)
-        
+
         # Grouper par client et type
         rapport = {}
         total_rotations = queryset.count()
-        
+
         for rotation in queryset:
             client_nom = rotation.client.nom
             type_materiel = rotation.type_materiel.nom
-            
+
             if client_nom not in rapport:
                 rapport[client_nom] = {}
-            
+
             if type_materiel not in rapport[client_nom]:
                 rapport[client_nom][type_materiel] = {
                     'quantite_totale': 0,
                     'nombre_rotations': 0,
                     'rotations': []
                 }
-            
+
             rapport[client_nom][type_materiel]['quantite_totale'] += rotation.quantite
             rapport[client_nom][type_materiel]['nombre_rotations'] += 1
             rapport[client_nom][type_materiel]['rotations'].append({
@@ -439,7 +439,7 @@ class RotationSortanteRapportView(APIView):
                 'quantite': rotation.quantite,
                 'observation': rotation.observation
             })
-        
+
         return Response({
             'date_debut': date_debut,
             'date_fin': date_fin,
@@ -468,7 +468,7 @@ class ClientRechercheView(generics.ListAPIView):
     """Recherche de clients par nom, téléphone ou email"""
     serializer_class = ClientSerializer
     permission_classes = [IsAuthenticated]
-    
+
     def get_queryset(self):
         query = self.request.query_params.get('q', '')
         return Client.objects.filter(
@@ -499,7 +499,7 @@ class FournisseurRechercheView(generics.ListAPIView):
     """Recherche de fournisseurs - Spec 9"""
     serializer_class = FournisseurSerializer
     permission_classes = [IsAuthenticated]
-    
+
     def get_queryset(self):
         query = self.request.query_params.get('q', '')
         return Fournisseur.objects.filter(
@@ -515,48 +515,48 @@ class FournisseurRechercheView(generics.ListAPIView):
 class ExpressionBesoinListCreateView(generics.ListCreateAPIView):
     """Liste toutes les expressions de besoin ou crée une nouvelle - Spec 1"""
     permission_classes = [IsAuthenticated]
-    
+
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return ExpressionBesoinCreateSerializer
         return ExpressionBesoinSerializer
-    
+
     def get_queryset(self):
         user = self.request.user
         queryset = ExpressionBesoin.objects.all().order_by('-date_creation')
-        
+
         # Visibilité restreinte (Spec 1)
         if user.type not in ['directeur_operations', 'comptable']:
             # Utilisateur ne voit que ses propres expressions
             queryset = queryset.filter(createur=user)
-        
+
         return queryset
 
 
 class ExpressionBesoinRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     """Récupère, modifie ou supprime une expression de besoin - Spec 1"""
     permission_classes = [IsAuthenticated]
-    
+
     def get_serializer_class(self):
         if self.request.method in ['PUT', 'PATCH']:
             return ExpressionBesoinCreateSerializer
         return ExpressionBesoinSerializer
-    
+
     def get_queryset(self):
         user = self.request.user
         queryset = ExpressionBesoin.objects.all()
-        
+
         # Visibilité restreinte (Spec 1)
         if user.type not in ['directeur_operations', 'comptable']:
             queryset = queryset.filter(createur=user)
-        
+
         return queryset
 
 
 class ExpressionBesoinValiderView(APIView):
     """Valide ou rejette une expression de besoin et génère une Note de Frais - Spec 1 & 2"""
     permission_classes = [IsAuthenticated]
-    
+
     def patch(self, request, pk):
         # Vérification des permissions
         if request.user.type not in ['directeur_operations', 'comptable', 'directeur_general']:
@@ -564,16 +564,16 @@ class ExpressionBesoinValiderView(APIView):
                 {"error": "Vous n'avez pas la permission de valider"},
                 status=status.HTTP_403_FORBIDDEN
             )
-        
+
         expression = get_object_or_404(ExpressionBesoin, pk=pk)
         nouveau_statut = request.data.get('status')
-        
+
         if nouveau_statut not in ['valide', 'rejete', 'en_cours']:
             return Response(
                 {"error": "Statut invalide"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
+
         try:
             with transaction.atomic():
                 # 1. Mise à jour de l'expression de besoin
@@ -596,7 +596,7 @@ class ExpressionBesoinValiderView(APIView):
                         # 3. Duplication des items (EB -> NF)
                         items_eb = expression.items.all()
                         items_nf = []
-                        
+
                         for item in items_eb:
                             # Note: On mappe les types de l'EB vers les types de la NF
                             # Si les types sont identiques, c'est direct.
@@ -606,7 +606,7 @@ class ExpressionBesoinValiderView(APIView):
                                 type=item.type,
                                 montant=item.montant
                             ))
-                        
+
                         if items_nf:
                             ItemNoteDeFrais.objects.bulk_create(items_nf)
 
@@ -633,7 +633,7 @@ class ExpressionBesoinValiderView(APIView):
 class NoteDeFraisListCreateView(generics.ListCreateAPIView):
     """Liste toutes les notes de frais ou crée une nouvelle - Spec 2"""
     permission_classes = [IsAuthenticated]
-    
+
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return NoteDeFraisCreateSerializer
@@ -648,7 +648,7 @@ class NoteDeFraisListCreateView(generics.ListCreateAPIView):
         # Logic for "Comptable": only show validated notes
         if hasattr(user, 'type') and user.type == 'comptable':
             return queryset.filter(status='valide')
-        
+
         return queryset
 
 
@@ -676,13 +676,13 @@ class NoteDeFraisValiderView(APIView):
                 {"error": "Statut invalide"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
+
         note.status = nouveau_statut
         if nouveau_statut in ['valide', 'rejete']:
             note.valideur = request.user
             note.date_validation = datetime.now()
         note.save()
-        
+
         return Response({
             "message": f"Note {nouveau_statut} avec succès",
             "status": note.status
@@ -692,17 +692,17 @@ class NoteDeFraisValiderView(APIView):
 class NoteDeFraisCreerDepuisExpressionView(APIView):
     """Crée une note de frais à partir d'une expression de besoin - Spec 2"""
     permission_classes = [IsAuthenticated]
-    
+
     def post(self, request, expression_id):
         expression = get_object_or_404(ExpressionBesoin, pk=expression_id)
-        
+
         with db_transaction.atomic():
             # Créer la note de frais (le client, navire, etc. sont portés par l'EB)
             note = NoteDeFrais.objects.create(
                 expression_besoin=expression,
                 createur=request.user
             )
-            
+
             # Copier les items de l'EB vers la NF pour permettre l'ajustement ultérieur
             for item_eb in expression.items.all():
                 ItemNoteDeFrais.objects.create(
@@ -711,7 +711,7 @@ class NoteDeFraisCreerDepuisExpressionView(APIView):
                     type=item_eb.type,
                     montant=item_eb.montant
                 )
-        
+
         return Response(
             {
                 "message": "Note de frais générée avec succès",
@@ -725,22 +725,22 @@ class NoteDeFraisParDeviseView(generics.ListAPIView):
     """Liste les notes de frais filtrées par la devise de l'EB source"""
     serializer_class = NoteDeFraisSerializer
     permission_classes = [IsAuthenticated]
-    
+
     def get_queryset(self):
         devise = self.request.query_params.get('devise')
         queryset = NoteDeFrais.objects.all().order_by('-date_creation')
-        
+
         if devise:
             # Filtrage à travers la relation ForeignKey
             queryset = queryset.filter(expression_besoin__devise=devise)
-        
+
         return queryset
 
 
 class NoteDeFraisAjouterItemView(APIView):
     """Ajoute un item à une note de frais existante"""
     permission_classes = [IsAuthenticated]
-    
+
     def post(self, request, pk):
         try:
             note = NoteDeFrais.objects.get(pk=pk)
@@ -749,7 +749,7 @@ class NoteDeFraisAjouterItemView(APIView):
                 {"detail": "Note de frais introuvable"},
                 status=status.HTTP_404_NOT_FOUND
             )
-        
+
         serializer = ItemNoteDeFraisSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(note_de_frais=note)
@@ -757,7 +757,7 @@ class NoteDeFraisAjouterItemView(APIView):
                 NoteDeFraisSerializer(note).data,
                 status=status.HTTP_201_CREATED
             )
-        
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -882,7 +882,7 @@ class DevisListCreateView(generics.ListCreateAPIView):
     """Liste tous les devis ou crée un nouveau devis - Spec 4"""
     queryset = Devis.objects.all().order_by('-date_creation')
     permission_classes = [IsAuthenticated]
-    
+
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return DevisCreateSerializer
@@ -895,7 +895,7 @@ class DevisRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     """Récupère, modifie ou supprime un devis - Spec 4"""
     queryset = Devis.objects.all()
     permission_classes = [IsAuthenticated]
-    
+
     def get_serializer_class(self):
         if self.request.method == 'GET':
             return DevisDetailSerializer
@@ -907,11 +907,11 @@ class DevisRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
 class DevisValiderView(APIView):
     """Valide ou rejette un devis et génère une facture si validé - Spec 4"""
     permission_classes = [IsAuthenticated]
-    
+
     def patch(self, request, pk):
         devis = get_object_or_404(Devis, pk=pk)
         nouveau_statut = request.data.get('status')
-        
+
         if nouveau_statut not in ['valide', 'rejete']:
             return Response(
                 {"error": "Statut invalide"},
@@ -938,9 +938,9 @@ class DevisValiderView(APIView):
                         bl=devis.bl,
                         tva=devis.tva,
                         devise=devis.devise,
-                        createur=request.user,  
-                        status='attente',       
-                        est_privee=False        
+                        createur=request.user,
+                        status='attente',
+                        est_privee=False
                     )
 
                     items_devis = devis.items.all()
@@ -974,7 +974,7 @@ class DevisParClientView(generics.ListAPIView):
     """Liste les devis d'un client spécifique"""
     serializer_class = DevisSerializer
     permission_classes = [IsAuthenticated]
-    
+
     def get_queryset(self):
         client_id = self.kwargs.get('client_id')
         return Devis.objects.filter(client_id=client_id).order_by('-date_creation')
@@ -983,7 +983,7 @@ class DevisParClientView(generics.ListAPIView):
 class DevisAjouterItemView(APIView):
     """Ajoute un item à un devis existant"""
     permission_classes = [IsAuthenticated]
-    
+
     def post(self, request, pk):
         try:
             devis = Devis.objects.get(pk=pk)
@@ -992,7 +992,7 @@ class DevisAjouterItemView(APIView):
                 {"detail": "Devis introuvable"},
                 status=status.HTTP_404_NOT_FOUND
             )
-        
+
         serializer = ItemDevisSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(devis=devis)
@@ -1000,14 +1000,14 @@ class DevisAjouterItemView(APIView):
                 DevisDetailSerializer(devis).data,
                 status=status.HTTP_201_CREATED
             )
-        
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class DevisConvertirEnFactureView(APIView):
     """Convertit un devis en facture"""
     permission_classes = [IsAuthenticated]
-    
+
     def post(self, request, pk):
         try:
             devis = Devis.objects.get(pk=pk)
@@ -1016,7 +1016,7 @@ class DevisConvertirEnFactureView(APIView):
                 {"detail": "Devis introuvable"},
                 status=status.HTTP_404_NOT_FOUND
             )
-        
+
         with db_transaction.atomic():
             facture = Facture.objects.create(
                 client=devis.client,
@@ -1030,7 +1030,7 @@ class DevisConvertirEnFactureView(APIView):
                 devise=devis.devise,
                 createur=request.user
             )
-            
+
             for item_devis in devis.items.all():
                 ItemFacture.objects.create(
                     facture=facture,
@@ -1038,7 +1038,7 @@ class DevisConvertirEnFactureView(APIView):
                     prix_unitaire=item_devis.prix_unitaire,
                     quantite=item_devis.quantite
                 )
-        
+
         return Response(
             {
                 "message": "Devis converti en facture avec succès",
@@ -1053,50 +1053,50 @@ class DevisConvertirEnFactureView(APIView):
 class FactureListCreateView(generics.ListCreateAPIView):
     """Liste toutes les factures ou crée une nouvelle - Spec 3"""
     permission_classes = [IsAuthenticated]
-    
+
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return FactureCreateSerializer
         elif self.request.method == 'GET':
             return FactureDetailSerializer
-        return FactureDetailSerializer  
-    
+        return FactureDetailSerializer
+
     def get_queryset(self):
         user = self.request.user
         queryset = Facture.objects.all().order_by('-date_creation')
-        
+
         if user.type != 'directeur_general':
             queryset = queryset.filter(est_privee=False)
-        
+
         return queryset
 
 
 class FactureRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     """Récupère, modifie ou supprime une facture - Spec 3"""
     permission_classes = [IsAuthenticated]
-    
+
     def get_serializer_class(self):
         if self.request.method == 'GET':
             return FactureDetailSerializer
         if self.request.method in ['PUT', 'PATCH']:
-            return FactureCreateSerializer 
+            return FactureCreateSerializer
         return FactureSerializer
-    
+
     def get_queryset(self):
         user = self.request.user
         queryset = Facture.objects.all()
-        
+
         # Factures privées visibles uniquement par le DG (Spec 3)
         if user.type != 'directeur_general':
             queryset = queryset.filter(est_privee=False)
-        
+
         return queryset
 
 
 class FactureValiderView(APIView):
     """Valide ou rejette une facture - Spec 3"""
     permission_classes = [IsAuthenticated]
-    
+
     def patch(self, request, pk):
         # Validation par DG ou Comptable (Spec 3)
         if request.user.type not in ['directeur_general', 'comptable']:
@@ -1104,21 +1104,21 @@ class FactureValiderView(APIView):
                 {"error": "Vous n'avez pas la permission de valider"},
                 status=status.HTTP_403_FORBIDDEN
             )
-        
+
         facture = get_object_or_404(Facture, pk=pk)
         nouveau_statut = request.data.get('status')
-        
+
         if nouveau_statut not in ['valide', 'rejete']:
             return Response(
                 {"error": "Statut invalide"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
+
         facture.status = nouveau_statut
         facture.valideur = request.user
         facture.date_validation = datetime.now()
         facture.save()
-        
+
         return Response({
             "message": f"Facture {nouveau_statut}e avec succès",
             "status": facture.status
@@ -1129,24 +1129,24 @@ class FactureParClientView(generics.ListAPIView):
     """Liste les factures d'un client spécifique"""
     serializer_class = FactureSerializer
     permission_classes = [IsAuthenticated]
-    
+
     def get_queryset(self):
         client_id = self.kwargs.get('client_id')
         user = self.request.user
-        
+
         queryset = Facture.objects.filter(client_id=client_id).order_by('-date_creation')
-        
+
         # Filtrer les factures privées
         if user.type != 'directeur_general':
             queryset = queryset.filter(est_privee=False)
-        
+
         return queryset
 
 
 class FactureAjouterItemView(APIView):
     """Ajoute un item à une facture existante"""
     permission_classes = [IsAuthenticated]
-    
+
     def post(self, request, pk):
         try:
             facture = Facture.objects.get(pk=pk)
@@ -1155,7 +1155,7 @@ class FactureAjouterItemView(APIView):
                 {"detail": "Facture introuvable"},
                 status=status.HTTP_404_NOT_FOUND
             )
-        
+
         serializer = ItemFactureSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(facture=facture)
@@ -1163,7 +1163,7 @@ class FactureAjouterItemView(APIView):
                 FactureDetailSerializer(facture).data,
                 status=status.HTTP_201_CREATED
             )
-        
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -1173,7 +1173,7 @@ class BonCommandeListCreateView(generics.ListCreateAPIView):
     """Liste tous les bons de commande ou crée un nouveau - Spec 10"""
     queryset = BonCommande.objects.all().order_by('-date_creation')
     permission_classes = [IsAuthenticated]
-    
+
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return BonCommandeCreateSerializer
@@ -1186,7 +1186,7 @@ class BonCommandeRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView)
     """Récupère, modifie ou supprime un bon de commande - Spec 10"""
     queryset = BonCommande.objects.all()
     permission_classes = [IsAuthenticated]
-    
+
     def get_serializer_class(self):
         if self.request.method == 'GET':
             return BonCommandeDetailSerializer
@@ -1198,22 +1198,22 @@ class BonCommandeRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView)
 class BonCommandeValiderView(APIView):
     """Valide ou rejette un bon de commande - Spec 10"""
     permission_classes = [IsAuthenticated]
-    
+
     def patch(self, request, pk):
         bon_commande = get_object_or_404(BonCommande, pk=pk)
         nouveau_statut = request.data.get('status')
-        
+
         if nouveau_statut not in ['valide', 'rejete']:
             return Response(
                 {"error": "Statut invalide"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
+
         bon_commande.status = nouveau_statut
         bon_commande.valideur = request.user
         bon_commande.date_validation = datetime.now()
         bon_commande.save()
-        
+
         return Response({
             "message": f"Bon de commande {nouveau_statut} avec succès",
             "status": bon_commande.status
@@ -1223,7 +1223,7 @@ class BonCommandeValiderView(APIView):
 class BonCommandeAjouterItemView(APIView):
     """Ajoute un item à un bon de commande existant - Spec 10"""
     permission_classes = [IsAuthenticated]
-    
+
     def post(self, request, pk):
         try:
             bon_commande = BonCommande.objects.get(pk=pk)
@@ -1232,7 +1232,7 @@ class BonCommandeAjouterItemView(APIView):
                 {"detail": "Bon de commande introuvable"},
                 status=status.HTTP_404_NOT_FOUND
             )
-        
+
         serializer = ItemBonCommandeSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(bon_commande=bon_commande)
@@ -1240,7 +1240,7 @@ class BonCommandeAjouterItemView(APIView):
                 BonCommandeDetailSerializer(bon_commande).data,
                 status=status.HTTP_201_CREATED
             )
-        
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -1264,14 +1264,14 @@ class UtilisateurParTypeView(generics.ListAPIView):
     """Liste les utilisateurs filtrés par type"""
     serializer_class = UtilisateurSerializer
     permission_classes = [IsAuthenticated]
-    
+
     def get_queryset(self):
         type_utilisateur = self.request.query_params.get('type')
         queryset = Utilisateur.objects.all().order_by('nom', 'prenom')
-        
+
         if type_utilisateur:
             queryset = queryset.filter(type=type_utilisateur)
-        
+
         return queryset
 
 
@@ -1289,20 +1289,20 @@ class SeConnecter(TokenObtainPairView):
         mot_de_passe = serializer.validated_data['mot_de_passe']
 
         utilisateur = Utilisateur.objects.filter(username=username).first()
-        
+
         if utilisateur:
             utilisateur = authenticate(request, username=username, password=mot_de_passe)
             if utilisateur:
                 refresh = RefreshToken.for_user(utilisateur)
-                
+
                 utilisateur_data = UtilisateurSerializer(utilisateur).data
-                
+
                 data = {
                     'token': str(refresh.access_token),
                     'refresh': str(refresh),
                     'utilisateur': utilisateur_data,
                 }
-                
+
                 return Response(data, status=status.HTTP_200_OK)
             else:
                 return Response(
@@ -1386,7 +1386,7 @@ def modifier_mot_de_passe(request):
 class StatistiquesGeneralesView(APIView):
     """Retourne les statistiques générales du système"""
     permission_classes = [IsAuthenticated]
-    
+
     def get(self, request):
         stats = {
             'total_rotations': Rotation.objects.count(),
@@ -1404,7 +1404,7 @@ class StatistiquesGeneralesView(APIView):
             'total_bons_commande': BonCommande.objects.count(),
             'total_utilisateurs': Utilisateur.objects.count(),
         }
-        
+
         # Montants par devise (Devis)
         devis_par_devise = {}
         for devise_code, devise_nom in Devis.DEVISES:
@@ -1415,7 +1415,7 @@ class StatistiquesGeneralesView(APIView):
                 'total': float(total),
                 'nombre': devis.count()
             }
-        
+
         # Montants par devise (Factures)
         factures_par_devise = {}
         for devise_code, devise_nom in Facture.DEVISES:
@@ -1426,17 +1426,17 @@ class StatistiquesGeneralesView(APIView):
                 'total': float(total),
                 'nombre': factures.count()
             }
-        
+
         stats['devis_par_devise'] = devis_par_devise
         stats['factures_par_devise'] = factures_par_devise
-        
+
         return Response(stats, status=status.HTTP_200_OK)
 
 
 class StatistiquesClientView(APIView):
     """Retourne les statistiques d'un client spécifique"""
     permission_classes = [IsAuthenticated]
-    
+
     def get(self, request, client_id):
         try:
             client = Client.objects.get(pk=client_id)
@@ -1445,10 +1445,10 @@ class StatistiquesClientView(APIView):
                 {"detail": "Client introuvable"},
                 status=status.HTTP_404_NOT_FOUND
             )
-        
+
         devis = Devis.objects.filter(client=client)
         factures = Facture.objects.filter(client=client)
-        
+
         stats = {
             'client': ClientSerializer(client).data,
             'total_devis': devis.count(),
@@ -1456,7 +1456,7 @@ class StatistiquesClientView(APIView):
             'montant_total_devis': sum(d.montant_total for d in devis),
             'montant_total_factures': sum(f.montant_total for f in factures),
         }
-        
+
         return Response(stats, status=status.HTTP_200_OK)
 
 
@@ -1468,23 +1468,23 @@ class StatistiquesClientView(APIView):
 class BADListCreateView(generics.ListCreateAPIView):
     """Liste tous les BAD ou crée un nouveau BAD"""
     permission_classes = [IsAuthenticated]
-    
+
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return BADCreateSerializer
         elif self.request.method == 'GET':
             return BADSerializer
         return BADSerializer
-    
+
     def get_queryset(self):
         user = self.request.user
         queryset = BAD.objects.all().order_by('-date_creation')
-        
+
         # Filtre optionnel par client via query params
         client_id = self.request.query_params.get('client')
         if client_id:
             queryset = queryset.filter(client_id=client_id)
-            
+
         return queryset
 
 
@@ -1492,7 +1492,7 @@ class BADRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     """Récupère, modifie ou supprime un BAD"""
     queryset = BAD.objects.all()
     permission_classes = [IsAuthenticated]
-    
+
     def get_serializer_class(self):
         if self.request.method in ['PUT', 'PATCH']:
             return BADCreateSerializer
@@ -1502,20 +1502,20 @@ class BADRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
 class BADValiderItemView(APIView):
     """Permet à un agent ou directeur de valider un item spécifique d'un BAD"""
     permission_classes = [IsAuthenticated]
-    
+
     def patch(self, request, item_id):
         item = get_object_or_404(ItemBAD, pk=item_id)
-        
+
         # Seuls certains rôles peuvent valider les items logistiques
         if request.user.type not in ['agent_port', 'directeur_operations', 'directeur_general']:
             return Response(
                 {"error": "Vous n'avez pas la permission de valider cet item"},
                 status=status.HTTP_403_FORBIDDEN
             )
-            
+
         item.valideur = request.user
         item.save()
-        
+
         return Response({
             "message": "Item validé avec succès",
             "valideur": request.user.get_full_name()
@@ -1526,7 +1526,7 @@ class BADParFactureView(generics.ListAPIView):
     """Récupère les BAD associés à une facture spécifique"""
     serializer_class = BADSerializer
     permission_classes = [IsAuthenticated]
-    
+
     def get_queryset(self):
         facture_id = self.kwargs.get('facture_id')
         return BAD.objects.filter(facture_id=facture_id)
@@ -1541,12 +1541,12 @@ class BADExportPdfView(APIView):
 
     def get(self, request, pk):
         bad = get_object_or_404(BAD, pk=pk)
-        
+
         # Ici vous pourriez utiliser un template Excel spécifique au BAD
         # similaire à votre NoteDeFraisExportPdfView
-        
+
         return Response({"message": "Fonctionnalité d'export en cours de déploiement pour le format BAD"})
-    
+
 
 
 
@@ -1555,7 +1555,7 @@ class BADExportPdfView(APIView):
 class DocumentArchiveListCreateView(generics.ListCreateAPIView):
     """Liste tous les documents archivés ou upload un nouveau document"""
     permission_classes = [IsAuthenticated]
-    
+
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return DocumentArchiveCreateSerializer
@@ -1564,16 +1564,16 @@ class DocumentArchiveListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         user = self.request.user
         queryset = DocumentArchive.objects.all().order_by('-date_upload')
-        
+
         # Filtrage par type si spécifié dans l'URL (?type_doc=BL)
         type_doc = self.request.query_params.get('type_doc')
         if type_doc:
             queryset = queryset.filter(type_doc=type_doc)
-            
+
         # Optionnel : Si vous voulez que les assistants ne voient que leurs propres uploads
         # if user.type == 'assistant':
         #     queryset = queryset.filter(cree_par=user)
-            
+
         return queryset
 
 
@@ -1581,7 +1581,7 @@ class DocumentArchiveRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIV
     """Récupère, modifie ou supprime un document archivé"""
     queryset = DocumentArchive.objects.all()
     permission_classes = [IsAuthenticated]
-    
+
     def get_serializer_class(self):
         if self.request.method in ['PUT', 'PATCH']:
             return DocumentArchiveCreateSerializer
@@ -1592,50 +1592,67 @@ class DocumentArchiveRechercheView(generics.ListAPIView):
     """Recherche de documents par titre ou description"""
     serializer_class = DocumentArchiveSerializer
     permission_classes = [IsAuthenticated]
-    
+
     def get_queryset(self):
         query = self.request.query_params.get('q', '')
         return DocumentArchive.objects.filter(
-            Q(titre__icontains=query) | 
+            Q(titre__icontains=query) |
             Q(description__icontains=query)
         ).order_by('-date_upload')
-    
 
-# --- Rapport Journalier ---
+
 class RapportJournalierStatsView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         target_date = request.query_params.get('date')
-        mouvement = request.query_params.get('type_mouvement', 'sorties') # Default to sorties
+        mouvement = request.query_params.get('type_mouvement', 'sorties')
 
         if not target_date:
             return Response({"error": "Date manquante"}, status=400)
 
-        # Filtrage selon le choix
+        # 1. Filtrage de base
         if mouvement == 'entrees':
             qs = RotationEntrante.objects.filter(date_arrivee__date=target_date)
-            label_field = 'date_arrivee'
         else:
             qs = RotationSortante.objects.filter(date_sortie__date=target_date)
-            label_field = 'date_sortie'
 
         qs = qs.select_related('client', 'type_materiel')
 
-        # Agrégation pour le récapitulatif
+        # 2. Récapitulatif Global (Déjà correct dans votre code, on le garde)
         stats_par_type = qs.values('type_materiel__nom').annotate(total=Sum('quantite'))
         recapitulatif = {item['type_materiel__nom']: item['total'] for item in stats_par_type}
 
-        # Structure par client
-        clients_data = {}
+        # 3. Structure par client avec REGROUPEMENT (Addition)
+        # On utilise un dictionnaire : { "Nom Client": { "Type Materiel": Quantité_Totale } }
+        clients_map = {}
+
         for item in qs:
             c_nom = item.client.nom
             t_nom = item.type_materiel.nom
-            if c_nom not in clients_data:
-                clients_data[c_nom] = []
-            clients_data[c_nom].append({"type": t_nom, "quantite": item.quantite})
+            qte = item.quantite or 0
 
-        detailed_stats = [{"client": k, "mouvements": v} for k, v in clients_data.items()]
+            if c_nom not in clients_map:
+                clients_map[c_nom] = {}
+
+            # Si le type de matériel existe déjà pour ce client, on additionne
+            if t_nom in clients_map[c_nom]:
+                clients_map[c_nom][t_nom] += qte
+            else:
+                clients_map[c_nom][t_nom] = qte
+
+        # 4. Formatage de la réponse pour le frontend
+        detailed_stats = []
+        for client_nom, materiels in clients_map.items():
+            # Transformer le sous-dictionnaire en liste de mouvements groupés
+            mouvements_groupes = [
+                {"type": t_nom, "quantite": qte_totale}
+                for t_nom, qte_totale in materiels.items()
+            ]
+            detailed_stats.append({
+                "client": client_nom,
+                "mouvements": mouvements_groupes
+            })
 
         return Response({
             "date_consultee": target_date,
@@ -1643,6 +1660,7 @@ class RapportJournalierStatsView(APIView):
             "recapitulatif": recapitulatif,
             "details_par_client": detailed_stats
         })
+
 
 # --- Statistiques Globales ---
 class StatistiquesGlobalesView(APIView):

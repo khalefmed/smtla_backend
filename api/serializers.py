@@ -244,6 +244,7 @@ class ItemExpressionBesoinSerializer(serializers.ModelSerializer):
 class ExpressionBesoinSerializer(serializers.ModelSerializer):
     """Serializer complet pour la consultation des EB"""
     items = ItemExpressionBesoinSerializer(many=True, read_only=True)
+    createur = UtilisateurSimpleSerializer(read_only=True)
     createur_nom = serializers.CharField(source='createur.get_full_name', read_only=True)
     valideur_nom = serializers.CharField(source='valideur.get_full_name', read_only=True)
     # Ajout du type pour la gestion automatique des signatures PDF
@@ -362,6 +363,7 @@ class NoteFraisDetailSerializer(serializers.ModelSerializer):
     expression_besoin_detail = ExpressionBesoinSerializer(source='expression_besoin', read_only=True)
     
     # Traçabilité
+    createur = UtilisateurSimpleSerializer(read_only=True)
     createur_nom = serializers.CharField(source='createur.get_full_name', read_only=True)
     valideur_nom = serializers.CharField(source='valideur.get_full_name', read_only=True)
     status_display = serializers.CharField(source='get_status_display', read_only=True)
@@ -383,6 +385,7 @@ class NoteFraisDetailSerializer(serializers.ModelSerializer):
             'tva',
             'devise',
             'devise_display',
+            'createur',
             'createur_nom',
             'valideur_nom',
             'date_validation',
