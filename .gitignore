@@ -1,5 +1,4 @@
-.venv/
-
+.env
 *.sqlite3
 *.log
 __pycache__/
