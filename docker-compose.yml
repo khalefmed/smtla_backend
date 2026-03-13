@@ -16,7 +16,7 @@ services:
       timeout: 5s
       retries: 5
     ports:
-      - "5433:5432" # Changed host port to 5433 to prevent conflicts
+      - "5434:5432" # Changed host port to 5434 to prevent conflicts
     restart: always
 
   backend:
