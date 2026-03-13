@@ -1,9 +1,23 @@
-*.env
+# Environment variables
+.env
+
+# Databases
 *.sqlite3
+db.sqlite3
+
+# Logs
 *.log
+
+# Python cache
 __pycache__/
-*.json
 *.pyc
-*.sh
-*.DS_Store
+
+# Virtual environments
 /smtla_venv/
+.venv/
+
+# User-uploaded media
+/media/
+
+# OS generated files
+.DS_Store

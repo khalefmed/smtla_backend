@@ -1,0 +1,5279 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2026-02-04T12:00:05.626Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "1",
+    "object_repr": "Mohamed Khalef (Directeur Général)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Type\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2026-02-11T15:10:54.623Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "1",
+    "object_repr": "NoteDeFrais object (1)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2026-02-28T12:55:35.063Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "2",
+    "object_repr": "  ()",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2026-02-28T12:56:54.129Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "2",
+    "object_repr": "Khayi STA (Directeur des Opérations)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Prenom\", \"Nom\", \"Telephone\", \"Type\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2026-02-28T12:57:24.077Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "3",
+    "object_repr": "  ()",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2026-02-28T12:58:00.588Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "3",
+    "object_repr": "Mariem STA (Comptable)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Prenom\", \"Nom\", \"Telephone\", \"Type\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2026-02-28T12:58:39.414Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "4",
+    "object_repr": "  ()",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2026-02-28T12:58:59.207Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "4",
+    "object_repr": "Mohamed Didi (Agent Port)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Prenom\", \"Nom\", \"Telephone\", \"Type\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2026-02-28T12:59:19.672Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "5",
+    "object_repr": "  ()",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2026-02-28T12:59:43.463Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "5",
+    "object_repr": "Ismail Cheikh (Agent Port)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Prenom\", \"Nom\", \"Telephone\", \"Type\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2026-02-28T13:00:12.296Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "6",
+    "object_repr": "  ()",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2026-02-28T13:00:56.460Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "6",
+    "object_repr": "Habibe STA (Directeur Général)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Prenom\", \"Nom\", \"Telephone\", \"Type\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2026-02-28T13:13:27.008Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "7",
+    "object_repr": "  ()",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2026-02-28T13:13:49.779Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "7",
+    "object_repr": "Khadige STA (Comptable)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Prenom\", \"Nom\", \"Telephone\", \"Type\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2026-02-28T13:14:28.332Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "8",
+    "object_repr": "  ()",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2026-02-28T13:14:40.630Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "8",
+    "object_repr": "Saviye STA (Comptable)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Prenom\", \"Nom\", \"Telephone\", \"Type\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2026-02-28T13:15:08.947Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "9",
+    "object_repr": "  ()",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2026-02-28T13:15:28.396Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "9",
+    "object_repr": "Moustapha Ghasri (Agent Port)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Prenom\", \"Nom\", \"Telephone\", \"Type\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2026-02-28T13:15:54.875Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "9",
+    "object_repr": "Moustapha Gasri (Agent Port)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Nom\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2026-03-04T11:57:55.728Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "1",
+    "object_repr": "Mohamed Khalef (Directeur des Opérations)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Type\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 21,
+  "fields": {
+    "action_time": "2026-03-05T09:27:11.665Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "10",
+    "object_repr": "  ()",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 22,
+  "fields": {
+    "action_time": "2026-03-05T09:27:42.127Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "10",
+    "object_repr": "Kaw Fall (Assistant)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Prenom\", \"Nom\", \"Telephone\", \"Type\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 23,
+  "fields": {
+    "action_time": "2026-03-05T09:28:47.316Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "10",
+    "object_repr": "Kaw Fall (Assistant)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 24,
+  "fields": {
+    "action_time": "2026-03-05T09:29:13.034Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "11",
+    "object_repr": "  ()",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 25,
+  "fields": {
+    "action_time": "2026-03-05T09:29:36.309Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "11",
+    "object_repr": "Kaw Fall (Assistant)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Prenom\", \"Nom\", \"Telephone\", \"Type\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 26,
+  "fields": {
+    "action_time": "2026-03-05T11:48:10.139Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "5",
+    "object_repr": "NoteDeFrais object (5)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 27,
+  "fields": {
+    "action_time": "2026-03-05T11:48:10.171Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "4",
+    "object_repr": "NoteDeFrais object (4)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 28,
+  "fields": {
+    "action_time": "2026-03-05T11:48:10.196Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "3",
+    "object_repr": "NoteDeFrais object (3)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 29,
+  "fields": {
+    "action_time": "2026-03-05T11:48:10.223Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "2",
+    "object_repr": "NoteDeFrais object (2)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 30,
+  "fields": {
+    "action_time": "2026-03-05T11:48:10.253Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "1",
+    "object_repr": "NoteDeFrais object (1)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 31,
+  "fields": {
+    "action_time": "2026-03-05T11:48:23.121Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "2",
+    "object_repr": "FA002/2026 - UV SHIPPING",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 32,
+  "fields": {
+    "action_time": "2026-03-05T11:48:23.147Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "1",
+    "object_repr": "FA001/2026 - Infinity",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 33,
+  "fields": {
+    "action_time": "2026-03-05T11:48:55.796Z",
+    "user": 1,
+    "content_type": 22,
+    "object_id": "16",
+    "object_repr": "103 - Infinity - en_cours",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 34,
+  "fields": {
+    "action_time": "2026-03-05T11:48:55.830Z",
+    "user": 1,
+    "content_type": 22,
+    "object_id": "18",
+    "object_repr": "321 - AGRIM - en_cours",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 35,
+  "fields": {
+    "action_time": "2026-03-05T11:48:55.859Z",
+    "user": 1,
+    "content_type": 22,
+    "object_id": "17",
+    "object_repr": "104 - Infinity - en_cours",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 36,
+  "fields": {
+    "action_time": "2026-03-05T11:48:55.890Z",
+    "user": 1,
+    "content_type": 22,
+    "object_id": "6",
+    "object_repr": "432 - AGRIM - en_cours",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 37,
+  "fields": {
+    "action_time": "2026-03-05T11:48:55.919Z",
+    "user": 1,
+    "content_type": 22,
+    "object_id": "5",
+    "object_repr": "350 - Infinity - en_cours",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 38,
+  "fields": {
+    "action_time": "2026-03-05T11:48:55.950Z",
+    "user": 1,
+    "content_type": 22,
+    "object_id": "4",
+    "object_repr": "451 - Infinity - en_cours",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 39,
+  "fields": {
+    "action_time": "2026-03-05T11:48:55.986Z",
+    "user": 1,
+    "content_type": 22,
+    "object_id": "3",
+    "object_repr": "178 - Chwily - en_cours",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 40,
+  "fields": {
+    "action_time": "2026-03-05T11:48:56.015Z",
+    "user": 1,
+    "content_type": 22,
+    "object_id": "2",
+    "object_repr": "123 - Infinity - en_cours",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 41,
+  "fields": {
+    "action_time": "2026-03-05T11:48:56.053Z",
+    "user": 1,
+    "content_type": 22,
+    "object_id": "1",
+    "object_repr": "123 - Infinity - en_cours",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 42,
+  "fields": {
+    "action_time": "2026-03-05T11:48:56.081Z",
+    "user": 1,
+    "content_type": 22,
+    "object_id": "15",
+    "object_repr": "102 - SD MINING - en_cours",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 43,
+  "fields": {
+    "action_time": "2026-03-05T11:48:56.106Z",
+    "user": 1,
+    "content_type": 22,
+    "object_id": "14",
+    "object_repr": "101 - CGC - en_cours",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 44,
+  "fields": {
+    "action_time": "2026-03-05T11:49:11.848Z",
+    "user": 1,
+    "content_type": 23,
+    "object_id": "7",
+    "object_repr": "23 - AGRIM - en_cours",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 45,
+  "fields": {
+    "action_time": "2026-03-05T11:49:11.899Z",
+    "user": 1,
+    "content_type": 23,
+    "object_id": "6",
+    "object_repr": "441 - Chwily - en_cours",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 46,
+  "fields": {
+    "action_time": "2026-03-05T11:49:11.939Z",
+    "user": 1,
+    "content_type": 23,
+    "object_id": "5",
+    "object_repr": "251 - Infinity - en_cours",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 47,
+  "fields": {
+    "action_time": "2026-03-05T11:49:11.979Z",
+    "user": 1,
+    "content_type": 23,
+    "object_id": "4",
+    "object_repr": "410 - Infinity - en_cours",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 48,
+  "fields": {
+    "action_time": "2026-03-05T11:49:12.013Z",
+    "user": 1,
+    "content_type": 23,
+    "object_id": "3",
+    "object_repr": "784 - Infinity - en_cours",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 49,
+  "fields": {
+    "action_time": "2026-03-05T11:49:12.052Z",
+    "user": 1,
+    "content_type": 23,
+    "object_id": "2",
+    "object_repr": "156 - Infinity - en_cours",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 50,
+  "fields": {
+    "action_time": "2026-03-05T11:49:12.094Z",
+    "user": 1,
+    "content_type": 23,
+    "object_id": "1",
+    "object_repr": "128 - Infinity - en_cours",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 51,
+  "fields": {
+    "action_time": "2026-03-05T11:49:22.669Z",
+    "user": 1,
+    "content_type": 24,
+    "object_id": "7",
+    "object_repr": "CAMION",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 52,
+  "fields": {
+    "action_time": "2026-03-05T11:49:22.703Z",
+    "user": 1,
+    "content_type": 24,
+    "object_id": "6",
+    "object_repr": "DI PIPE",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 53,
+  "fields": {
+    "action_time": "2026-03-05T11:49:22.751Z",
+    "user": 1,
+    "content_type": 24,
+    "object_id": "1",
+    "object_repr": "Flexitant",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 54,
+  "fields": {
+    "action_time": "2026-03-05T11:49:22.798Z",
+    "user": 1,
+    "content_type": 24,
+    "object_id": "5",
+    "object_repr": "GRUS",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 55,
+  "fields": {
+    "action_time": "2026-03-05T11:49:22.839Z",
+    "user": 1,
+    "content_type": 24,
+    "object_id": "4",
+    "object_repr": "PIPE DN 800",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 56,
+  "fields": {
+    "action_time": "2026-03-05T11:49:22.878Z",
+    "user": 1,
+    "content_type": 24,
+    "object_id": "3",
+    "object_repr": "Pipe",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 57,
+  "fields": {
+    "action_time": "2026-03-05T11:49:22.920Z",
+    "user": 1,
+    "content_type": 24,
+    "object_id": "2",
+    "object_repr": "Voiture",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 58,
+  "fields": {
+    "action_time": "2026-03-05T11:49:52.052Z",
+    "user": 1,
+    "content_type": 26,
+    "object_id": "10",
+    "object_repr": "Item BL BL-7898 - BAD 131",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 59,
+  "fields": {
+    "action_time": "2026-03-05T11:49:52.083Z",
+    "user": 1,
+    "content_type": 26,
+    "object_id": "9",
+    "object_repr": "Item BL 5465456454 - BAD 130",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 60,
+  "fields": {
+    "action_time": "2026-03-05T11:49:52.111Z",
+    "user": 1,
+    "content_type": 26,
+    "object_id": "8",
+    "object_repr": "Item BL BL1212 - BAD 129",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 61,
+  "fields": {
+    "action_time": "2026-03-05T11:49:52.146Z",
+    "user": 1,
+    "content_type": 26,
+    "object_id": "7",
+    "object_repr": "Item BL BL9000 - BAD 128",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 62,
+  "fields": {
+    "action_time": "2026-03-05T11:49:52.174Z",
+    "user": 1,
+    "content_type": 26,
+    "object_id": "5",
+    "object_repr": "Item BL BL-8928 - BAD 127",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 63,
+  "fields": {
+    "action_time": "2026-03-05T11:50:11.928Z",
+    "user": 1,
+    "content_type": 25,
+    "object_id": "9",
+    "object_repr": "BAD 131 - AGRIM",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 64,
+  "fields": {
+    "action_time": "2026-03-05T11:50:11.963Z",
+    "user": 1,
+    "content_type": 25,
+    "object_id": "8",
+    "object_repr": "BAD 130 - Chwily",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 65,
+  "fields": {
+    "action_time": "2026-03-05T11:50:11.997Z",
+    "user": 1,
+    "content_type": 25,
+    "object_id": "7",
+    "object_repr": "BAD 129 - Infinity",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 66,
+  "fields": {
+    "action_time": "2026-03-05T11:50:12.032Z",
+    "user": 1,
+    "content_type": 25,
+    "object_id": "6",
+    "object_repr": "BAD 128 - Infinity",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 67,
+  "fields": {
+    "action_time": "2026-03-05T11:50:12.067Z",
+    "user": 1,
+    "content_type": 25,
+    "object_id": "5",
+    "object_repr": "BAD 127 - Infinity",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 68,
+  "fields": {
+    "action_time": "2026-03-05T11:50:22.942Z",
+    "user": 1,
+    "content_type": 16,
+    "object_id": "4",
+    "object_repr": "SMTLA/BC/003/2026 - Hisense",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 69,
+  "fields": {
+    "action_time": "2026-03-05T11:50:22.972Z",
+    "user": 1,
+    "content_type": 16,
+    "object_id": "3",
+    "object_repr": "SMTLA/BC/002/2026 - TCL",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 70,
+  "fields": {
+    "action_time": "2026-03-05T11:50:22.999Z",
+    "user": 1,
+    "content_type": 16,
+    "object_id": "1",
+    "object_repr": "SMTLA/BC/001/2026 - TCL",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 71,
+  "fields": {
+    "action_time": "2026-03-05T11:50:32.641Z",
+    "user": 1,
+    "content_type": 27,
+    "object_id": "5",
+    "object_repr": "MBL (MANIFESTE)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 72,
+  "fields": {
+    "action_time": "2026-03-05T11:50:32.670Z",
+    "user": 1,
+    "content_type": 27,
+    "object_id": "3",
+    "object_repr": "testtt (BL-CONNAISSEMENT)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 73,
+  "fields": {
+    "action_time": "2026-03-05T11:51:22.277Z",
+    "user": 1,
+    "content_type": 17,
+    "object_id": "6",
+    "object_repr": "EB006/2026 - ELMOUSTAPHA ELGASSRI",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 74,
+  "fields": {
+    "action_time": "2026-03-05T11:51:22.318Z",
+    "user": 1,
+    "content_type": 17,
+    "object_id": "5",
+    "object_repr": "EB005/2026 - mariem",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 75,
+  "fields": {
+    "action_time": "2026-03-05T11:51:22.350Z",
+    "user": 1,
+    "content_type": 17,
+    "object_id": "4",
+    "object_repr": "EB004/2026 - Ahmed",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 76,
+  "fields": {
+    "action_time": "2026-03-05T11:51:22.379Z",
+    "user": 1,
+    "content_type": 17,
+    "object_id": "3",
+    "object_repr": "EB003/2026 - Mohamed Yacoub",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 77,
+  "fields": {
+    "action_time": "2026-03-05T11:51:22.409Z",
+    "user": 1,
+    "content_type": 17,
+    "object_id": "2",
+    "object_repr": "EB002/2026 - Mohamed Khalef",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 78,
+  "fields": {
+    "action_time": "2026-03-05T11:51:22.437Z",
+    "user": 1,
+    "content_type": 17,
+    "object_id": "1",
+    "object_repr": "EB001/2026 - Moustapha Seydna Aly",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 79,
+  "fields": {
+    "action_time": "2026-03-05T11:51:47.486Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "7",
+    "object_repr": "DV007/2026 - CGC",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 80,
+  "fields": {
+    "action_time": "2026-03-05T11:51:47.514Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "6",
+    "object_repr": "DV006/2026 - CGC",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 81,
+  "fields": {
+    "action_time": "2026-03-05T11:51:47.542Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "5",
+    "object_repr": "DV005/2026 - CGC",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 82,
+  "fields": {
+    "action_time": "2026-03-05T11:51:47.565Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "4",
+    "object_repr": "DV004/2026 - Infinity",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 83,
+  "fields": {
+    "action_time": "2026-03-05T11:51:47.594Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "3",
+    "object_repr": "DV003/2026 - Infinity",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 84,
+  "fields": {
+    "action_time": "2026-03-05T11:51:47.627Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "2",
+    "object_repr": "DV002/2026 - Chwily",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 85,
+  "fields": {
+    "action_time": "2026-03-05T11:51:47.658Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "1",
+    "object_repr": "DV001/2026 - Infinity",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 86,
+  "fields": {
+    "action_time": "2026-03-05T11:51:59.619Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "2",
+    "object_repr": "Chwily",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 87,
+  "fields": {
+    "action_time": "2026-03-05T11:51:59.645Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "Infinity",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 88,
+  "fields": {
+    "action_time": "2026-03-05T11:53:33.683Z",
+    "user": 1,
+    "content_type": 18,
+    "object_id": "2",
+    "object_repr": "Hisense",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 89,
+  "fields": {
+    "action_time": "2026-03-05T11:53:33.714Z",
+    "user": 1,
+    "content_type": 18,
+    "object_id": "1",
+    "object_repr": "TCL",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "00z7k3l8qkvz2h74cjz95dx5nsd5gc9e",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hCgWAaX7j0DGZhBqgaS0q6Md7dNutDtf-_9twi4LiWsnecwkbgILU6_W8T05LoDemC9N5laXeYpyl2RB-3y1ohf18P9OyjYy1ZbAs-UR7DOD5CVtlYZ1mOEmAiUc2fDWQNaRs9o2JtscNPZEdBgovh8AdxNOB8:1vqBrT:C8POLEWeIRxq9jNl60yaH8513LJqg6O7E3_hiTbU1xA",
+    "expire_date": "2026-02-25T15:10:39.911Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "6r58kbk1wyoyg6j922axgqfkfkde5cls",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hCgWAaX7j0DGZhBqgaS0q6Md7dNutDtf-_9twi4LiWsnecwkbgILU6_W8T05LoDemC9N5laXeYpyl2RB-3y1ohf18P9OyjYy1ZbAs-UR7DOD5CVtlYZ1mOEmAiUc2fDWQNaRs9o2JtscNPZEdBgovh8AdxNOB8:1vwJnr:AGZFPual8TBnpRoxRpWXfm015rlzYI02rBQf7cDXoEI",
+    "expire_date": "2026-03-14T12:52:15.642Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "8nkad1nm5ot60oi7j8ipis50fgo1equt",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hCgWAaX7j0DGZhBqgaS0q6Md7dNutDtf-_9twi4LiWsnecwkbgILU6_W8T05LoDemC9N5laXeYpyl2RB-3y1ohf18P9OyjYy1ZbAs-UR7DOD5CVtlYZ1mOEmAiUc2fDWQNaRs9o2JtscNPZEdBgovh8AdxNOB8:1vtpLX:TZFpvJA3P79j5-zqCGf9V698JNhvgdfnCgu7phU-Zlg",
+    "expire_date": "2026-03-07T15:56:43.137Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "gyf703bf43zlre6rewoq1a88kt2egnqn",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hCgWAaX7j0DGZhBqgaS0q6Md7dNutDtf-_9twi4LiWsnecwkbgILU6_W8T05LoDemC9N5laXeYpyl2RB-3y1ohf18P9OyjYy1ZbAs-UR7DOD5CVtlYZ1mOEmAiUc2fDWQNaRs9o2JtscNPZEdBgovh8AdxNOB8:1vnbXk:HLtP2TxhDEU_eOAHIaZJ7w4BjikXqHeA1ZlaAjt4NDc",
+    "expire_date": "2026-02-18T11:59:36.396Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "yic7rpr5kaoq0n52kxtx8pajiwj283im",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hAZHKQu3fcMZGAGqRpISrsy3l2bdKHb_977LxVoXUpYu8xhYnVRRh1-t0jpIXUDfKd6azq1usxT1Juid9r12Fie1939OyjUy7cmR96ztQCZJaFPyXrLgJlz5HPM4k7WkxyFHKM4MWhgILTkcBAHoN4fDcM4mg:1vxkrH:Ri1RJOvcxvBaHlO2eeYx8PNCUEVQ3uGiAvhFVQDdc9U",
+    "expire_date": "2026-03-18T11:57:43.497Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "jti": "497d3fe1e6ac455ba3d0cd241d9193ea",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNDc2NjUzNywiaWF0IjoxNzcwMjA2NTM3LCJqdGkiOiI0OTdkM2ZlMWU2YWM0NTViYTNkMGNkMjQxZDkxOTNlYSIsInVzZXJfaWQiOjF9.BP2eoQWwOxkXpqTrsWzevhpHxknTMkB2grBD-bd8KTs",
+    "created_at": "2026-02-04T12:02:17.758Z",
+    "expires_at": "2027-03-11T12:02:17Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 2,
+  "fields": {
+    "user": 1,
+    "jti": "daea24aa554848ca8a583f4ecec9ea90",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNDc2NjU2NCwiaWF0IjoxNzcwMjA2NTY0LCJqdGkiOiJkYWVhMjRhYTU1NDg0OGNhOGE1ODNmNGVjZWM5ZWE5MCIsInVzZXJfaWQiOjF9.nJ99Sr2FmSftnEIzYM-SMM9ny3VU_xueJj3WwGAbZcs",
+    "created_at": "2026-02-04T12:02:44.875Z",
+    "expires_at": "2027-03-11T12:02:44Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 3,
+  "fields": {
+    "user": 1,
+    "jti": "51cef78d5a7647388866b3e2dee2e572",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNDg2ODg1NywiaWF0IjoxNzcwMzA4ODU3LCJqdGkiOiI1MWNlZjc4ZDVhNzY0NzM4ODg2NmIzZTJkZWUyZTU3MiIsInVzZXJfaWQiOjF9.ZH-rey43b6KFBmcHjxhBx47MO2pcnEHXszCYhx6gj00",
+    "created_at": "2026-02-05T16:27:37.287Z",
+    "expires_at": "2027-03-12T16:27:37Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 4,
+  "fields": {
+    "user": 1,
+    "jti": "e2131863b8754556842f2d6df451738b",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNTM3NDI5NSwiaWF0IjoxNzcwODE0Mjk1LCJqdGkiOiJlMjEzMTg2M2I4NzU0NTU2ODQyZjJkNmRmNDUxNzM4YiIsInVzZXJfaWQiOjF9.x7vSAwedknxoP4OiBmoC0OuvpQx3wohESVwkm26rb2I",
+    "created_at": "2026-02-11T12:51:35.238Z",
+    "expires_at": "2027-03-18T12:51:35Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 5,
+  "fields": {
+    "user": 1,
+    "jti": "fed2f5bd64644a00b93a5e5b572291cf",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNTc5MTI4OSwiaWF0IjoxNzcxMjMxMjg5LCJqdGkiOiJmZWQyZjViZDY0NjQ0YTAwYjkzYTVlNWI1NzIyOTFjZiIsInVzZXJfaWQiOjF9.HVYR_gO5k36rndF9U1PE8KGa7uCyXMg-aQuOkjaXryk",
+    "created_at": "2026-02-16T08:41:29.177Z",
+    "expires_at": "2027-03-23T08:41:29Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 6,
+  "fields": {
+    "user": 1,
+    "jti": "877f2474bb2843f2b13ba3543d4bec4a",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNjI0OTQxNywiaWF0IjoxNzcxNjg5NDE3LCJqdGkiOiI4NzdmMjQ3NGJiMjg0M2YyYjEzYmEzNTQzZDRiZWM0YSIsInVzZXJfaWQiOjF9.ipkk5XtfkhyuCqWSTE9K1t4oldO3ERlz_gouI8qFnMo",
+    "created_at": "2026-02-21T15:56:57.993Z",
+    "expires_at": "2027-03-28T15:56:57Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 7,
+  "fields": {
+    "user": 1,
+    "jti": "f0393cd08f9d4a978c4a5a20b7eb40e1",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNjI1MTI1NiwiaWF0IjoxNzcxNjkxMjU2LCJqdGkiOiJmMDM5M2NkMDhmOWQ0YTk3OGM0YTVhMjBiN2ViNDBlMSIsInVzZXJfaWQiOjF9.u_8Md6Zv0rXhzlnQc_ny0s-7wwtowbv-Qf0wu3l40ds",
+    "created_at": "2026-02-21T16:27:36.072Z",
+    "expires_at": "2027-03-28T16:27:36Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 8,
+  "fields": {
+    "user": 1,
+    "jti": "bf55c130cfde491d9df9ebea30019142",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNjQwMjI2MiwiaWF0IjoxNzcxODQyMjYyLCJqdGkiOiJiZjU1YzEzMGNmZGU0OTFkOWRmOWViZWEzMDAxOTE0MiIsInVzZXJfaWQiOjF9.lJqbOZ3m87etjE4cJ_EYNzT0tJr7zDwTi7-2REbcqGE",
+    "created_at": "2026-02-23T10:24:22.022Z",
+    "expires_at": "2027-03-30T10:24:22Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 9,
+  "fields": {
+    "user": 1,
+    "jti": "2a717c70db39453b9640820e24cbf234",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNjY2OTIwOSwiaWF0IjoxNzcyMTA5MjA5LCJqdGkiOiIyYTcxN2M3MGRiMzk0NTNiOTY0MDgyMGUyNGNiZjIzNCIsInVzZXJfaWQiOjF9.1gmHmbMq3EK_CX44TcOJOxooFf8qgDfrnSRx9OcBKHs",
+    "created_at": "2026-02-26T12:33:29.982Z",
+    "expires_at": "2027-04-02T12:33:29Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 10,
+  "fields": {
+    "user": 1,
+    "jti": "bb543b4956bf4429b05910f00847f150",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNjg0MjY3NCwiaWF0IjoxNzcyMjgyNjc0LCJqdGkiOiJiYjU0M2I0OTU2YmY0NDI5YjA1OTEwZjAwODQ3ZjE1MCIsInVzZXJfaWQiOjF9.DMPQJ7asYifvDpARPTW8t3zAqFoIAnnYxAfz-LvbG94",
+    "created_at": "2026-02-28T12:44:34.114Z",
+    "expires_at": "2027-04-04T12:44:34Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 11,
+  "fields": {
+    "user": 2,
+    "jti": "4601d8dc081b4f4abf38f182670445dc",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNjg0NDYwMSwiaWF0IjoxNzcyMjg0NjAxLCJqdGkiOiI0NjAxZDhkYzA4MWI0ZjRhYmYzOGYxODI2NzA0NDVkYyIsInVzZXJfaWQiOjJ9.T-AolySJuFvw1PDZ16BgB6IFyfW8mW4UgZqcjZxsOx0",
+    "created_at": "2026-02-28T13:16:41.992Z",
+    "expires_at": "2027-04-04T13:16:41Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 12,
+  "fields": {
+    "user": 4,
+    "jti": "3d46035342ab4e7d986cbbf5e5a3e1eb",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNjg0NjY4NCwiaWF0IjoxNzcyMjg2Njg0LCJqdGkiOiIzZDQ2MDM1MzQyYWI0ZTdkOTg2Y2JiZjVlNWEzZTFlYiIsInVzZXJfaWQiOjR9.Wu12leI0ScimFiGnLvLgjqJNTIbjT9sBdLS2nhHHEM0",
+    "created_at": "2026-02-28T13:51:24.592Z",
+    "expires_at": "2027-04-04T13:51:24Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 13,
+  "fields": {
+    "user": 8,
+    "jti": "ddfcee05acb648ca904c02472a8625ed",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNjg0NjcxMCwiaWF0IjoxNzcyMjg2NzEwLCJqdGkiOiJkZGZjZWUwNWFjYjY0OGNhOTA0YzAyNDcyYTg2MjVlZCIsInVzZXJfaWQiOjh9.hMcb7lhHtpSnjOtVo_-Rdl3TNMQkUnXQxbMIYlR6Bg4",
+    "created_at": "2026-02-28T13:51:50.491Z",
+    "expires_at": "2027-04-04T13:51:50Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 14,
+  "fields": {
+    "user": 6,
+    "jti": "ce286404f7ec4d419846737150472f0a",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNjg0NjczMiwiaWF0IjoxNzcyMjg2NzMyLCJqdGkiOiJjZTI4NjQwNGY3ZWM0ZDQxOTg0NjczNzE1MDQ3MmYwYSIsInVzZXJfaWQiOjZ9.kOoZ5xUwfo3VjFWxkhtCwJtfF2hpCIo9wKVws6QJIKo",
+    "created_at": "2026-02-28T13:52:12.817Z",
+    "expires_at": "2027-04-04T13:52:12Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 15,
+  "fields": {
+    "user": 6,
+    "jti": "916e0072f4ed4cdd9183ced9a5236a5f",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNjg0Njc1NywiaWF0IjoxNzcyMjg2NzU3LCJqdGkiOiI5MTZlMDA3MmY0ZWQ0Y2RkOTE4M2NlZDlhNTIzNmE1ZiIsInVzZXJfaWQiOjZ9.p_1_VQh_XYYYkzhQ8Qdajqgh-8mh5k7vCD2yvq9_zIU",
+    "created_at": "2026-02-28T13:52:37.242Z",
+    "expires_at": "2027-04-04T13:52:37Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 16,
+  "fields": {
+    "user": 2,
+    "jti": "5529da1226e848faad9c9c45ace49998",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNjg0Njc3NCwiaWF0IjoxNzcyMjg2Nzc0LCJqdGkiOiI1NTI5ZGExMjI2ZTg0OGZhYWQ5YzljNDVhY2U0OTk5OCIsInVzZXJfaWQiOjJ9.OnT5KIajk4cOa4LrdDR-97wdJ3LH1s0I0yrEgi25bQo",
+    "created_at": "2026-02-28T13:52:54.850Z",
+    "expires_at": "2027-04-04T13:52:54Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 17,
+  "fields": {
+    "user": 2,
+    "jti": "db157e121c754b0aaa7cb738c67b4e9e",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNjg0Nzg2NywiaWF0IjoxNzcyMjg3ODY3LCJqdGkiOiJkYjE1N2UxMjFjNzU0YjBhYWE3Y2I3MzhjNjdiNGU5ZSIsInVzZXJfaWQiOjJ9.wFSTLV8BniY5JdKk3kMhnDqe6xYNyQNPyYHlJ6LxFA4",
+    "created_at": "2026-02-28T14:11:07.870Z",
+    "expires_at": "2027-04-04T14:11:07Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 18,
+  "fields": {
+    "user": 2,
+    "jti": "bfe6b4054e8d4ae3be8ea60bc3c6147e",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNjg0NzkxNiwiaWF0IjoxNzcyMjg3OTE2LCJqdGkiOiJiZmU2YjQwNTRlOGQ0YWUzYmU4ZWE2MGJjM2M2MTQ3ZSIsInVzZXJfaWQiOjJ9.QWR1xvfSs3f8j3Goo_bouZwAa4bH3kB0ZWaYh1J3yWY",
+    "created_at": "2026-02-28T14:11:56.940Z",
+    "expires_at": "2027-04-04T14:11:56Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 19,
+  "fields": {
+    "user": 2,
+    "jti": "e925bdcbc7d34b3c8a4c74ec4e8a23f8",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNjg0Nzk2NiwiaWF0IjoxNzcyMjg3OTY2LCJqdGkiOiJlOTI1YmRjYmM3ZDM0YjNjOGE0Yzc0ZWM0ZThhMjNmOCIsInVzZXJfaWQiOjJ9.lOVAle1oioaqp9PjsG1SgxEpz04Ki_3DvfXuAmuqApY",
+    "created_at": "2026-02-28T14:12:46.397Z",
+    "expires_at": "2027-04-04T14:12:46Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 20,
+  "fields": {
+    "user": 1,
+    "jti": "e2553c03cfa54ecab6bfb5df1ee2d4e7",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNjg0ODE4NSwiaWF0IjoxNzcyMjg4MTg1LCJqdGkiOiJlMjU1M2MwM2NmYTU0ZWNhYjZiZmI1ZGYxZWUyZDRlNyIsInVzZXJfaWQiOjF9.LSuZIvmhdyZbqMWag7rKcv5Rsc1JprKnTWftVjPaNrA",
+    "created_at": "2026-02-28T14:16:25.736Z",
+    "expires_at": "2027-04-04T14:16:25Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 21,
+  "fields": {
+    "user": 2,
+    "jti": "b277602d2c81497f8bf6f954cab868ad",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzAxNzU5MywiaWF0IjoxNzcyNDU3NTkzLCJqdGkiOiJiMjc3NjAyZDJjODE0OTdmOGJmNmY5NTRjYWI4NjhhZCIsInVzZXJfaWQiOjJ9.qLMZGdwu_GrlvPF5Y9HXkt-lUtE3KJpAOiyOho0V_uU",
+    "created_at": "2026-03-02T13:19:53.052Z",
+    "expires_at": "2027-04-06T13:19:53Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 22,
+  "fields": {
+    "user": 2,
+    "jti": "61f609f3997740ae8ed1203d7cd666ed",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzE3ODgzOSwiaWF0IjoxNzcyNjE4ODM5LCJqdGkiOiI2MWY2MDlmMzk5Nzc0MGFlOGVkMTIwM2Q3Y2Q2NjZlZCIsInVzZXJfaWQiOjJ9.l2vrOKoDG4M2yst9UH1b0mWTvJiSPdckqyERoRZ7BjY",
+    "created_at": "2026-03-04T10:07:19.631Z",
+    "expires_at": "2027-04-08T10:07:19Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 23,
+  "fields": {
+    "user": 2,
+    "jti": "b072f6d95d574c67b7f04d23aaeafd19",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzE3OTExMSwiaWF0IjoxNzcyNjE5MTExLCJqdGkiOiJiMDcyZjZkOTVkNTc0YzY3YjdmMDRkMjNhYWVhZmQxOSIsInVzZXJfaWQiOjJ9.uSMy2hSvWoLqyjDUUZrUv0FQj20AWI2CQ46--kxv0Mw",
+    "created_at": "2026-03-04T10:11:51.176Z",
+    "expires_at": "2027-04-08T10:11:51Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 24,
+  "fields": {
+    "user": 4,
+    "jti": "b6cd8e84cc6e49279a7dcd2730c2eb65",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzE4NDA3MCwiaWF0IjoxNzcyNjI0MDcwLCJqdGkiOiJiNmNkOGU4NGNjNmU0OTI3OWE3ZGNkMjczMGMyZWI2NSIsInVzZXJfaWQiOjR9._B1yPKr8nb4h8ydmi_Ezd589lTNYW6gy9mpB1yv-o8Q",
+    "created_at": "2026-03-04T11:34:30.854Z",
+    "expires_at": "2027-04-08T11:34:30Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 25,
+  "fields": {
+    "user": 4,
+    "jti": "acd4813850b440b7a560dfbfd2ba700b",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzE4NDA4OCwiaWF0IjoxNzcyNjI0MDg4LCJqdGkiOiJhY2Q0ODEzODUwYjQ0MGI3YTU2MGRmYmZkMmJhNzAwYiIsInVzZXJfaWQiOjR9.WVYZA2QhvwyFytiXql9jQLICdN0jH5t6NnjyVRLIeDk",
+    "created_at": "2026-03-04T11:34:48.960Z",
+    "expires_at": "2027-04-08T11:34:48Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 26,
+  "fields": {
+    "user": 1,
+    "jti": "4b56e60355fe4d6cb35df257892476ae",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzE4NDg5NCwiaWF0IjoxNzcyNjI0ODk0LCJqdGkiOiI0YjU2ZTYwMzU1ZmU0ZDZjYjM1ZGYyNTc4OTI0NzZhZSIsInVzZXJfaWQiOjF9.K_7AI97hCafzq-IT_IpuLJXp0nPKU6kzphWn_92oeic",
+    "created_at": "2026-03-04T11:48:14.190Z",
+    "expires_at": "2027-04-08T11:48:14Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 27,
+  "fields": {
+    "user": 1,
+    "jti": "342c057eb3e4485b89943c27a7fa5ea1",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzE4NDkzMSwiaWF0IjoxNzcyNjI0OTMxLCJqdGkiOiIzNDJjMDU3ZWIzZTQ0ODViODk5NDNjMjdhN2ZhNWVhMSIsInVzZXJfaWQiOjF9.6xcSeoZAXe1dIhsE2Zv2736a9BSAQZOKtqfY1UfbSmI",
+    "created_at": "2026-03-04T11:48:51.184Z",
+    "expires_at": "2027-04-08T11:48:51Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 28,
+  "fields": {
+    "user": 6,
+    "jti": "7bc54dfe02dc41fca4c7b79ba1f30e6e",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzE4NDk1MywiaWF0IjoxNzcyNjI0OTUzLCJqdGkiOiI3YmM1NGRmZTAyZGM0MWZjYTRjN2I3OWJhMWYzMGU2ZSIsInVzZXJfaWQiOjZ9.T5L2t4vYdS0sVSs6rHb56YhlZkT9urzj9bWfgF5sang",
+    "created_at": "2026-03-04T11:49:13.890Z",
+    "expires_at": "2027-04-08T11:49:13Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 29,
+  "fields": {
+    "user": 6,
+    "jti": "0c946682e0094435b471e4feac95ac63",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzE4NTAwOCwiaWF0IjoxNzcyNjI1MDA4LCJqdGkiOiIwYzk0NjY4MmUwMDk0NDM1YjQ3MWU0ZmVhYzk1YWM2MyIsInVzZXJfaWQiOjZ9.XaM5SC1QatizIcqpkHFtm-xvCUqE-jMrggb_DfxP3ug",
+    "created_at": "2026-03-04T11:50:08.666Z",
+    "expires_at": "2027-04-08T11:50:08Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 30,
+  "fields": {
+    "user": 1,
+    "jti": "19f25d8fdbf34c53835ebeca4cd0a699",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzE4NTIyMywiaWF0IjoxNzcyNjI1MjIzLCJqdGkiOiIxOWYyNWQ4ZmRiZjM0YzUzODM1ZWJlY2E0Y2QwYTY5OSIsInVzZXJfaWQiOjF9.MLZmBCtOx1FJSRoxRKfh5rjzWy6vmaapR0GjpfGhiYo",
+    "created_at": "2026-03-04T11:53:43.850Z",
+    "expires_at": "2027-04-08T11:53:43Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 31,
+  "fields": {
+    "user": 1,
+    "jti": "674f1f3b76374d64a21cfeae8fede50b",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzE4NTQ5MywiaWF0IjoxNzcyNjI1NDkzLCJqdGkiOiI2NzRmMWYzYjc2Mzc0ZDY0YTIxY2ZlYWU4ZmVkZTUwYiIsInVzZXJfaWQiOjF9.OjkIIgPCVhBd9qyssrKQKXWHECVEE-H7znl6B1js4Hk",
+    "created_at": "2026-03-04T11:58:13.261Z",
+    "expires_at": "2027-04-08T11:58:13Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 32,
+  "fields": {
+    "user": 3,
+    "jti": "beae1892c16447b4980a90b9163582b9",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzE4NzUyNiwiaWF0IjoxNzcyNjI3NTI2LCJqdGkiOiJiZWFlMTg5MmMxNjQ0N2I0OTgwYTkwYjkxNjM1ODJiOSIsInVzZXJfaWQiOjN9.KDB5SCvHo5RXqbPtOVMkFKyQaM5zovEJa15e8bh5LA4",
+    "created_at": "2026-03-04T12:32:06.126Z",
+    "expires_at": "2027-04-08T12:32:06Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 33,
+  "fields": {
+    "user": 9,
+    "jti": "4b8cf94eea354964b9b8d2369029835d",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzE4OTQ3NiwiaWF0IjoxNzcyNjI5NDc2LCJqdGkiOiI0YjhjZjk0ZWVhMzU0OTY0YjliOGQyMzY5MDI5ODM1ZCIsInVzZXJfaWQiOjl9.jRZXyNQWcawSt-fG7NXPzbvRdSHBrVCxg4PMBhqna4s",
+    "created_at": "2026-03-04T13:04:36.052Z",
+    "expires_at": "2027-04-08T13:04:36Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 34,
+  "fields": {
+    "user": 4,
+    "jti": "035c139511ec4dc5bd3d8ca1e167f74e",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzE5MDgwOSwiaWF0IjoxNzcyNjMwODA5LCJqdGkiOiIwMzVjMTM5NTExZWM0ZGM1YmQzZDhjYTFlMTY3Zjc0ZSIsInVzZXJfaWQiOjR9.zwTpJOehZOFK8sH0OWMP7W8vD024ujlpjGPt7enkiNY",
+    "created_at": "2026-03-04T13:26:49.382Z",
+    "expires_at": "2027-04-08T13:26:49Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 35,
+  "fields": {
+    "user": 4,
+    "jti": "e3deca070c264ad8b963d1c09e09e72c",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzE5MTI5MiwiaWF0IjoxNzcyNjMxMjkyLCJqdGkiOiJlM2RlY2EwNzBjMjY0YWQ4Yjk2M2QxYzA5ZTA5ZTcyYyIsInVzZXJfaWQiOjR9.y-b6tHesrFp03pc7ssWkZO55syj_5iM1Wpbsmn7-3zk",
+    "created_at": "2026-03-04T13:34:52.495Z",
+    "expires_at": "2027-04-08T13:34:52Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 36,
+  "fields": {
+    "user": 9,
+    "jti": "3f9ac84b48b14c3a839ed605b84b48ba",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzIwMTc1NywiaWF0IjoxNzcyNjQxNzU3LCJqdGkiOiIzZjlhYzg0YjQ4YjE0YzNhODM5ZWQ2MDViODRiNDhiYSIsInVzZXJfaWQiOjl9.jMBn-hOjA8RelDbx9iZTLddVDQocit7c037lQjT_Xew",
+    "created_at": "2026-03-04T16:29:17.392Z",
+    "expires_at": "2027-04-08T16:29:17Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 37,
+  "fields": {
+    "user": 6,
+    "jti": "6edf403c1d8f412f8704d22f47619ff2",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzIwNDg2NywiaWF0IjoxNzcyNjQ0ODY3LCJqdGkiOiI2ZWRmNDAzYzFkOGY0MTJmODcwNGQyMmY0NzYxOWZmMiIsInVzZXJfaWQiOjZ9.upHW-RP4WnoX-t6h495VWnmOUF4MQ0_-jylLc_JMM5c",
+    "created_at": "2026-03-04T17:21:07.114Z",
+    "expires_at": "2027-04-08T17:21:07Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 38,
+  "fields": {
+    "user": 11,
+    "jti": "a930c652c18b4b4d876ce7e9ea1c5300",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzI2Mjk5MCwiaWF0IjoxNzcyNzAyOTkwLCJqdGkiOiJhOTMwYzY1MmMxOGI0YjRkODc2Y2U3ZTllYTFjNTMwMCIsInVzZXJfaWQiOjExfQ.CFQgTPJ2wZtl73PPLOOMN6d2IAj3CUJmpdktAR47Ewk",
+    "created_at": "2026-03-05T09:29:50.479Z",
+    "expires_at": "2027-04-09T09:29:50Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 39,
+  "fields": {
+    "user": 1,
+    "jti": "f702b8031638416abf6244ef3afc7ff1",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzI3MTU2NiwiaWF0IjoxNzcyNzExNTY2LCJqdGkiOiJmNzAyYjgwMzE2Mzg0MTZhYmY2MjQ0ZWYzYWZjN2ZmMSIsInVzZXJfaWQiOjF9.EG2JRFaLqkjwFoa2anOB64dozZ3vzXRVFr7NUbshPH8",
+    "created_at": "2026-03-05T11:52:46.717Z",
+    "expires_at": "2027-04-09T11:52:46Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 40,
+  "fields": {
+    "user": 4,
+    "jti": "e641b792d0374d21b8ccf26eaaaa9183",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzI3NTUxNywiaWF0IjoxNzcyNzE1NTE3LCJqdGkiOiJlNjQxYjc5MmQwMzc0ZDIxYjhjY2YyNmVhYWFhOTE4MyIsInVzZXJfaWQiOjR9.cDI-T8Uxad3IniptGyaN3lj1OV6DU9L34uSnPjWd7VU",
+    "created_at": "2026-03-05T12:58:37.982Z",
+    "expires_at": "2027-04-09T12:58:37Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 41,
+  "fields": {
+    "user": 4,
+    "jti": "083e39797d694cedaf5662c0ceb2d580",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzI3NTUxOSwiaWF0IjoxNzcyNzE1NTE5LCJqdGkiOiIwODNlMzk3OTdkNjk0Y2VkYWY1NjYyYzBjZWIyZDU4MCIsInVzZXJfaWQiOjR9.aSzqySceD34PK0wKMoZUhXV09lKCjXHLxTDSQPpls3U",
+    "created_at": "2026-03-05T12:58:39.221Z",
+    "expires_at": "2027-04-09T12:58:39Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 42,
+  "fields": {
+    "user": 2,
+    "jti": "6516f491b3a64f4ba34ec90cf85b46b0",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzI4ODI2NiwiaWF0IjoxNzcyNzI4MjY2LCJqdGkiOiI2NTE2ZjQ5MWIzYTY0ZjRiYTM0ZWM5MGNmODViNDZiMCIsInVzZXJfaWQiOjJ9.2CQg9MGxs-o7fb_vElb_Zd01dqwDWL-kG2AbcHTUrXA",
+    "created_at": "2026-03-05T16:31:06.446Z",
+    "expires_at": "2027-04-09T16:31:06Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 43,
+  "fields": {
+    "user": 4,
+    "jti": "aafa861d11904acb96b55cb0714a9394",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzYxNDE5MCwiaWF0IjoxNzczMDU0MTkwLCJqdGkiOiJhYWZhODYxZDExOTA0YWNiOTZiNTVjYjA3MTRhOTM5NCIsInVzZXJfaWQiOjR9.YxvB3gegRF-RDsX_OvI8fxElRKQ7GqqyJQlxn37W1tw",
+    "created_at": "2026-03-09T11:03:10.403Z",
+    "expires_at": "2027-04-13T11:03:10Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 44,
+  "fields": {
+    "user": 2,
+    "jti": "030baa2c3d994b80948576e448a2fe79",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzYyMDY4MSwiaWF0IjoxNzczMDYwNjgxLCJqdGkiOiIwMzBiYWEyYzNkOTk0YjgwOTQ4NTc2ZTQ0OGEyZmU3OSIsInVzZXJfaWQiOjJ9.E9guNRuM6Ij2ToAKXA_eSYhXKRix9WIustue8I1aPqI",
+    "created_at": "2026-03-09T12:51:21.516Z",
+    "expires_at": "2027-04-13T12:51:21Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 45,
+  "fields": {
+    "user": 4,
+    "jti": "d77bc14fd32048a2bfe43ec575fbcc58",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzYyMTA0NSwiaWF0IjoxNzczMDYxMDQ1LCJqdGkiOiJkNzdiYzE0ZmQzMjA0OGEyYmZlNDNlYzU3NWZiY2M1OCIsInVzZXJfaWQiOjR9.D9-T91Vnxu2kaH0s3TQiwouaN9Z4-0b8xIa16G5ZmS0",
+    "created_at": "2026-03-09T12:57:25.008Z",
+    "expires_at": "2027-04-13T12:57:25Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 46,
+  "fields": {
+    "user": 11,
+    "jti": "6b313b3c46984bfaa757fe86b614f05f",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzYyNzg5OSwiaWF0IjoxNzczMDY3ODk5LCJqdGkiOiI2YjMxM2IzYzQ2OTg0YmZhYTc1N2ZlODZiNjE0ZjA1ZiIsInVzZXJfaWQiOjExfQ._rovNmJncG-1AwSTclhOknhTFyfPz-X740XtNBRKePA",
+    "created_at": "2026-03-09T14:51:39.235Z",
+    "expires_at": "2027-04-13T14:51:39Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 47,
+  "fields": {
+    "user": 4,
+    "jti": "c068927b797646288b31076e4bc0a4ac",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzcwMDA3MywiaWF0IjoxNzczMTQwMDczLCJqdGkiOiJjMDY4OTI3Yjc5NzY0NjI4OGIzMTA3NmU0YmMwYTRhYyIsInVzZXJfaWQiOjR9.PjR8Sp6qREGRcDSmSzNU5XwCEMilwj4ZUUGDg1NYO64",
+    "created_at": "2026-03-10T10:54:33.075Z",
+    "expires_at": "2027-04-14T10:54:33Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 48,
+  "fields": {
+    "user": 4,
+    "jti": "562c3852cae54f0d8aae46b42b9704bf",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzcwMzEzNSwiaWF0IjoxNzczMTQzMTM1LCJqdGkiOiI1NjJjMzg1MmNhZTU0ZjBkOGFhZTQ2YjQyYjk3MDRiZiIsInVzZXJfaWQiOjR9.aPTrwgS_XeiKlRJGKVYTwM2PJPwJAY4dYPzlY3x-15Q",
+    "created_at": "2026-03-10T11:45:35.843Z",
+    "expires_at": "2027-04-14T11:45:35Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 49,
+  "fields": {
+    "user": 4,
+    "jti": "91598e17e8204158a08f9f17362a1c81",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzcwMzMzMCwiaWF0IjoxNzczMTQzMzMwLCJqdGkiOiI5MTU5OGUxN2U4MjA0MTU4YTA4ZjlmMTczNjJhMWM4MSIsInVzZXJfaWQiOjR9.azMA9MvYAUpwrgU1KalEezTU9gvxB-Qa61NyRvPpG4Q",
+    "created_at": "2026-03-10T11:48:50.550Z",
+    "expires_at": "2027-04-14T11:48:50Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 50,
+  "fields": {
+    "user": 4,
+    "jti": "8c220f6265374699898d852ae89f4846",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzcwMzMzMSwiaWF0IjoxNzczMTQzMzMxLCJqdGkiOiI4YzIyMGY2MjY1Mzc0Njk5ODk4ZDg1MmFlODlmNDg0NiIsInVzZXJfaWQiOjR9.Nq09PKdilD8IfM3nOxESBMGUQE3kmSIS4Y_wDlQqkQE",
+    "created_at": "2026-03-10T11:48:51.538Z",
+    "expires_at": "2027-04-14T11:48:51Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 51,
+  "fields": {
+    "user": 4,
+    "jti": "e4aa0a7f83be490085dcdad2647bdf2a",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzcwNjAxOSwiaWF0IjoxNzczMTQ2MDE5LCJqdGkiOiJlNGFhMGE3ZjgzYmU0OTAwODVkY2RhZDI2NDdiZGYyYSIsInVzZXJfaWQiOjR9.4SRbfP93n_gh-1kfoJT2oRHIfYOoj0BUB2ohN9E5ZH0",
+    "created_at": "2026-03-10T12:33:39.536Z",
+    "expires_at": "2027-04-14T12:33:39Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 52,
+  "fields": {
+    "user": 4,
+    "jti": "248e984ab6f2445a938dc29983a984da",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzcwNzY5NSwiaWF0IjoxNzczMTQ3Njk1LCJqdGkiOiIyNDhlOTg0YWI2ZjI0NDVhOTM4ZGMyOTk4M2E5ODRkYSIsInVzZXJfaWQiOjR9.lePz0FwmLPAnjb8_-upIweFAZKFWBP9FUTPU2WjduPc",
+    "created_at": "2026-03-10T13:01:35.627Z",
+    "expires_at": "2027-04-14T13:01:35Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 53,
+  "fields": {
+    "user": 1,
+    "jti": "668eca6681fc48219fdd8fd7e2e8b80d",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTgwNzg2ODMzOCwiaWF0IjoxNzczMzA4MzM4LCJqdGkiOiI2NjhlY2E2NjgxZmM0ODIxOWZkZDhmZDdlMmU4YjgwZCIsInVzZXJfaWQiOjF9.w64sIsx7Cm4tzhmQTxnrv2xszRSn9RPjJFKQY1MHE-E",
+    "created_at": "2026-03-12T09:38:58.187Z",
+    "expires_at": "2027-04-16T09:38:58Z"
+  }
+},
+{
+  "model": "api.utilisateur",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$1xqmNc5Jy0uS8uIO59T6zw$g8l9hpRj+8+7aeRMKPw4tS5UplGMuwrQ7TNqUze3kJY=",
+    "last_login": "2026-03-04T11:57:43.477Z",
+    "is_superuser": true,
+    "username": "khalef",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-02-04T11:58:56.826Z",
+    "prenom": "Mohamed",
+    "nom": "Khalef",
+    "telephone": "34450717",
+    "type": "directeur_operations",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "api.utilisateur",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$ktPzhXvlIQacyeBgKNnSlm$2EGglJpxbbWDOqBOmg3pljrMehJ4QMesT5Lj4IuyNpM=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "khayi",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-28T12:55:34.972Z",
+    "prenom": "Khayi",
+    "nom": "STA",
+    "telephone": "37818387",
+    "type": "directeur_operations",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "api.utilisateur",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$pnqqiXtEjHlgH8ffnPsqnT$l9iAmw0tNVoz6VjgfJupxaslr682MXAIsOSTSjXzGYQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "mariem",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-28T12:57:23.989Z",
+    "prenom": "Mariem",
+    "nom": "STA",
+    "telephone": "12345678",
+    "type": "comptable",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "api.utilisateur",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$SYPUBz8p8GCb2h2iPdmWUT$ObcE3a9dQ4craoRkHBk2yPcb2CjCIJJz6bdRYSutfcU=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "med",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-28T12:58:39.324Z",
+    "prenom": "Mohamed",
+    "nom": "Didi",
+    "telephone": "12345679",
+    "type": "agent_port",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "api.utilisateur",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$v9N7oCYFx3zjMFetriulJf$CvbQxyErN00mrvqPMGev9C3DyF2oqax3Fa6cp7V1HJ4=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "ismail",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-28T12:59:19.583Z",
+    "prenom": "Ismail",
+    "nom": "Cheikh",
+    "telephone": "12345671",
+    "type": "agent_port",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "api.utilisateur",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$GpjY7J1k7ZXtttE5RUEJxV$EsYmZIjGbHIPj271xR6phOcu8/ZxSlxaij8d/CEmQtA=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "habibe",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-28T13:00:12.206Z",
+    "prenom": "Habibe",
+    "nom": "STA",
+    "telephone": "12345675",
+    "type": "directeur_general",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "api.utilisateur",
+  "pk": 7,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$uiGazg3WhT2P2cKZ7rtAbh$mjkt/S9xGh5LmDo6QzQ/rahtvqjeC7UfeG0QMqJm6hY=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "khadige",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-28T13:13:26.914Z",
+    "prenom": "Khadige",
+    "nom": "STA",
+    "telephone": "12345672",
+    "type": "comptable",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "api.utilisateur",
+  "pk": 8,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$loypBjJqBx25X9jHGhI62b$Vnq1cvjqNHhYD9Ymon++lR8f2pi2aaENv9W27zo6oJQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "saviye",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-28T13:14:28.241Z",
+    "prenom": "Saviye",
+    "nom": "STA",
+    "telephone": "123456783",
+    "type": "comptable",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "api.utilisateur",
+  "pk": 9,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$g3NMZY4CFMNs0ZbVVq99Ul$zHAPDA2tD4XceSDA5Eo57lqUOF5YTxqUeG8ebWbTxGU=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "moustapha",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-28T13:15:08.858Z",
+    "prenom": "Moustapha",
+    "nom": "Gasri",
+    "telephone": "12345674",
+    "type": "agent_port",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "api.utilisateur",
+  "pk": 11,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$G4izk9iS0IKjrbBP8gWxe1$rRB5/7twOhpTgh6RPF8XutLj3LJK9ejgdMRmq/ssOs8=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "kaw",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-03-05T09:29:10.383Z",
+    "prenom": "Kaw",
+    "nom": "Fall",
+    "telephone": "1897297917",
+    "type": "assistant",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "api.client",
+  "pk": 3,
+  "fields": {
+    "nom": "ETS MOHAMED MOHAMED",
+    "telephone": "22318195 36318195",
+    "email": "MTT.MAURITANIE@GMAIL.COM",
+    "adresse": "ILOT V TEVRAGH ZEINA",
+    "nif": "10716873"
+  }
+},
+{
+  "model": "api.client",
+  "pk": 4,
+  "fields": {
+    "nom": "UV SHIPPING",
+    "telephone": "+91 7200 4808 93",
+    "email": "gomathi@uvshipping.com",
+    "adresse": "New No.7 | Nicholas Road Chetpet | Chennai - 600 031 | TN, India",
+    "nif": "600 031"
+  }
+},
+{
+  "model": "api.client",
+  "pk": 5,
+  "fields": {
+    "nom": "AGRIM",
+    "telephone": "41403085",
+    "email": "Moulayebrahim@gmail.com",
+    "adresse": "ROSSO-CHEMAME 28",
+    "nif": "000000"
+  }
+},
+{
+  "model": "api.client",
+  "pk": 6,
+  "fields": {
+    "nom": "CGC",
+    "telephone": "41314485",
+    "email": "cgc@gmail.com",
+    "adresse": "PEKA 10 CARREFOUR BAMAKO",
+    "nif": "00000000"
+  }
+},
+{
+  "model": "api.client",
+  "pk": 7,
+  "fields": {
+    "nom": "SD MINING",
+    "telephone": "24344003",
+    "email": "sdmining@gmail.com",
+    "adresse": "NUAKCHOTT MAURITANIE",
+    "nif": "00000001"
+  }
+},
+{
+  "model": "api.client",
+  "pk": 8,
+  "fields": {
+    "nom": "AGRINEQ",
+    "telephone": "31801217",
+    "email": "AGRINEG@GMAIL.COM",
+    "adresse": "NOUAKCHOTT-MAURITANIE",
+    "nif": "0000000"
+  }
+},
+{
+  "model": "api.client",
+  "pk": 9,
+  "fields": {
+    "nom": "TALC INVESTMENT",
+    "telephone": "38047712",
+    "email": "Talc@gmail.com",
+    "adresse": "Nouakchott, Mauritanie",
+    "nif": "11111111"
+  }
+},
+{
+  "model": "api.typemateriel",
+  "pk": 9,
+  "fields": {
+    "nom": "DI PIPE",
+    "description": "",
+    "date_creation": "2026-03-09T11:03:52.053Z"
+  }
+},
+{
+  "model": "api.typemateriel",
+  "pk": 11,
+  "fields": {
+    "nom": "GRUS",
+    "description": "",
+    "date_creation": "2026-03-09T13:02:40.525Z"
+  }
+},
+{
+  "model": "api.typemateriel",
+  "pk": 12,
+  "fields": {
+    "nom": "COLIS",
+    "description": "",
+    "date_creation": "2026-03-09T13:20:27.001Z"
+  }
+},
+{
+  "model": "api.typemateriel",
+  "pk": 13,
+  "fields": {
+    "nom": "DN 1200",
+    "description": "",
+    "date_creation": "2026-03-09T13:27:05.385Z"
+  }
+},
+{
+  "model": "api.typemateriel",
+  "pk": 14,
+  "fields": {
+    "nom": "PIPES",
+    "description": "",
+    "date_creation": "2026-03-09T13:29:08.481Z"
+  }
+},
+{
+  "model": "api.typemateriel",
+  "pk": 15,
+  "fields": {
+    "nom": "DN 800",
+    "description": "",
+    "date_creation": "2026-03-09T13:41:44.362Z"
+  }
+},
+{
+  "model": "api.typemateriel",
+  "pk": 16,
+  "fields": {
+    "nom": "FITTING PIPES DN 1800",
+    "description": "",
+    "date_creation": "2026-03-09T14:27:33.620Z"
+  }
+},
+{
+  "model": "api.typemateriel",
+  "pk": 17,
+  "fields": {
+    "nom": "PIPES DN 1800",
+    "description": "",
+    "date_creation": "2026-03-09T14:48:22.257Z"
+  }
+},
+{
+  "model": "api.typemateriel",
+  "pk": 18,
+  "fields": {
+    "nom": "GRB-PIPE DN 1800",
+    "description": "",
+    "date_creation": "2026-03-09T14:55:53.817Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 21,
+  "fields": {
+    "client": 7,
+    "type_materiel": 11,
+    "numero_bordereau": "201",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T13:02:00Z",
+    "camion": "2528AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 2,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:03:54.221Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 22,
+  "fields": {
+    "client": 7,
+    "type_materiel": 11,
+    "numero_bordereau": "202",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T13:04:00Z",
+    "camion": "2536AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:04:53.622Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 23,
+  "fields": {
+    "client": 7,
+    "type_materiel": 11,
+    "numero_bordereau": "203",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T13:05:00Z",
+    "camion": "2537AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 2,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:06:04.232Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 24,
+  "fields": {
+    "client": 7,
+    "type_materiel": 11,
+    "numero_bordereau": "204",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T13:06:00Z",
+    "camion": "2538AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 2,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:07:33.142Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 25,
+  "fields": {
+    "client": 7,
+    "type_materiel": 11,
+    "numero_bordereau": "205",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T13:07:00Z",
+    "camion": "1940AR00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:08:55.592Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 26,
+  "fields": {
+    "client": 7,
+    "type_materiel": 11,
+    "numero_bordereau": "206",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T13:09:00Z",
+    "camion": "2593AL00",
+    "navire": "MV BRILLANCE",
+    "quantite": 2,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:10:28.417Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 27,
+  "fields": {
+    "client": 7,
+    "type_materiel": 11,
+    "numero_bordereau": "207",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T10:54:00Z",
+    "camion": "2528AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:14:26.970Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 28,
+  "fields": {
+    "client": 7,
+    "type_materiel": 11,
+    "numero_bordereau": "208",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T11:11:00Z",
+    "camion": "2563AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:15:16.818Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 29,
+  "fields": {
+    "client": 7,
+    "type_materiel": 11,
+    "numero_bordereau": "209",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T11:35:00Z",
+    "camion": "2537AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 2,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:16:25.390Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 30,
+  "fields": {
+    "client": 7,
+    "type_materiel": 11,
+    "numero_bordereau": "212",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T16:05:00Z",
+    "camion": "2526AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 2,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:19:21.478Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 31,
+  "fields": {
+    "client": 7,
+    "type_materiel": 12,
+    "numero_bordereau": "213",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T17:30:00Z",
+    "camion": "7606AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 5,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:21:45.667Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 32,
+  "fields": {
+    "client": 7,
+    "type_materiel": 12,
+    "numero_bordereau": "214",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T21:00:00Z",
+    "camion": "2536AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:22:49.621Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 33,
+  "fields": {
+    "client": 7,
+    "type_materiel": 12,
+    "numero_bordereau": "215",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T22:54:00Z",
+    "camion": "9302AL00",
+    "navire": "MV BRILLANCE",
+    "quantite": 2,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:24:17.018Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 34,
+  "fields": {
+    "client": 6,
+    "type_materiel": 13,
+    "numero_bordereau": "216",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T00:13:00Z",
+    "camion": "9302AL00",
+    "navire": "MV BRILLANCE",
+    "quantite": 4,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:28:05.822Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 35,
+  "fields": {
+    "client": 6,
+    "type_materiel": 14,
+    "numero_bordereau": "217",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T00:23:00Z",
+    "camion": "1531AZ00",
+    "navire": "MV BRILLANCE",
+    "quantite": 4,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:30:14.010Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 36,
+  "fields": {
+    "client": 6,
+    "type_materiel": 14,
+    "numero_bordereau": "218",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T00:41:00Z",
+    "camion": "1529AZ00",
+    "navire": "MV BRILLANCE",
+    "quantite": 4,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:31:18.494Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 37,
+  "fields": {
+    "client": 8,
+    "type_materiel": 14,
+    "numero_bordereau": "220",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T02:44:00Z",
+    "camion": "6127AE00",
+    "navire": "MV BRILLANCE",
+    "quantite": 14,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:36:08.285Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 38,
+  "fields": {
+    "client": 8,
+    "type_materiel": 14,
+    "numero_bordereau": "221",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T02:58:00Z",
+    "camion": "3571AS00",
+    "navire": "MV BRILLANCE",
+    "quantite": 14,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:37:12.985Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 39,
+  "fields": {
+    "client": 8,
+    "type_materiel": 14,
+    "numero_bordereau": "222",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T03:25:00Z",
+    "camion": "7148AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 16,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:38:29.717Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 40,
+  "fields": {
+    "client": 8,
+    "type_materiel": 14,
+    "numero_bordereau": "223",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T03:07:00Z",
+    "camion": "1076AA00",
+    "navire": "MV BRILLANCE",
+    "quantite": 14,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:39:56.309Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 41,
+  "fields": {
+    "client": 8,
+    "type_materiel": 14,
+    "numero_bordereau": "224",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T03:21:00Z",
+    "camion": "0881AG00",
+    "navire": "MV BRILLANCE",
+    "quantite": 14,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:40:51.088Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 42,
+  "fields": {
+    "client": 8,
+    "type_materiel": 15,
+    "numero_bordereau": "225",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T03:24:00Z",
+    "camion": "3051AE00",
+    "navire": "MV BRILLANCE",
+    "quantite": 6,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:43:14.540Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 43,
+  "fields": {
+    "client": 8,
+    "type_materiel": 14,
+    "numero_bordereau": "226",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T03:34:00Z",
+    "camion": "0355AA11",
+    "navire": "MV BRILLANCE",
+    "quantite": 14,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:44:12.098Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 44,
+  "fields": {
+    "client": 8,
+    "type_materiel": 15,
+    "numero_bordereau": "227",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T03:35:00Z",
+    "camion": "0347AA07",
+    "navire": "MV BRILLANCE",
+    "quantite": 6,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:45:38.955Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 45,
+  "fields": {
+    "client": 8,
+    "type_materiel": 14,
+    "numero_bordereau": "228",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T03:58:00Z",
+    "camion": "7151AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 14,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:46:54.467Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 46,
+  "fields": {
+    "client": 8,
+    "type_materiel": 15,
+    "numero_bordereau": "229",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T03:59:00Z",
+    "camion": "6127AE00",
+    "navire": "MV BRILLLANCE",
+    "quantite": 6,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:47:57.431Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 47,
+  "fields": {
+    "client": 8,
+    "type_materiel": 15,
+    "numero_bordereau": "230",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T04:01:00Z",
+    "camion": "3571AS00",
+    "navire": "MV BRILLANCE",
+    "quantite": 6,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:49:05.102Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 48,
+  "fields": {
+    "client": 8,
+    "type_materiel": 15,
+    "numero_bordereau": "231",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T04:10:00Z",
+    "camion": "7148AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 6,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:50:02.590Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 49,
+  "fields": {
+    "client": 8,
+    "type_materiel": 14,
+    "numero_bordereau": "232",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T04:12:00Z",
+    "camion": "1076AA00",
+    "navire": "MV BRILLANCE",
+    "quantite": 14,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:51:48.878Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 50,
+  "fields": {
+    "client": 8,
+    "type_materiel": 15,
+    "numero_bordereau": "233",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T04:22:00Z",
+    "camion": "3051AE00",
+    "navire": "MV BRILLANCE",
+    "quantite": 6,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:52:54.887Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 51,
+  "fields": {
+    "client": 8,
+    "type_materiel": 14,
+    "numero_bordereau": "234",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T04:30:00Z",
+    "camion": "0881AG00",
+    "navire": "MV BRILLANCE",
+    "quantite": 14,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:53:53.505Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 52,
+  "fields": {
+    "client": 8,
+    "type_materiel": 15,
+    "numero_bordereau": "235",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T04:33:00Z",
+    "camion": "0347AA07",
+    "navire": "MV BRILLANCE",
+    "quantite": 6,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:54:57.217Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 53,
+  "fields": {
+    "client": 8,
+    "type_materiel": 14,
+    "numero_bordereau": "236",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T04:40:00Z",
+    "camion": "6127AE00",
+    "navire": "MV BRILLANCE",
+    "quantite": 14,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:56:19.729Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 54,
+  "fields": {
+    "client": 8,
+    "type_materiel": 15,
+    "numero_bordereau": "237",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T04:42:00Z",
+    "camion": "0355AA11",
+    "navire": "MV BRILLANCE",
+    "quantite": 6,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:57:32.389Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 55,
+  "fields": {
+    "client": 8,
+    "type_materiel": 14,
+    "numero_bordereau": "238",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T04:48:00Z",
+    "camion": "7151AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 14,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T13:58:43.907Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 56,
+  "fields": {
+    "client": 8,
+    "type_materiel": 14,
+    "numero_bordereau": "239",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T04:59:00Z",
+    "camion": "3571AS00",
+    "navire": "MV BRILLANCE",
+    "quantite": 14,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:00:15.596Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 57,
+  "fields": {
+    "client": 8,
+    "type_materiel": 14,
+    "numero_bordereau": "240",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T05:09:00Z",
+    "camion": "7148AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 14,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:01:08.199Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 58,
+  "fields": {
+    "client": 8,
+    "type_materiel": 14,
+    "numero_bordereau": "241",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T05:16:00Z",
+    "camion": "0347AA07",
+    "navire": "MV BRILLANCE",
+    "quantite": 14,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:02:09.048Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 59,
+  "fields": {
+    "client": 6,
+    "type_materiel": 14,
+    "numero_bordereau": "242",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T05:20:00Z",
+    "camion": "4990AM00",
+    "navire": "MV BRILLANCE",
+    "quantite": 4,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:04:15.570Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 60,
+  "fields": {
+    "client": 8,
+    "type_materiel": 14,
+    "numero_bordereau": "243",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T05:27:00Z",
+    "camion": "3051AE00",
+    "navire": "MV BRILLANCE",
+    "quantite": 14,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:05:19.384Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 61,
+  "fields": {
+    "client": 6,
+    "type_materiel": 14,
+    "numero_bordereau": "244",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T05:40:00Z",
+    "camion": "1940AR00",
+    "navire": "MV BRILLANCE",
+    "quantite": 4,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:06:07.794Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 62,
+  "fields": {
+    "client": 6,
+    "type_materiel": 14,
+    "numero_bordereau": "245",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T05:44:00Z",
+    "camion": "9302AL00",
+    "navire": "MV BRILLANCE",
+    "quantite": 4,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:07:30.057Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 63,
+  "fields": {
+    "client": 8,
+    "type_materiel": 14,
+    "numero_bordereau": "246",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T05:48:00Z",
+    "camion": "1076AA00",
+    "navire": "MV BRILLANCE",
+    "quantite": 14,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:08:37.112Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 64,
+  "fields": {
+    "client": 6,
+    "type_materiel": 14,
+    "numero_bordereau": "247",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T05:54:00Z",
+    "camion": "1531AZ00",
+    "navire": "MV BRILLANCE",
+    "quantite": 4,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:09:47.646Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 65,
+  "fields": {
+    "client": 8,
+    "type_materiel": 14,
+    "numero_bordereau": "248",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T05:55:00Z",
+    "camion": "0881AG00",
+    "navire": "MV BRILLANCE",
+    "quantite": 14,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:10:44.007Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 66,
+  "fields": {
+    "client": 8,
+    "type_materiel": 14,
+    "numero_bordereau": "249",
+    "observation": "OK",
+    "date_arrivee": "2026-01-10T05:57:00Z",
+    "camion": "6127AE00",
+    "navire": "MV BRILLANCE",
+    "quantite": 14,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:11:45.652Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 67,
+  "fields": {
+    "client": 9,
+    "type_materiel": 14,
+    "numero_bordereau": "401",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T18:22:00Z",
+    "camion": "9408AV",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:23:46.626Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 68,
+  "fields": {
+    "client": 9,
+    "type_materiel": 14,
+    "numero_bordereau": "402",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T18:30:00Z",
+    "camion": "5483AX",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:25:34.865Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 69,
+  "fields": {
+    "client": 9,
+    "type_materiel": 16,
+    "numero_bordereau": "403",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T18:35:00Z",
+    "camion": "5467AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:28:45.724Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 70,
+  "fields": {
+    "client": 9,
+    "type_materiel": 16,
+    "numero_bordereau": "404",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T18:42:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:30:03.813Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 71,
+  "fields": {
+    "client": 9,
+    "type_materiel": 13,
+    "numero_bordereau": "405",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T18:50:00Z",
+    "camion": "9405AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:31:06.376Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 72,
+  "fields": {
+    "client": 9,
+    "type_materiel": 15,
+    "numero_bordereau": "406",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T18:58:00Z",
+    "camion": "5463AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:32:24.488Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 73,
+  "fields": {
+    "client": 9,
+    "type_materiel": 16,
+    "numero_bordereau": "407",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T19:38:00Z",
+    "camion": "9404AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:33:49.154Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 74,
+  "fields": {
+    "client": 9,
+    "type_materiel": 16,
+    "numero_bordereau": "408",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T19:49:00Z",
+    "camion": "5463AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:34:49.870Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 75,
+  "fields": {
+    "client": 9,
+    "type_materiel": 16,
+    "numero_bordereau": "409",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T20:25:00Z",
+    "camion": "9408AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:36:09.309Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 76,
+  "fields": {
+    "client": 9,
+    "type_materiel": 16,
+    "numero_bordereau": "410",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T20:05:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:37:06.227Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 77,
+  "fields": {
+    "client": 9,
+    "type_materiel": 16,
+    "numero_bordereau": "412",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T20:49:00Z",
+    "camion": "9404AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:44:14.178Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 78,
+  "fields": {
+    "client": 9,
+    "type_materiel": 17,
+    "numero_bordereau": "412",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T14:48:00Z",
+    "camion": "9404AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:49:24.178Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 79,
+  "fields": {
+    "client": 9,
+    "type_materiel": 17,
+    "numero_bordereau": "413",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T20:54:00Z",
+    "camion": "5483AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:50:22.449Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 80,
+  "fields": {
+    "client": 9,
+    "type_materiel": 17,
+    "numero_bordereau": "414",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T20:59:00Z",
+    "camion": "5467AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:51:19.871Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 81,
+  "fields": {
+    "client": 9,
+    "type_materiel": 17,
+    "numero_bordereau": "415",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T21:03:00Z",
+    "camion": "9408AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:52:08.130Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 82,
+  "fields": {
+    "client": 9,
+    "type_materiel": 17,
+    "numero_bordereau": "416",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T21:05:00Z",
+    "camion": "5463AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:53:08.540Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 83,
+  "fields": {
+    "client": 9,
+    "type_materiel": 17,
+    "numero_bordereau": "417",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T21:08:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:53:56.580Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 84,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "418",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T21:20:00Z",
+    "camion": "9406AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:56:59.728Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 85,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "419",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T21:33:00Z",
+    "camion": "9405AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:58:00.682Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 86,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "420",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T21:39:00Z",
+    "camion": "9404AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T14:58:59.531Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 87,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "421",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T21:11:00Z",
+    "camion": "5483AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:00:24.512Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 88,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "422",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T22:29:00Z",
+    "camion": "5467AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:01:25.145Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 89,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "423",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T22:30:00Z",
+    "camion": "9408AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:02:17.226Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 90,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "424",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T22:36:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:03:03.325Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 91,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "425",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T22:46:00Z",
+    "camion": "5463AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:03:49.525Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 92,
+  "fields": {
+    "client": 9,
+    "type_materiel": 16,
+    "numero_bordereau": "426",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T22:53:00Z",
+    "camion": "9405AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:06:05.704Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 93,
+  "fields": {
+    "client": 9,
+    "type_materiel": 16,
+    "numero_bordereau": "427",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T23:01:00Z",
+    "camion": "9406AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:06:59.070Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 94,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "428",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T23:12:00Z",
+    "camion": "9404AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:08:01.570Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 95,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "429",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T23:16:00Z",
+    "camion": "5483AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:09:05.377Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 96,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "430",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T23:23:00Z",
+    "camion": "9408AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:10:03.121Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 97,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "431",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T23:28:00Z",
+    "camion": "5467AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:10:58.785Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 98,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "432",
+    "observation": "OK",
+    "date_arrivee": "2025-12-28T23:36:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:11:51.419Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 99,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "433",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T00:04:00Z",
+    "camion": "9405AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:13:08.935Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 100,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "434",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T00:05:00Z",
+    "camion": "5463AAX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:14:58.503Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 101,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "435",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T00:14:00Z",
+    "camion": "5483AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:16:42.413Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 102,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "436",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T00:19:00Z",
+    "camion": "9406",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:17:40.822Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 103,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "437",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T00:25:00Z",
+    "camion": "9408AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:18:40.099Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 104,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "438",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T00:36:00Z",
+    "camion": "9404AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:19:32.731Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 105,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "439",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T01:11:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:20:48.601Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 106,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "440",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T01:13:00Z",
+    "camion": "9405AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:21:52.963Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 107,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "441",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T01:18:00Z",
+    "camion": "5467AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:22:51.794Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 108,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "442",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T01:32:00Z",
+    "camion": "5463AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:25:54.816Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 109,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "443",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T01:41:00Z",
+    "camion": "5483AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:26:48.789Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 110,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "444",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T01:46:00Z",
+    "camion": "9406AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:27:44.514Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 111,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "445",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T01:53:00Z",
+    "camion": "9408AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:29:00.129Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 112,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "446",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T01:57:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:30:20.369Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 113,
+  "fields": {
+    "client": 9,
+    "type_materiel": 16,
+    "numero_bordereau": "447",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T02:25:00Z",
+    "camion": "9404AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:31:15.137Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 114,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "448",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T02:27:00Z",
+    "camion": "9405AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:32:24.942Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 115,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "449",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T02:29:00Z",
+    "camion": "5467AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:33:29.137Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 116,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "450",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T02:38:00Z",
+    "camion": "5463AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:34:47.362Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 117,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "101",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T02:47:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:40:47.167Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 118,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "102",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T02:59:00Z",
+    "camion": "5483AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:42:00.080Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 119,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "103",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T03:49:00Z",
+    "camion": "9408AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:43:02.795Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 120,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "104",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T03:57:00Z",
+    "camion": "9406AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-09T15:44:11.860Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 121,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "105",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T04:13:00Z",
+    "camion": "9404AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T10:56:36.156Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 122,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "106",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T04:18:00Z",
+    "camion": "9405AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T10:57:48.411Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 123,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "107",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T04:23:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T10:58:48.743Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 124,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "108",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T04:38:00Z",
+    "camion": "5467AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T10:59:42.900Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 125,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "109",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T05:03:00Z",
+    "camion": "5483AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:02:02.560Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 126,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "110",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T05:12:00Z",
+    "camion": "5463AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:02:50.762Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 127,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "111",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T05:25:00Z",
+    "camion": "9406AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:03:49.296Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 128,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "112",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T06:10:00Z",
+    "camion": "9404AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:04:42.141Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 129,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "113",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T06:20:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:05:28.115Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 130,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "114",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T06:28:00Z",
+    "camion": "9406AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:06:32.752Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 131,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "115",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T06:55:00Z",
+    "camion": "9405AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:07:18.595Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 132,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "117",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T09:11:00Z",
+    "camion": "9408AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:10:57.734Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 133,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "118",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T09:20:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:12:03.139Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 134,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "119",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T09:30:00Z",
+    "camion": "9404AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:12:56.120Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 135,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "120",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T09:40:00Z",
+    "camion": "5483AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:14:08.176Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 136,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "121",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T09:49:00Z",
+    "camion": "9405AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:15:07.483Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 137,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "123",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T09:58:00Z",
+    "camion": "5467AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:16:18.310Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 138,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "124",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T10:10:00Z",
+    "camion": "5463AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:17:04.348Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 139,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "125",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T10:22:00Z",
+    "camion": "9406AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:18:39.140Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 140,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "126",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T10:33:00Z",
+    "camion": "9408AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:19:28.880Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 141,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "127",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T10:43:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:20:19.235Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 142,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "128",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T10:53:00Z",
+    "camion": "9404AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:21:20.004Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 143,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "129",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T11:05:00Z",
+    "camion": "5483AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:22:10.441Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 144,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "130",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T11:15:00Z",
+    "camion": "5467AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:22:57.628Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 145,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "131",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T11:25:00Z",
+    "camion": "9405AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:23:48.593Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 146,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "132",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T11:31:00Z",
+    "camion": "5463AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:25:31.355Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 147,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "133",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T11:38:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:26:16.987Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 148,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "134",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T12:30:00Z",
+    "camion": "9406AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:27:07.014Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 149,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "135",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T12:45:00Z",
+    "camion": "5467AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:27:50.668Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 150,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "136",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T13:00:00Z",
+    "camion": "9408AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:28:47.304Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 151,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "137",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T13:20:00Z",
+    "camion": "9404AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:29:40.890Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 152,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "138",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T13:30:00Z",
+    "camion": "5483AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:30:41.264Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 153,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "139",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T13:33:00Z",
+    "camion": "5463AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:31:40.017Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 154,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "140",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T13:39:00Z",
+    "camion": "9405AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:32:28.620Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 155,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "141",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T13:45:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:33:21.065Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 156,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "142",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T13:49:00Z",
+    "camion": "5467AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:34:09.686Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 157,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "143",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T09:14:00Z",
+    "camion": "5486AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:36:09.620Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 158,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "144",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T10:42:00Z",
+    "camion": "5463AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:37:13.562Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 159,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "145",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T10:50:00Z",
+    "camion": "5486AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:39:00.910Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 160,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "145",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T10:50:00Z",
+    "camion": "5486AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:39:04.411Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 162,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "146",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T10:56:00Z",
+    "camion": "5467AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:53:37.477Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 163,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "147",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T11:10:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:55:37.778Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 164,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "148",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T11:15:00Z",
+    "camion": "9405AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T11:57:03.185Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 165,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "149",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T11:30:00Z",
+    "camion": "9404AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T12:08:30.989Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 166,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "150",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T10:38:00Z",
+    "camion": "5483AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T12:10:21.313Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 167,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "251",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T14:00:00Z",
+    "camion": "5486AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T12:16:58.662Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 168,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "252",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T14:07:00Z",
+    "camion": "9408AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:03:08.314Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 169,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "253",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T14:15:00Z",
+    "camion": "9404AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:04:00.338Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 170,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "254",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T14:20:00Z",
+    "camion": "5463AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:04:54.018Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 171,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "255",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T14:40:00Z",
+    "camion": "5483AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:05:49.506Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 172,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "256",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T16:24:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:06:36.582Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 173,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "257",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T16:32:00Z",
+    "camion": "5467AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:07:25.565Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 174,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "258",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T16:43:00Z",
+    "camion": "9408AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:08:16.203Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 175,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "259",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T16:51:00Z",
+    "camion": "5486AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:09:06.797Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 176,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "260",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T16:49:00Z",
+    "camion": "9405AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:10:02.187Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 177,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "261",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T17:26:00Z",
+    "camion": "5483AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:10:49.303Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 178,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "262",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T17:01:00Z",
+    "camion": "5463AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:12:09.474Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 179,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "263",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T17:18:00Z",
+    "camion": "9404AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:13:16.202Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 180,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "264",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T17:32:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:13:59.452Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 181,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "266",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T17:48:00Z",
+    "camion": "9408AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:14:59.083Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 182,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "267",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T17:57:00Z",
+    "camion": "5463AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:15:45.760Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 183,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "268",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T17:06:00Z",
+    "camion": "5486AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:16:39.219Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 184,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "269",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T18:15:00Z",
+    "camion": "5483AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:17:14.663Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 185,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "270",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T18:34:00Z",
+    "camion": "9405AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:18:05.779Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 186,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "271",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T19:00:00Z",
+    "camion": "5467AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:18:45.997Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 187,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "272",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T19:05:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:19:48.844Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 188,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "273",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T21:07:00Z",
+    "camion": "9404AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:20:29.333Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 189,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "274",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T20:30:00Z",
+    "camion": "5483AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:21:16.878Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 190,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "275",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T13:21:00Z",
+    "camion": "9408AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:22:14.783Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 191,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "276",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T21:16:00Z",
+    "camion": "5467AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:22:58.732Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 192,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "277",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T21:50:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:23:36.881Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 193,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "278",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T22:24:00Z",
+    "camion": "5483AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:24:35.822Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 194,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "279",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T23:45:00Z",
+    "camion": "5463AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:25:31.680Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 195,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "280",
+    "observation": "OK",
+    "date_arrivee": "2025-12-29T21:58:00Z",
+    "camion": "9404AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:26:14.849Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 196,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "282",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T01:18:00Z",
+    "camion": "9408AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:27:02.922Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 197,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "283",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T01:26:00Z",
+    "camion": "5467AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:27:49.378Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 198,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "284",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T01:37:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:28:41.153Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 199,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "285",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T01:45:00Z",
+    "camion": "5463AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:29:47.449Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 200,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "286",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T02:35:00Z",
+    "camion": "5483AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:30:37.625Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 201,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "287",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T02:52:00Z",
+    "camion": "9404AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:31:33.531Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 202,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "288",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T03:14:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:32:25.462Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 203,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "289",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T03:31:00Z",
+    "camion": "5467AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:33:11.126Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 204,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "290",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T03:48:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:33:59.927Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 205,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "291",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T04:59:00Z",
+    "camion": "5463AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:34:40.319Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 206,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "292",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T05:15:00Z",
+    "camion": "5467AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:35:26.971Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 207,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "293",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T05:53:00Z",
+    "camion": "9408AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:36:18.942Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 208,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "294",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T06:04:00Z",
+    "camion": "9404AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:37:11.342Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 209,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "295",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T06:16:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:37:55.212Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 210,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "296",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T07:10:00Z",
+    "camion": "5463AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:39:10.985Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 211,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "297",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T07:17:00Z",
+    "camion": "9408AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:40:09.952Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 212,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "298",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T07:40:00Z",
+    "camion": "5483AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:41:09.858Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 213,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "299",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T08:50:00Z",
+    "camion": "5464AX00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:41:57.280Z"
+  }
+},
+{
+  "model": "api.rotationentrante",
+  "pk": 214,
+  "fields": {
+    "client": 9,
+    "type_materiel": 18,
+    "numero_bordereau": "300",
+    "observation": "OK",
+    "date_arrivee": "2025-12-30T09:06:00Z",
+    "camion": "9404AV00",
+    "navire": "MV BRILLANCE",
+    "quantite": 1,
+    "status": "en_cours",
+    "date_creation": "2026-03-10T13:42:53.250Z"
+  }
+},
+{
+  "model": "api.expressionbesoin",
+  "pk": 7,
+  "fields": {
+    "reference": "EB001/2026",
+    "nom_demandeur": "OULDVALL",
+    "direction": "OPERATION",
+    "affectation": "SIEGE",
+    "client_beneficiaire": null,
+    "bl_awb": "",
+    "navire": "",
+    "eta": "2026-03-09T14:55:00Z",
+    "status": "valide",
+    "date_creation": "2026-03-09T14:55:39.254Z",
+    "tva": false,
+    "devise": "MRU",
+    "createur": 11,
+    "valideur": 2,
+    "date_validation": "2026-03-09T14:57:01.340Z"
+  }
+},
+{
+  "model": "api.itemexpressionbesoin",
+  "pk": 15,
+  "fields": {
+    "expression_besoin": 7,
+    "libelle": "AVANCE SUR SALAIRE",
+    "type": "avance_salaire",
+    "montant": "1000.00"
+  }
+}
+]
