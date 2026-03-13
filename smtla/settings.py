@@ -9,14 +9,18 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-import dj_database_url
+
 from datetime import timedelta
 from pathlib import Path
-import os
+import os 
+from dotenv import load_dotenv
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from a .env file
+load_dotenv(BASE_DIR / '.env')
 
 ## I'm just here to modify the project
 ## .... change
@@ -30,23 +34,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-k+#-t4pyyf(c35@ykl=+gqouptf-1nd%r5wr%uslbe$ki+w&k&'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-k+#-t4pyyf(c35@ykl=+gqouptf-1nd%r5wr%uslbe$ki+w&k&')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOW_ORIGIN = [
-    '*'
-]
-
-ALLOWED_HOSTS = [
-    '*'
-]
+# Use an environment variable to control this. E.g., set DEBUG=0 in production.
+# It defaults to True for local development.
+DEBUG = os.environ.get('DEBUG', '1') == '1'
 
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-]
+ALLOWED_HOSTS = [host.strip(" '\"[]") for host in os.environ.get("ALLOWED_HOSTS", "localhost").split(",") if host.strip(" '\"[]")]
+
+
+CSRF_TRUSTED_ORIGINS = [url.strip(" '\"[]") for url in os.environ.get("CSRF_TRUSTED_ORIGINS", "http://localhost:3000").split(",") if url.strip(" '\"[]")]
+
+CORS_ALLOWED_ORIGINS = [url.strip(" '\"[]") for url in os.environ.get("CORS_ALLOWED_ORIGINS", "http://localhost:3000").split(",") if url.strip(" '\"[]")]
+
+CORS_ALLOW_CREDENTIALS = os.environ.get("CORS_ALLOW_CREDENTIALS", "False").lower() == "true"
 
 
 # Application definition
@@ -78,18 +81,19 @@ AUTH_USER_MODEL = 'api.Utilisateur'
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.AllowAny",
+        "rest_framework.permissions.IsAuthenticated",
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
 
+# See https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=365),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=400),
-    "ROTATE_REFRESH_TOKENS": False,
-    "BLACKLIST_AFTER_ROTATION": False,
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": False,
 
     "ALGORITHM": "HS256",
@@ -163,17 +167,16 @@ WSGI_APPLICATION = 'smtla.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': os.getenv('DATABASE_HOST'),
+        'PORT': os.getenv('DATABASE_PORT'),
     }
 }
 
-# DATABASES['default'] = dj_database_url.parse('postgresql://ged_bd_user:D2rhJZra3HXqNw007ZTn2dUg5ncpcHSS@dpg-cpupg6qj1k6c738fbri0-a.oregon-postgres.render.com/ged_bd')
-# ged_bd_user
-# D2rhJZra3HXqNw007ZTn2dUg5ncpcHSS
-# postgresql://ged_bd_user:D2rhJZra3HXqNw007ZTn2dUg5ncpcHSS@dpg-cpupg6qj1k6c738fbri0-a/ged_bd
-# postgresql://ged_bd_user:D2rhJZra3HXqNw007ZTn2dUg5ncpcHSS@dpg-cpupg6qj1k6c738fbri0-a.oregon-postgres.render.com/ged_bd
-# PGPASSWORD=D2rhJZra3HXqNw007ZTn2dUg5ncpcHSS psql -h dpg-cpupg6qj1k6c738fbri0-a.oregon-postgres.render.com -U ged_bd_user ged_bd
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -219,7 +222,4 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-CORS_ORIGIN_ALLOW_ALL = True
-
-
-
+CORS_ORIGIN_ALLOW_ALL = os.environ.get("CORS_ORIGIN_ALLOW_ALL", "False").lower() == "true"

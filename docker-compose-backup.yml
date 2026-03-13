@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    platform: linux/amd64
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=DATABASE_NAME
+      - POSTGRES_USER=DATABASE_USER
+      - POSTGRES_PASSWORD=DATABASE_PASSWORD
+    ports:
+      - "5432:5432"
+    restart: always
+
+  backend:
+    build: .
+    platform: linux/amd64
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py loaddata data.json &&
+             python manage.py collectstatic --no-input &&
+             gunicorn --bind 0.0.0.0:8000 smtla.wsgi:application"
+    volumes:
+      - .:/app
+      - static_volume:/app/static
+      - media_volume:/app/media
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=0
+      - DATABASE_URL=DATABASE_URL
+      - ALLOWED_HOSTS=*
+    depends_on:
+      - db
+    restart: always
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:

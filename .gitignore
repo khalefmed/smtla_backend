@@ -1,1 +1,9 @@
 .venv/
+
+*.sqlite3
+*.log
+__pycache__/
+*.json
+*.pyc
+*.sh
+/smtla_venv/
