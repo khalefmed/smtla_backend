@@ -6,4 +6,6 @@ __pycache__/
 *.json
 *.pyc
 *.sh
+.DS_Store
+.gitignore
 /smtla_venv/
