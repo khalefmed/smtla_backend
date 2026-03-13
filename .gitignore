@@ -1,9 +1,9 @@
-.env
+*.env
 *.sqlite3
 *.log
 __pycache__/
 *.json
 *.pyc
 *.sh
-.DS_Store
+*.DS_Store
 /smtla_venv/
