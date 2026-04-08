@@ -936,6 +936,11 @@ class DevisValiderView(APIView):
                         eta=devis.eta,
                         etd=devis.etd,
                         bl=devis.bl,
+                        type=devis.type,
+                        description=devis.description,
+                        volume=devis.volume,
+                        poids=devis.poids,
+                        commentaire=devis.commentaire,
                         tva=devis.tva,
                         devise=devis.devise,
                         createur=request.user,
@@ -1707,3 +1712,49 @@ class StatistiquesGlobalesView(APIView):
             "total": total_final,
             "mouvementType": mouvement
         })
+    
+
+class PDAListCreateView(generics.ListCreateAPIView):
+    """Liste tous les PDA ou crée un nouveau PDA"""
+    permission_classes = [IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return PDACreateUpdateSerializer
+        return PDASerializer
+
+    def get_queryset(self):
+        # Tri par date de création décroissante
+        queryset = PDA.objects.all().order_by('-date')
+
+        # Recherche par nom du client (lié via ForeignKey)
+        client_name = self.request.query_params.get('client')
+        if client_name:
+            queryset = queryset.filter(client__nom__icontains=client_name)
+
+        # Filtre par navire
+        vessel = self.request.query_params.get('vessel')
+        if vessel:
+            queryset = queryset.filter(vessel_name__icontains=vessel)
+
+        return queryset
+
+    def perform_create(self, serializer):
+        """
+        Cette méthode intercepte la sauvegarde pour ajouter l'utilisateur actuel.
+        Assure-toi que ton modèle PDA possède : createur = models.ForeignKey(User, ...)
+        """
+        # Si ton modèle n'a PAS de champ 'createur', retire simplement cet argument.
+        # Si tu veux enregistrer qui a fait le PDA :
+        serializer.save(createur=self.request.user)
+
+
+class PDARetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    """Récupère, modifie ou supprime un PDA"""
+    queryset = PDA.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.request.method in ['PUT', 'PATCH']:
+            return PDACreateUpdateSerializer
+        return PDASerializer

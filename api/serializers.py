@@ -466,7 +466,7 @@ class DevisSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Devis
-        fields = ['id', 'reference', 'client', 'client_nom', 'port_arrive', 
+        fields = ['id', 'reference', 'client', 'client_nom', 'port_arrive', 'type', 'description', 'volume', 'poids', 'commentaire',
                   'vessel', 'voyage', 'eta', 'etd', 'bl', 'date_creation', 
                   'tva', 'devise', 'devise_display', 'montant_total', 'items',
                   'status', 'status_display', 'createur', 'createur_nom',
@@ -487,7 +487,7 @@ class DevisDetailSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Devis
-        fields = ['id', 'reference', 'client', 'port_arrive', 'vessel', 
+        fields = ['id', 'reference', 'client', 'port_arrive', 'vessel', 'type', 'description', 'volume', 'poids', 'commentaire',
                   'voyage', 'eta', 'etd', 'bl', 'date_creation', 'tva', 
                   'devise', 'devise_display', 'montant_total', 'items',
                   'status', 'status_display', 'createur', 'valideur', 
@@ -504,7 +504,7 @@ class DevisCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Devis
         fields = [
-            'client_id', 'port_arrive', 'vessel', 'voyage', 'bl', 'eta', 'etd', 'tva', 'devise', 'items'
+            'client_id', 'port_arrive', 'vessel', 'voyage', 'bl', 'eta', 'etd', 'tva', 'devise', 'items', 'type', 'description', 'volume', 'poids', 'commentaire',
         ]
 
     def create(self, validated_data):
@@ -562,7 +562,7 @@ class FactureSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Facture
-        fields = ['id', 'reference', 'client', 'client_nom', 'port_arrive', 
+        fields = ['id', 'reference', 'client', 'client_nom', 'port_arrive', 'type', 'description', 'volume', 'poids', 'commentaire',
                   'vessel', 'voyage', 'eta', 'etd', 'bl', 'date_creation', 
                   'tva', 'devise', 'devise_display', 'montant_total', 'items',
                   'status', 'status_display', 'est_privee', 'createur', 
@@ -583,7 +583,7 @@ class FactureDetailSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Facture
-        fields = ['id', 'reference', 'client', 'port_arrive', 'vessel', 
+        fields = ['id', 'reference', 'client', 'port_arrive', 'vessel', 'type', 'description', 'volume', 'poids', 'commentaire',
                   'voyage', 'eta', 'etd', 'bl', 'date_creation', 'tva', 
                   'devise', 'devise_display', 'montant_total', 'items',
                   'status', 'status_display', 'est_privee', 'createur',
@@ -604,7 +604,7 @@ class FactureCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Facture
         fields = [
-            'client_id', 'port_arrive', 'vessel', 'voyage',
+            'client_id', 'port_arrive', 'vessel', 'voyage', 'type', 'description', 'volume', 'poids', 'commentaire',
             'eta', 'etd', 'bl', 'tva', 'devise', 'est_privee', 'items'
         ]
 
@@ -887,4 +887,100 @@ class DocumentArchiveCreateSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
 
+
+
+# ==================== PRO-FORMA DISBURSEMENT ACCOUNT (PDA) ====================
+
+class PDAItemSerializer(serializers.ModelSerializer):
+    """Serializer pour les lignes de détails du PDA (Port Dues, Expenses, etc.)"""
+    total_amount = serializers.ReadOnlyField()
+    category_display = serializers.CharField(source='get_category_display', read_only=True)
+
+    class Meta:
+        model = PDAItem
+        fields = ['id', 'category', 'category_display', 'label', 'grt_value', 'rate', 'total_amount']
+
+
+class PDASerializer(serializers.ModelSerializer):
+    """Serializer pour l'affichage complet du PDA"""
+    items = PDAItemSerializer(many=True, read_only=True)
+    createur_nom = serializers.CharField(source='createur.get_full_name', read_only=True)
+    createur = UtilisateurSerializer(read_only=True)
+    client = ClientSerializer(read_only=True)
+    client_nom = serializers.CharField(source='client.nom', read_only=True)
+
+    # Calculs financiers calculés à la volée
+    sub_total = serializers.SerializerMethodField()
+    vat_amount = serializers.SerializerMethodField()
+    grand_total = serializers.SerializerMethodField()
+
+    class Meta:
+        model = PDA
+        fields = [
+            'id', 'pda_number', 'client', 'client_nom', 'date', 'vessel_name', 
+            'port_of_arrival', 'cargo_description', 'currency', 'createur', 
+            'number_of_days', 'apply_vat', 'remarks', 'items', 
+            'createur_nom', 'sub_total', 'vat_amount', 'grand_total'
+        ]
+
+    def get_sub_total(self, obj):
+        return sum(item.total_amount for item in obj.items.all())
+
+    def get_vat_amount(self, obj):
+        if obj.apply_vat:
+            return self.get_sub_total(obj) * 0.16
+        return 0
+
+    def get_grand_total(self, obj):
+        return self.get_sub_total(obj) + self.get_vat_amount(obj)
+
+
+class PDACreateUpdateSerializer(serializers.ModelSerializer):
+    """Serializer pour la création et modification dynamique du PDA"""
+    items = PDAItemSerializer(many=True)
+    client_id = serializers.PrimaryKeyRelatedField(
+        queryset=Client.objects.all(),
+        source='client',
+        write_only=True
+    )
+
+    class Meta:
+        model = PDA
+        fields = [
+            'pda_number', 'client_id', 'vessel_name', 'port_of_arrival', 
+            'cargo_description', 'currency', 'number_of_days', 
+            'apply_vat', 'remarks', 'items'
+        ]
+
+    def create(self, validated_data):
+        items_data = validated_data.pop('items')
+        
+        from django.db import transaction
+        with transaction.atomic():
+            # Association automatique du créateur via le contexte de la requête
+            validated_data['createur'] = self.context['request'].user
+            pda = PDA.objects.create(**validated_data)
+            
+            for item_data in items_data:
+                PDAItem.objects.create(pda=pda, **item_data)
+        
+        return pda
+
+    def update(self, instance, validated_data):
+        items_data = validated_data.pop('items', None)
+        
+        from django.db import transaction
+        with transaction.atomic():
+            # Mise à jour des champs de base
+            for attr, value in validated_data.items():
+                setattr(instance, attr, value)
+            instance.save()
+            
+            # Mise à jour dynamique des items (on remplace tout pour la simplicité du PDA)
+            if items_data is not None:
+                instance.items.all().delete()
+                for item_data in items_data:
+                    PDAItem.objects.create(pda=instance, **item_data)
+        
+        return instance
 

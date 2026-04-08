@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models import Max
 from datetime import datetime
+from django.core.validators import MinValueValidator
 
 
 class Utilisateur(AbstractUser):
@@ -74,7 +75,6 @@ class TypeMateriel(models.Model):
         verbose_name_plural = "Types de matériel"
         ordering = ['nom']
 
-from django.db import models
 
 class RotationEntrante(models.Model):
     """Modèle pour les rotations entrantes - Spec 6"""
@@ -447,6 +447,11 @@ class Devis(models.Model):
     tva = models.BooleanField(default=False, verbose_name="TVA")
     devise = models.CharField(max_length=10, choices=DEVISES, default='MRU')
     status = models.CharField(max_length=20, choices=STATUS, default='attente')
+    type = models.CharField(max_length=255, verbose_name="Type", null=True, blank=True)
+    description = models.CharField(max_length=255, verbose_name="Description", null=True, blank=True)
+    volume = models.CharField(max_length=255, verbose_name="Volume", null=True, blank=True)
+    poids = models.CharField(max_length=255, verbose_name="Poids", null=True, blank=True)
+    commentaire = models.TextField(verbose_name="Commentaire", null=True, blank=True)
     
     # Traçabilité - Spec 4
     createur = models.ForeignKey(
@@ -550,6 +555,11 @@ class Facture(models.Model):
     tva = models.BooleanField(default=False, verbose_name="TVA")
     devise = models.CharField(max_length=10, choices=DEVISES, default='MRU')
     status = models.CharField(max_length=20, choices=STATUS, default='attente')
+    type = models.CharField(max_length=255, verbose_name="Type", null=True, blank=True)
+    description = models.CharField(max_length=255, verbose_name="Description", null=True, blank=True)
+    volume = models.CharField(max_length=255, verbose_name="Volume", null=True, blank=True)
+    poids = models.CharField(max_length=255, verbose_name="Poids", null=True, blank=True)
+    commentaire = models.TextField(verbose_name="Commentaire", null=True, blank=True)
     
     # Facture privée - Spec 3
     est_privee = models.BooleanField(default=False, verbose_name="Facture privée")
@@ -864,5 +874,71 @@ class DocumentArchive(models.Model):
         verbose_name = "Document archivé"
         verbose_name_plural = "Archives Documentaires"
         ordering = ['-date_upload']
+    
+
+
+
+
+class PDA(models.Model):
+    CURRENCY_CHOICES = [('EUR', 'Euro'), ('USD', 'Dollar')]
+    
+    # En-tête
+    pda_number = models.CharField(max_length=50, unique=True, verbose_name="PDA N°")
+    date = models.DateField(auto_now_add=True)
+    client = models.ForeignKey(
+        'Client', 
+        on_delete=models.CASCADE, 
+        related_name='pdas',
+        verbose_name="Client / Principal",
+        null=True, blank=True
+    )
+
+    createur = models.ForeignKey(
+        Utilisateur,
+        on_delete=models.PROTECT,
+        related_name='pda_creees',
+        null=True,
+        blank=True
+    )
+
+    vessel_name = models.CharField(max_length=255)
+    port_of_arrival = models.CharField(max_length=255, default="NOUAKCHOTT")
+    cargo_description = models.TextField(blank=True)
+    
+    # Paramètres globaux
+    currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='EUR')
+    number_of_days = models.IntegerField(default=1, validators=[MinValueValidator(1)])
+    apply_vat = models.BooleanField(default=True, verbose_name="Appliquer TVA (16%)")
+    
+    # Remarques dynamiques
+    remarks = models.TextField(blank=True, help_text="Texte libre pour les remarques en bas de page")
+
+    def __str__(self):
+        return f"PDA {self.pda_number} - {self.vessel_name}"
+
+class PDAItem(models.Model):
+    CATEGORY_CHOICES = [
+        ('PORT_DUES', 'Ports Dues'),
+        ('OTHER_EXPENSES', 'Other Expenses (Port Call Tax, etc.)'),
+        ('STEVEDORING', 'Stevedoring/Handling on Board'),
+    ]
+
+    pda = models.ForeignKey(PDA, related_name='items', on_delete=models.CASCADE)
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
+    label = models.CharField(max_length=255) # Ex: "PILOTAGE IN & OUT"
+    
+    # Champs pour le calcul
+    grt_value = models.FloatField(default=0, help_text="Valeur GRT / Quantité / Tons")
+    rate = models.FloatField(default=0)
+    
+    # Pour les Port Dues, le calcul est souvent (GRT * Rate)
+    # Pour le Stevedoring, c'est (Tons * Rate)
+    # On stocke le total_item pour faciliter l'affichage
+    total_amount = models.FloatField(editable=False)
+
+    def save(self, *args, **kwargs):
+        # Logique de calcul simple par défaut
+        self.total_amount = self.grt_value * self.rate
+        super().save(*args, **kwargs)
 
 

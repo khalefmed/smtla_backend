@@ -84,6 +84,11 @@ urlpatterns = [
     path('bads/facture/<int:facture_id>/', BADParFactureView.as_view(), name='bad-par-facture'),
     path('bads/<int:pk>/export-pdf/', BADExportPdfView.as_view(), name='bad-export-pdf'),
 
+
+    # ==================== PDA ====================
+    path('pdas/', PDAListCreateView.as_view(), name='pda-list-create'),
+    path('pdas/<int:pk>/', PDARetrieveUpdateDeleteView.as_view(), name='pda-detail'),
+
     # ==================== ARCHIVES DOCUMENTAIRES (GED) ====================
     path('archives/', DocumentArchiveListCreateView.as_view(), name='archive-list-create'),
     path('archives/<int:pk>/', DocumentArchiveRetrieveUpdateDeleteView.as_view(), name='archive-detail'),
