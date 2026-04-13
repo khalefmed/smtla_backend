@@ -814,7 +814,7 @@ class BADCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = BAD
         fields = [
-            'id', 'client_id', 'client_nom', 'facture_id', 'facture_ref', 
+            'id', 'client_id', 'client_nom', 'facture_id', 'facture_ref', 'date', 'date_expiration',
             'reference', 'navire', 'nombre_jours', 'nom_representant', 'items'
         ]
         read_only_fields = ['reference']
