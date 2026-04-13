@@ -469,7 +469,7 @@ class DevisSerializer(serializers.ModelSerializer):
         fields = ['id', 'reference', 'client', 'client_nom', 'port_arrive', 'type', 'description', 'volume', 'poids', 'commentaire',
                   'vessel', 'voyage', 'eta', 'etd', 'bl', 'date_creation', 
                   'tva', 'devise', 'devise_display', 'montant_total', 'items',
-                  'status', 'status_display', 'createur', 'createur_nom',
+                  'status', 'status_display', 'createur', 'createur_nom', 'is_excluding_customs',
                   'valideur', 'valideur_nom', 'date_validation']
         read_only_fields = ['reference', 'date_creation', 'montant_total',
                             'createur', 'valideur', 'date_validation']
@@ -487,7 +487,7 @@ class DevisDetailSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Devis
-        fields = ['id', 'reference', 'client', 'port_arrive', 'vessel', 'type', 'description', 'volume', 'poids', 'commentaire',
+        fields = ['id', 'reference', 'client', 'port_arrive', 'vessel', 'type', 'description', 'volume', 'poids', 'commentaire', 'is_excluding_customs',
                   'voyage', 'eta', 'etd', 'bl', 'date_creation', 'tva', 
                   'devise', 'devise_display', 'montant_total', 'items',
                   'status', 'status_display', 'createur', 'valideur', 
@@ -504,7 +504,7 @@ class DevisCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Devis
         fields = [
-            'client_id', 'port_arrive', 'vessel', 'voyage', 'bl', 'eta', 'etd', 'tva', 'devise', 'items', 'type', 'description', 'volume', 'poids', 'commentaire',
+            'client_id', 'port_arrive', 'vessel', 'voyage', 'bl', 'eta', 'etd', 'tva', 'devise', 'items', 'type', 'description', 'volume', 'poids', 'commentaire', 'is_excluding_customs'
         ]
 
     def create(self, validated_data):
@@ -565,7 +565,7 @@ class FactureSerializer(serializers.ModelSerializer):
         fields = ['id', 'reference', 'client', 'client_nom', 'port_arrive', 'type', 'description', 'volume', 'poids', 'commentaire',
                   'vessel', 'voyage', 'eta', 'etd', 'bl', 'date_creation', 
                   'tva', 'devise', 'devise_display', 'montant_total', 'items',
-                  'status', 'status_display', 'est_privee', 'createur', 
+                  'status', 'status_display', 'est_privee', 'createur',  'is_excluding_customs',
                   'createur_nom', 'valideur', 'valideur_nom', 'date_validation']
         read_only_fields = ['reference', 'date_creation', 'montant_total',
                             'createur', 'valideur', 'date_validation']
@@ -586,7 +586,7 @@ class FactureDetailSerializer(serializers.ModelSerializer):
         fields = ['id', 'reference', 'client', 'port_arrive', 'vessel', 'type', 'description', 'volume', 'poids', 'commentaire',
                   'voyage', 'eta', 'etd', 'bl', 'date_creation', 'tva', 
                   'devise', 'devise_display', 'montant_total', 'items',
-                  'status', 'status_display', 'est_privee', 'createur',
+                  'status', 'status_display', 'est_privee', 'createur', 'is_excluding_customs',
                   'valideur', 'date_validation']
         read_only_fields = ['reference', 'date_creation', 'montant_total',
                             'createur', 'valideur', 'date_validation']
@@ -605,7 +605,7 @@ class FactureCreateSerializer(serializers.ModelSerializer):
         model = Facture
         fields = [
             'client_id', 'port_arrive', 'vessel', 'voyage', 'type', 'description', 'volume', 'poids', 'commentaire',
-            'eta', 'etd', 'bl', 'tva', 'devise', 'est_privee', 'items'
+            'eta', 'etd', 'bl', 'tva', 'devise', 'est_privee', 'items', 'is_excluding_customs'
         ]
 
     def create(self, validated_data):
@@ -919,7 +919,7 @@ class PDASerializer(serializers.ModelSerializer):
         fields = [
             'id', 'pda_number', 'client', 'client_nom', 'date', 'vessel_name', 
             'port_of_arrival', 'cargo_description', 'currency', 'createur', 
-            'number_of_days', 'apply_vat', 'remarks', 'items', 
+            'number_of_days', 'apply_vat', 'remarks', 'items',  'voyage', 'weight',
             'createur_nom', 'sub_total', 'vat_amount', 'grand_total'
         ]
 
@@ -947,8 +947,8 @@ class PDACreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = PDA
         fields = [
-            'pda_number', 'client_id', 'vessel_name', 'port_of_arrival', 
-            'cargo_description', 'currency', 'number_of_days', 
+             'client_id', 'vessel_name', 'port_of_arrival', 
+            'cargo_description', 'currency', 'number_of_days', 'voyage', 'weight',
             'apply_vat', 'remarks', 'items'
         ]
 

@@ -4,6 +4,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models import Max
 from datetime import datetime
 from django.core.validators import MinValueValidator
+from django.db import models, transaction
+from django.utils import timezone
 
 
 class Utilisateur(AbstractUser):
@@ -452,6 +454,7 @@ class Devis(models.Model):
     volume = models.CharField(max_length=255, verbose_name="Volume", null=True, blank=True)
     poids = models.CharField(max_length=255, verbose_name="Poids", null=True, blank=True)
     commentaire = models.TextField(verbose_name="Commentaire", null=True, blank=True)
+    is_excluding_customs = models.BooleanField(default=True, verbose_name="Exclure Custom and duties")
     
     # Traçabilité - Spec 4
     createur = models.ForeignKey(
@@ -515,7 +518,7 @@ class ItemDevis(models.Model):
     )
     libelle = models.CharField(max_length=255)
     prix_unitaire = models.DecimalField(max_digits=12, decimal_places=2)
-    quantite = models.IntegerField()
+    quantite = models.DecimalField(max_digits=12, decimal_places=2)
     
     @property
     def montant_total(self):
@@ -560,6 +563,7 @@ class Facture(models.Model):
     volume = models.CharField(max_length=255, verbose_name="Volume", null=True, blank=True)
     poids = models.CharField(max_length=255, verbose_name="Poids", null=True, blank=True)
     commentaire = models.TextField(verbose_name="Commentaire", null=True, blank=True)
+    is_excluding_customs = models.BooleanField(default=True, verbose_name="Exclure Custom and duties")
     
     # Facture privée - Spec 3
     est_privee = models.BooleanField(default=False, verbose_name="Facture privée")
@@ -625,7 +629,7 @@ class ItemFacture(models.Model):
     )
     libelle = models.CharField(max_length=255)
     prix_unitaire = models.DecimalField(max_digits=12, decimal_places=2)
-    quantite = models.IntegerField()
+    quantite = models.DecimalField(max_digits=12, decimal_places=2)
     
     @property
     def montant_total(self):
@@ -904,6 +908,9 @@ class PDA(models.Model):
     vessel_name = models.CharField(max_length=255)
     port_of_arrival = models.CharField(max_length=255, default="NOUAKCHOTT")
     cargo_description = models.TextField(blank=True)
+
+    weight = models.CharField(max_length=255, blank=True, null=True, verbose_name="Poids")
+    voyage = models.CharField(max_length=100, blank=True, null=True)
     
     # Paramètres globaux
     currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='EUR')
@@ -913,8 +920,35 @@ class PDA(models.Model):
     # Remarques dynamiques
     remarks = models.TextField(blank=True, help_text="Texte libre pour les remarques en bas de page")
 
+    def save(self, *args, **kwargs):
+        if not self.pda_number:
+            with transaction.atomic():
+                current_year = timezone.now().year
+                prefix = f"PDA-{current_year}-"
+                
+                # On cherche la dernière PDA de l'année en cours
+                last_pda = PDA.objects.filter(
+                    pda_number__startswith=prefix
+                ).order_by('-pda_number').first()
+
+                if last_pda:
+                    # On extrait le numéro de la fin (ex: de 'PDA-2026-001' on tire '001')
+                    try:
+                        last_number = int(last_pda.pda_number.split('-')[-1])
+                        new_number = last_number + 1
+                    except (ValueError, IndexError):
+                        new_number = 1
+                else:
+                    new_number = 1
+
+                # Formatage avec zfill(3) pour avoir '001' au lieu de '1'
+                self.pda_number = f"{prefix}{str(new_number).zfill(3)}"
+                
+        super(PDA, self).save(*args, **kwargs)
+
     def __str__(self):
-        return f"PDA {self.pda_number} - {self.vessel_name}"
+        return f"{self.pda_number} - {self.vessel_name}"
+
 
 class PDAItem(models.Model):
     CATEGORY_CHOICES = [

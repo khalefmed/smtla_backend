@@ -938,6 +938,7 @@ class DevisValiderView(APIView):
                         bl=devis.bl,
                         type=devis.type,
                         description=devis.description,
+                        is_excluding_customs=devis.is_excluding_customs,
                         volume=devis.volume,
                         poids=devis.poids,
                         commentaire=devis.commentaire,
