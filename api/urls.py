@@ -68,6 +68,7 @@ urlpatterns = [
     path('factures/', FactureListCreateView.as_view(), name='facture-list-create'),
     path('factures/<int:pk>/', FactureRetrieveUpdateDeleteView.as_view(), name='facture-detail'),
     path('factures/<int:pk>/valider/', FactureValiderView.as_view(), name='facture-valider'),
+    path('factures/<int:pk>/payer/', FacturePayerView.as_view(), name='facture-payer'),
     path('factures/client/<int:client_id>/', FactureParClientView.as_view(), name='factures-par-client'),
     path('factures/<int:pk>/ajouter-item/', FactureAjouterItemView.as_view(), name='facture-ajouter-item'),
     

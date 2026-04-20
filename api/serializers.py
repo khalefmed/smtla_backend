@@ -562,7 +562,7 @@ class FactureSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Facture
-        fields = ['id', 'reference', 'client', 'client_nom', 'port_arrive', 'type', 'description', 'volume', 'poids', 'commentaire',
+        fields = ['id', 'reference', 'client', 'client_nom', 'port_arrive', 'type', 'description', 'volume', 'poids', 'commentaire', 'moyen', 'numero_recu', 'reference_recu',
                   'vessel', 'voyage', 'eta', 'etd', 'bl', 'date_creation', 
                   'tva', 'devise', 'devise_display', 'montant_total', 'items',
                   'status', 'status_display', 'est_privee', 'createur',  'is_excluding_customs',
@@ -583,7 +583,7 @@ class FactureDetailSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Facture
-        fields = ['id', 'reference', 'client', 'port_arrive', 'vessel', 'type', 'description', 'volume', 'poids', 'commentaire',
+        fields = ['id', 'reference', 'client', 'port_arrive', 'vessel', 'type', 'description', 'volume', 'poids', 'commentaire', 'moyen', 'numero_recu', 'reference_recu',
                   'voyage', 'eta', 'etd', 'bl', 'date_creation', 'tva', 
                   'devise', 'devise_display', 'montant_total', 'items',
                   'status', 'status_display', 'est_privee', 'createur', 'is_excluding_customs',
@@ -604,7 +604,7 @@ class FactureCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Facture
         fields = [
-            'client_id', 'port_arrive', 'vessel', 'voyage', 'type', 'description', 'volume', 'poids', 'commentaire',
+            'client_id', 'port_arrive', 'vessel', 'voyage', 'type', 'description', 'volume', 'poids', 'commentaire', 'moyen', 'numero_recu', 'reference_recu',
             'eta', 'etd', 'bl', 'tva', 'devise', 'est_privee', 'items', 'is_excluding_customs'
         ]
 

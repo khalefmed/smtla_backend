@@ -540,6 +540,13 @@ class Facture(models.Model):
         ('attente', 'En attente'),
         ('valide', 'Validé'),
         ('rejete', 'Rejeté'),
+        ('paye', 'Payée'),
+    ]
+    MOYEN = [
+        ('cheque', 'Chèque'),
+        ('virement', 'Virement'),
+        ('espece', 'Espèce'),
+        ('wallet', 'Wallet'),
     ]
     
     reference = models.CharField(max_length=15, unique=True, editable=False)
@@ -564,6 +571,10 @@ class Facture(models.Model):
     poids = models.CharField(max_length=255, verbose_name="Poids", null=True, blank=True)
     commentaire = models.TextField(verbose_name="Commentaire", null=True, blank=True)
     is_excluding_customs = models.BooleanField(default=True, verbose_name="Exclure Custom and duties")
+    moyen = models.CharField(max_length=20, choices=MOYEN, default='espece', verbose_name="Moyen de paiement", null=True, blank=True)
+    numero_recu = models.CharField(max_length=20, verbose_name="Numéro de reçu", null=True, blank=True)
+    reference_recu = models.CharField(max_length=20, verbose_name="Référence du reçu", null=True, blank=True)
+    date_paiement = models.DateTimeField(null=True, blank=True)
     
     # Facture privée - Spec 3
     est_privee = models.BooleanField(default=False, verbose_name="Facture privée")
@@ -606,6 +617,25 @@ class Facture(models.Model):
     
     def __str__(self):
         return f"{self.reference} - {self.client.nom}"
+
+    def generer_numero_recu(self):
+        """Génère un numéro de reçu séquentiel type 001/2026"""
+        annee_actuelle = datetime.now().year
+        
+        # On cherche le dernier numéro de reçu qui se termine par /YYYY
+        dernier = Facture.objects.filter(
+            numero_recu__endswith=f"/{annee_actuelle}"
+        ).aggregate(max_num=Max('numero_recu'))
+        
+        if dernier['max_num']:
+            # On extrait le compteur (ex: '005' depuis '005/2026')
+            last_counter = int(dernier['max_num'].split('/')[0])
+            compteur = last_counter + 1
+        else:
+            # Première facture payée de l'année
+            compteur = 1
+        
+        return f"{compteur:03d}/{annee_actuelle}"
     
     @property
     def montant_total(self):

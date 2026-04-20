@@ -1129,6 +1129,49 @@ class FactureValiderView(APIView):
             "message": f"Facture {nouveau_statut}e avec succès",
             "status": facture.status
         })
+    
+
+
+from django.utils import timezone # Préférable à datetime.now() pour Django
+
+class FacturePayerView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request, pk):
+        if request.user.type not in ['directeur_general', 'comptable']:
+            return Response(
+                {"error": "Vous n'avez pas la permission"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        facture = get_object_or_404(Facture, pk=pk)
+        
+        # On récupère le moyen de paiement depuis la requête (optionnel mais recommandé)
+        moyen_paiement = request.data.get('moyen')
+        reference_recu = request.data.get('reference_recu')
+
+        # Logique de paiement
+        facture.status = 'paye'
+        facture.date_paiement = timezone.now()
+        
+        if moyen_paiement:
+            facture.moyen = moyen_paiement
+        
+        if reference_recu:
+            facture.reference_recu = reference_recu
+
+        # Attribution du numéro de reçu seulement s'il n'existe pas encore
+        if not facture.numero_recu:
+            facture.numero_recu = facture.generer_numero_recu()
+        
+        facture.save()
+
+        return Response({
+            "message": "Facture marquée comme payée avec succès",
+            "status": facture.status,
+            "numero_recu": facture.numero_recu,
+            "date_paiement": facture.date_paiement
+        })
 
 
 class FactureParClientView(generics.ListAPIView):
