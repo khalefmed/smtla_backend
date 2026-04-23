@@ -398,8 +398,9 @@ class ItemNoteDeFrais(models.Model):
         ('carburant', 'Carburant'),
         ('entretien', 'Entretien'),
         ('telecom', 'Télécom'),
-        ('avance', 'Avance'),
-        ('divers', 'Divers'),
+        ('avance_salaire', 'Avance sur salaire'),
+        ('avance_paiement', 'Avance sur paiement'),
+        ('equipement', 'Equipement'),
     ]
     
     note_de_frais = models.ForeignKey(
