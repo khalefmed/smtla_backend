@@ -81,7 +81,6 @@ class TypeMateriel(models.Model):
 class RotationEntrante(models.Model):
     """Modèle pour les rotations entrantes - Spec 6"""
     
-    # Définition des choix de statut
     STATUS_CHOICES = [
         ('en_cours', 'En cours'),
         ('termine', 'Terminé'),
@@ -176,7 +175,6 @@ class ExpressionBesoin(models.Model):
     
     reference = models.CharField(max_length=15, unique=True, editable=False)
     
-    # --- Nouveaux Champs Ajoutés ---
     nom_demandeur = models.CharField(
         max_length=255, 
         default="Moustapha Seydna Aly", 
@@ -192,7 +190,6 @@ class ExpressionBesoin(models.Model):
         default="Bureau siege", 
         verbose_name="Affectation"
     )
-    # ------------------------------
 
     client_beneficiaire = models.ForeignKey(
         Client,
@@ -210,7 +207,6 @@ class ExpressionBesoin(models.Model):
     tva = models.BooleanField(default=False, verbose_name="TVA")
     devise = models.CharField(max_length=10, choices=DEVISES, default='MRU')
     
-    # Traçabilité
     createur = models.ForeignKey(
         Utilisateur,
         on_delete=models.PROTECT,
@@ -238,7 +234,6 @@ class ExpressionBesoin(models.Model):
         
         if dernier['max_num']:
             try:
-                # Gestion sécurisée du split au cas où le format change
                 last_counter = int(dernier['max_num'].split('/')[0].replace('EB', ''))
                 compteur = last_counter + 1
             except (ValueError, IndexError):
@@ -264,7 +259,7 @@ class ExpressionBesoin(models.Model):
             Decimal('0.00')
         )
         if self.tva:
-            total *= Decimal('1.16')  # TVA 16%
+            total *= Decimal('1.16')  
         return total
     
     class Meta:
@@ -317,8 +312,6 @@ class NoteDeFrais(models.Model):
     
     reference = models.CharField(max_length=15, unique=True, editable=False)
     
-    # Le lien devient le pivot central (OneToOne ou ForeignKey)
-    # On le met en CASCADE ou PROTECT selon votre flux métier
     expression_besoin = models.ForeignKey(
         ExpressionBesoin,
         on_delete=models.PROTECT, 
@@ -330,7 +323,6 @@ class NoteDeFrais(models.Model):
     status = models.CharField(max_length=20, choices=STATUS, default='attente')
     date_creation = models.DateTimeField(auto_now_add=True)
     
-    # Traçabilité
     createur = models.ForeignKey(
         Utilisateur,
         on_delete=models.PROTECT,
@@ -345,7 +337,6 @@ class NoteDeFrais(models.Model):
     )
     date_validation = models.DateTimeField(null=True, blank=True)
 
-    # --- Accès aux données de l'EB via propriétés pour simplifier le Serializer ---
     @property
     def client_beneficiaire(self):
         return self.expression_besoin.client_beneficiaire
@@ -379,7 +370,6 @@ class NoteDeFrais(models.Model):
     @property
     def montant_total(self):
         total = sum((item.montant_total for item in self.items.all()), Decimal('0.00'))
-        # On récupère la règle de TVA de l'EB parente
         if self.expression_besoin.tva:
             total *= Decimal('1.16')
         return total
@@ -457,7 +447,6 @@ class Devis(models.Model):
     commentaire = models.TextField(verbose_name="Commentaire", null=True, blank=True)
     is_excluding_customs = models.BooleanField(default=True, verbose_name="Exclure Custom and duties")
     
-    # Traçabilité - Spec 4
     createur = models.ForeignKey(
         Utilisateur,
         on_delete=models.PROTECT,
@@ -503,7 +492,7 @@ class Devis(models.Model):
             Decimal('0.00')
         )
         if self.tva:
-            total *= Decimal('1.16')  # TVA 16%
+            total *= Decimal('1.16')  
         return total
     
     class Meta:
@@ -577,10 +566,8 @@ class Facture(models.Model):
     reference_recu = models.CharField(max_length=20, verbose_name="Référence du reçu", null=True, blank=True)
     date_paiement = models.DateTimeField(null=True, blank=True)
     
-    # Facture privée - Spec 3
     est_privee = models.BooleanField(default=False, verbose_name="Facture privée")
     
-    # Traçabilité - Spec 3
     createur = models.ForeignKey(
         Utilisateur,
         on_delete=models.PROTECT,
@@ -623,17 +610,14 @@ class Facture(models.Model):
         """Génère un numéro de reçu séquentiel type 001/2026"""
         annee_actuelle = datetime.now().year
         
-        # On cherche le dernier numéro de reçu qui se termine par /YYYY
         dernier = Facture.objects.filter(
             numero_recu__endswith=f"/{annee_actuelle}"
         ).aggregate(max_num=Max('numero_recu'))
         
         if dernier['max_num']:
-            # On extrait le compteur (ex: '005' depuis '005/2026')
             last_counter = int(dernier['max_num'].split('/')[0])
             compteur = last_counter + 1
         else:
-            # Première facture payée de l'année
             compteur = 1
         
         return f"{compteur:03d}/{annee_actuelle}"
@@ -645,7 +629,7 @@ class Facture(models.Model):
             Decimal('0.00')
         )
         if self.tva:
-            total *= Decimal('1.16')  # TVA 16%
+            total *= Decimal('1.16')  
         return total
     
     class Meta:
@@ -690,7 +674,6 @@ class BonCommande(models.Model):
     status = models.CharField(max_length=20, choices=STATUS, default='attente')
     date_creation = models.DateTimeField(auto_now_add=True)
     
-    # Traçabilité - Spec 10
     createur = models.ForeignKey(
         Utilisateur,
         on_delete=models.PROTECT,
@@ -715,7 +698,6 @@ class BonCommande(models.Model):
         ).aggregate(max_num=Max('reference'))
         
         if dernier['max_num']:
-            # Extraire le numéro du format SMTLA/BC/XXX/YYYY
             parts = dernier['max_num'].split('/')
             last_counter = int(parts[2])
             compteur = last_counter + 1
@@ -739,7 +721,7 @@ class BonCommande(models.Model):
             Decimal('0.00')
         )
         if self.tva:
-            total *= Decimal('1.16')  # TVA 16%
+            total *= Decimal('1.16')  
         return total
     
     class Meta:
@@ -818,7 +800,6 @@ class BAD(models.Model):
     date = models.DateField(verbose_name="Date d'émission", null=True, blank=True)
     date_expiration = models.DateField(verbose_name="Date d'expiration", null=True, blank=True)
     
-    # Nouveaux champs demandés
     navire = models.CharField(max_length=255, verbose_name="Navire", blank=True, null=True)
     nombre_jours = models.PositiveIntegerField(default=0, verbose_name="Nombre de jours")
     
@@ -832,12 +813,11 @@ class BAD(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.id and not self.reference:
-            # Récupère la valeur max actuelle de 'reference'
             last_ref = BAD.objects.aggregate(Max('reference'))['reference__max']
             if last_ref is not None:
                 self.reference = last_ref + 1
             else:
-                self.reference = 101  # On commence à 101 (ou 1 selon votre choix)
+                self.reference = 101  
         
         super(BAD, self).save(*args, **kwargs)
 
@@ -854,7 +834,6 @@ class ItemBAD(models.Model):
     package_number = models.CharField(max_length=100, verbose_name="Nombre de colis")
     weight = models.DecimalField(max_digits=12, decimal_places=2, verbose_name="Poids")
     
-    # Traçabilité
     valideur = models.ForeignKey(Utilisateur, on_delete=models.SET_NULL, related_name='bad_items_valides', null=True, blank=True)
     createur = models.ForeignKey(Utilisateur, on_delete=models.SET_NULL, related_name='bad_items_crees', null=True, blank=True)
 
@@ -893,7 +872,6 @@ class DocumentArchive(models.Model):
     )
     date_upload = models.DateTimeField(auto_now_add=True)
     
-    # Traçabilité cohérente avec vos autres modèles
     cree_par = models.ForeignKey(
         Utilisateur, 
         on_delete=models.SET_NULL, 
@@ -917,7 +895,6 @@ class DocumentArchive(models.Model):
 class PDA(models.Model):
     CURRENCY_CHOICES = [('EUR', 'Euro'), ('USD', 'Dollar')]
     
-    # En-tête
     pda_number = models.CharField(max_length=50, unique=True, verbose_name="PDA N°")
     date = models.DateField(auto_now_add=True)
     client = models.ForeignKey(
@@ -943,12 +920,10 @@ class PDA(models.Model):
     weight = models.CharField(max_length=255, blank=True, null=True, verbose_name="Poids")
     voyage = models.CharField(max_length=100, blank=True, null=True)
     
-    # Paramètres globaux
     currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='EUR')
     number_of_days = models.IntegerField(default=1, validators=[MinValueValidator(1)])
     apply_vat = models.BooleanField(default=True, verbose_name="Appliquer TVA (16%)")
     
-    # Remarques dynamiques
     remarks = models.TextField(blank=True, help_text="Texte libre pour les remarques en bas de page")
 
     def save(self, *args, **kwargs):
@@ -957,13 +932,11 @@ class PDA(models.Model):
                 current_year = timezone.now().year
                 prefix = f"PDA-{current_year}-"
                 
-                # On cherche la dernière PDA de l'année en cours
                 last_pda = PDA.objects.filter(
                     pda_number__startswith=prefix
                 ).order_by('-pda_number').first()
 
                 if last_pda:
-                    # On extrait le numéro de la fin (ex: de 'PDA-2026-001' on tire '001')
                     try:
                         last_number = int(last_pda.pda_number.split('-')[-1])
                         new_number = last_number + 1
@@ -972,7 +945,6 @@ class PDA(models.Model):
                 else:
                     new_number = 1
 
-                # Formatage avec zfill(3) pour avoir '001' au lieu de '1'
                 self.pda_number = f"{prefix}{str(new_number).zfill(3)}"
                 
         super(PDA, self).save(*args, **kwargs)
@@ -990,19 +962,14 @@ class PDAItem(models.Model):
 
     pda = models.ForeignKey(PDA, related_name='items', on_delete=models.CASCADE)
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
-    label = models.CharField(max_length=255) # Ex: "PILOTAGE IN & OUT"
+    label = models.CharField(max_length=255)
     
-    # Champs pour le calcul
     grt_value = models.FloatField(default=0, help_text="Valeur GRT / Quantité / Tons")
     rate = models.FloatField(default=0)
     
-    # Pour les Port Dues, le calcul est souvent (GRT * Rate)
-    # Pour le Stevedoring, c'est (Tons * Rate)
-    # On stocke le total_item pour faciliter l'affichage
     total_amount = models.FloatField(editable=False)
 
     def save(self, *args, **kwargs):
-        # Logique de calcul simple par défaut
         self.total_amount = self.grt_value * self.rate
         super().save(*args, **kwargs)
 
@@ -1011,7 +978,6 @@ class PDAItem(models.Model):
 class FDA(models.Model):
     CURRENCY_CHOICES = [('EUR', 'Euro'), ('USD', 'Dollar')]
     
-    # En-tête
     fda_number = models.CharField(max_length=50, unique=True, verbose_name="FDA N°")
     date = models.DateField(auto_now_add=True)
     client = models.ForeignKey(
@@ -1038,13 +1004,9 @@ class FDA(models.Model):
     voyage = models.CharField(max_length=100, blank=True, null=True)
     port_inv_number = models.CharField(max_length=100, blank=True, null=True)
     
-    # Paramètres globaux
     currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='EUR')
-    # number_of_days = models.IntegerField(default=1, validators=[MinValueValidator(1)])
     apply_vat = models.BooleanField(default=True, verbose_name="Appliquer TVA (16%)")
-    
-    # Remarques dynamiques
-    # remarks = models.TextField(blank=True, help_text="Texte libre pour les remarques en bas de page")
+
 
     def save(self, *args, **kwargs):
         if not self.fda_number:
@@ -1052,13 +1014,11 @@ class FDA(models.Model):
                 current_year = timezone.now().year
                 prefix = f"FDA-{current_year}-"
                 
-                # On cherche la dernière FDA de l'année en cours
                 last_fda = FDA.objects.filter(
                     fda_number__startswith=prefix
                 ).order_by('-fda_number').first()
 
                 if last_fda:
-                    # On extrait le numéro de la fin (ex: de 'FDA-2026-001' on tire '001')
                     try:
                         last_number = int(last_fda.fda_number.split('-')[-1])
                         new_number = last_number + 1
@@ -1067,7 +1027,6 @@ class FDA(models.Model):
                 else:
                     new_number = 1
 
-                # Formatage avec zfill(3) pour avoir '001' au lieu de '1'
                 self.fda_number = f"{prefix}{str(new_number).zfill(3)}"
                 
         super(FDA, self).save(*args, **kwargs)
@@ -1085,23 +1044,18 @@ class FDAItem(models.Model):
 
     fda = models.ForeignKey(FDA, related_name='items', on_delete=models.CASCADE)
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
-    label = models.CharField(max_length=255) # Ex: "PILOTAGE IN & OUT"
+    label = models.CharField(max_length=255)
     
-    # Champs pour le calcul
     grt_value = models.FloatField(default=0, help_text="Valeur GRT / Quantité / Tons")
     rate = models.FloatField(default=0)
     port_inv = models.FloatField(default=0, null=True, blank=True, verbose_name="Port invoice number")
     devise = models.FloatField(default=0, null=True, blank=True, verbose_name="Port invoice number")
     price_mru = models.FloatField(default=0, null=True, blank=True, verbose_name="Price in MRU")
     price_devise = models.FloatField(default=0, null=True, blank=True, verbose_name="Price in Devise")
-    
-    # Pour les Port Dues, le calcul est souvent (GRT * Rate)
-    # Pour le Stevedoring, c'est (Tons * Rate)
-    # On stocke le total_item pour faciliter l'affichage
+
     total_amount = models.FloatField(editable=False)
 
     def save(self, *args, **kwargs):
-        # Logique de calcul simple par défaut
         self.total_amount = self.grt_value * self.rate
         super().save(*args, **kwargs)
 

@@ -23,7 +23,6 @@ from .models import (
     DocumentArchive
 )
 
-# ==================== TYPE MATERIEL (Spec 5) ====================
 
 @admin.register(TypeMateriel)
 class TypeMaterielAdmin(admin.ModelAdmin):
@@ -33,7 +32,6 @@ class TypeMaterielAdmin(admin.ModelAdmin):
     readonly_fields = ("date_creation",)
 
 
-# ==================== ROTATION ====================
 
 @admin.register(Rotation)
 class RotationAdmin(admin.ModelAdmin):
@@ -52,7 +50,6 @@ class RotationAdmin(admin.ModelAdmin):
     readonly_fields = ("date_creation",)
 
 
-# ==================== ROTATIONS ENTRANTES (Spec 6) ====================
 
 @admin.register(RotationEntrante)
 class RotationEntranteAdmin(admin.ModelAdmin):
@@ -71,7 +68,6 @@ class RotationEntranteAdmin(admin.ModelAdmin):
     readonly_fields = ("date_creation",)
 
 
-# ==================== ROTATIONS SORTANTES (Spec 7) ====================
 
 @admin.register(RotationSortante)
 class RotationSortanteAdmin(admin.ModelAdmin):
@@ -90,7 +86,6 @@ class RotationSortanteAdmin(admin.ModelAdmin):
     readonly_fields = ("date_creation",)
 
 
-# ==================== CLIENTS ====================
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
@@ -99,7 +94,6 @@ class ClientAdmin(admin.ModelAdmin):
     ordering = ("nom",)
 
 
-# ==================== FOURNISSEURS (Spec 9) ====================
 
 @admin.register(Fournisseur)
 class FournisseurAdmin(admin.ModelAdmin):
@@ -108,7 +102,6 @@ class FournisseurAdmin(admin.ModelAdmin):
     ordering = ("nom",)
 
 
-# ==================== EXPRESSIONS DE BESOIN (Spec 1) ====================
 
 class ItemExpressionBesoinInline(admin.TabularInline):
     model = ItemExpressionBesoin
@@ -116,11 +109,10 @@ class ItemExpressionBesoinInline(admin.TabularInline):
 
 @admin.register(ExpressionBesoin)
 class ExpressionBesoinAdmin(admin.ModelAdmin):
-    # Ajout des nouveaux champs dans la liste principale
     list_display = (
         "reference",
-        "nom_demandeur",      # Nouveau
-        "direction",         # Nouveau
+        "nom_demandeur",      
+        "direction",         
         "client_beneficiaire",
         "navire",
         "status",
@@ -128,10 +120,8 @@ class ExpressionBesoinAdmin(admin.ModelAdmin):
         "montant_total_affiche",
     )
     
-    # Ajout de filtres pour la direction et l'affectation
     list_filter = ("status", "direction", "affectation", "devise", "tva", "date_creation")
     
-    # Extension de la recherche aux nouveaux champs
     search_fields = ("reference", "nom_demandeur", "client_beneficiaire__nom", "bl_awb", "navire")
     
     ordering = ("-date_creation",)
@@ -147,7 +137,6 @@ class ExpressionBesoinAdmin(admin.ModelAdmin):
     
     inlines = [ItemExpressionBesoinInline]
 
-    # Organisation du formulaire d'édition par sections (fieldsets)
     fieldsets = (
         ("Identification", {
             "fields": ("reference", "status", "date_creation")
@@ -164,7 +153,7 @@ class ExpressionBesoinAdmin(admin.ModelAdmin):
         }),
         ("Validation & Traçabilité", {
             "fields": ("createur", "valideur", "date_validation"),
-            "classes": ("collapse",) # Cache cette section par défaut
+            "classes": ("collapse",) 
         }),
     )
 
@@ -174,31 +163,29 @@ class ExpressionBesoinAdmin(admin.ModelAdmin):
     montant_total_affiche.short_description = "Montant Total"
 
     def save_model(self, request, obj, form, change):
-        if not change:  # Si c'est une création
+        if not change:  
             obj.createur = request.user
         super().save_model(request, obj, form, change)
 
 
 
-# ==================== NOTES DE FRAIS (Spec 2) ====================
 
 class ItemNoteDeFraisInline(admin.TabularInline):
     model = ItemNoteDeFrais
-    extra = 0 # Mis à 0 pour éviter des lignes vides inutiles par défaut
+    extra = 0 
 
 @admin.register(NoteDeFrais)
 class NoteDeFraisAdmin(admin.ModelAdmin):
     list_display = (
         "reference",
-        "get_client",   # Utilisation d'une méthode pour récupérer le client de l'EB
-        "get_navire",   # Utilisation d'une méthode pour récupérer le navire de l'EB
+        "get_client",   
+        "get_navire",   
         "status",
         "date_creation",
         "createur",
         "montant_total_affiche",
     )
     
-    # Filtrage via la relation (on utilise __ pour accéder aux champs de l'EB)
     list_filter = (
         "status", 
         "expression_besoin__devise", 
@@ -206,7 +193,6 @@ class NoteDeFraisAdmin(admin.ModelAdmin):
         "date_creation"
     )
     
-    # Recherche via la relation
     search_fields = (
         "reference", 
         "expression_besoin__client_beneficiaire__nom", 
@@ -216,7 +202,6 @@ class NoteDeFraisAdmin(admin.ModelAdmin):
     
     ordering = ("-date_creation",)
     
-    # Ajout des champs de l'EB en lecture seule pour la vue détaillée
     readonly_fields = (
         "reference", 
         "expression_besoin",
@@ -232,7 +217,6 @@ class NoteDeFraisAdmin(admin.ModelAdmin):
     
     inlines = [ItemNoteDeFraisInline]
 
-    # --- Accesseurs pour les données de l'Expression de Besoin ---
 
     def get_client(self, obj):
         return obj.expression_besoin.client_beneficiaire
@@ -253,7 +237,6 @@ class NoteDeFraisAdmin(admin.ModelAdmin):
     montant_total_affiche.short_description = "Montant total"
 
 
-# ==================== DEVIS (Spec 4) ====================
 
 class ItemDevisInline(admin.TabularInline):
     model = ItemDevis
@@ -284,7 +267,6 @@ class DevisAdmin(admin.ModelAdmin):
     montant_total_affiche.short_description = "Montant total"
 
 
-# ==================== FACTURES (Spec 3) ====================
 
 class ItemFactureInline(admin.TabularInline):
     model = ItemFacture
@@ -316,7 +298,6 @@ class FactureAdmin(admin.ModelAdmin):
     montant_total_affiche.short_description = "Montant total"
 
 
-# ==================== BONS DE COMMANDE (Spec 10) ====================
 
 class ItemBonCommandeInline(admin.TabularInline):
     model = ItemBonCommande
@@ -348,12 +329,10 @@ class BonCommandeAdmin(admin.ModelAdmin):
 
 
 
-# ==================== BONS À DÉLIVRER (BAD) ====================
 
 class ItemBADInline(admin.TabularInline):
     model = ItemBAD
     extra = 1
-    # On met les champs de traçabilité en lecture seule dans l'inline
     readonly_fields = ("createur", "valideur")
     fields = ("bl", "package_number", "weight", "nombre_jours", "createur", "valideur")
 
@@ -377,7 +356,6 @@ class BADAdmin(admin.ModelAdmin):
     )
     ordering = ("-date_creation",)
     
-    # Configuration des champs pour la vue détaillée
     readonly_fields = ("date_creation",)
     
     inlines = [ItemBADInline]
@@ -396,7 +374,6 @@ class ItemBADAdmin(admin.ModelAdmin):
     search_fields = ("bl", "bad__reference")
 
 
-# ==================== UTILISATEURS ====================
 
 @admin.register(Utilisateur)
 class UtilisateurAdmin(UserAdmin):
@@ -429,7 +406,6 @@ class UtilisateurAdmin(UserAdmin):
     readonly_fields = ("last_login", "date_joined")
 
 
-# ==================== ARCHIVES DOCUMENTAIRES (GED) ====================
 
 @admin.register(DocumentArchive)
 class DocumentArchiveAdmin(admin.ModelAdmin):
@@ -444,12 +420,10 @@ class DocumentArchiveAdmin(admin.ModelAdmin):
     search_fields = ("titre", "description")
     ordering = ("-date_upload",)
     
-    # Empêcher la modification de la traçabilité manuellement
     readonly_fields = ("date_upload", "cree_par")
 
     def get_taille_fichier(self, obj):
         try:
-            # Conversion en Ko pour un affichage lisible
             size = obj.fichier.size / 1024
             return f"{size:.2f} Ko"
         except:
@@ -458,12 +432,11 @@ class DocumentArchiveAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         """Assigne automatiquement l'utilisateur qui télécharge le document via l'admin"""
-        if not obj.pk:  # Si c'est une création
+        if not obj.pk:  
             obj.cree_par = request.user
         super().save_model(request, obj, form, change)
 
 
-# ==================== CONFIGURATION ADMIN ====================
 
 admin.site.site_header = "SMTLA - Administration"
 admin.site.site_title = "SMTLA Admin"

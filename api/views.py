@@ -52,7 +52,6 @@ from django.db.models.functions import TruncDate
 from collections import defaultdict
 
 
-# ==================== DASHBOARD ====================
 
 
 class DashboardStatsView(APIView):
@@ -64,20 +63,14 @@ class DashboardStatsView(APIView):
         role = user.type
         stats = {}
 
-        # --- Fonctions utilitaires pour les totaux par devise ---
         def get_totals_by_currency(queryset, sum_field):
             """Retourne un dictionnaire {devise: total}"""
-            # Note: Si montant_total est une @property (comme dans Devis/Facture), 
-            # on doit parfois itérer si ce n'est pas un champ réel en BDD.
-            # Mais pour Note de Frais (items), on peut sommer directement.
             results = {}
-            # On groupe par devise
             data = queryset.values('devise').annotate(total=Sum(sum_field))
             for entry in data:
                 results[entry['devise']] = entry['total'] or 0
             return results
 
-        # 1. Statistiques Rotations & Stocks (Inchangé)
         if role in ['agent_port', 'directeur_operations', 'directeur_general']:
             stats['rotations'] = {
                 'total_entrantes': RotationEntrante.objects.filter(status='en_cours').count(),
@@ -100,11 +93,9 @@ class DashboardStatsView(APIView):
                     stocks.append(client_stock)
             stats['stocks_par_client'] = stocks
 
-        # 2. Statistiques Clients
         if role in ['agent_port', 'comptable', 'directeur_operations', 'directeur_general']:
             stats['clients'] = { 'total': Client.objects.count() }
 
-        # 3. Expression de Besoin
         if role in ['assistant', 'comptable', 'directeur_operations', 'directeur_general']:
             eb_attente_query = ExpressionBesoin.objects.filter(status='attente')
             stats['expressions_besoin'] = {
@@ -115,12 +106,9 @@ class DashboardStatsView(APIView):
                 'liste_en_attente': ExpressionBesoinSerializer(eb_attente_query, many=True).data
             }
 
-        # 4. Note de Frais (Modifié : Totaux par devise)
         if role in ['assistant', 'comptable', 'directeur_operations', 'directeur_general']:
             notes_validees = NoteDeFrais.objects.filter(status='valide')
             
-            # Calcul par devise pour les notes de frais (basé sur la devise de l'EB liée)
-            # On utilise le champ expression_besoin__devise si c'est là qu'est stockée la devise
             totals_nf = {}
             for nf in notes_validees:
                 devise = nf.expression_besoin.devise if nf.expression_besoin else 'MRU'
@@ -133,7 +121,6 @@ class DashboardStatsView(APIView):
                 'totaux_par_devise': totals_nf
             }
 
-        # 5. Devis & Factures (Modifié : Totaux par devise pour factures payées)
         if role in ['comptable', 'directeur_operations', 'directeur_general']:
             devis_attente_query = Devis.objects.filter(status='attente')
             stats['devis'] = {
@@ -148,7 +135,6 @@ class DashboardStatsView(APIView):
             if role != 'directeur_general':
                 factures_query = factures_query.filter(est_privee=False)
 
-            # Calcul des totaux par devise pour les factures PAYÉES
             factures_payees = factures_query.filter(status='paye')
             totals_factures = {}
             for f in factures_payees:
@@ -165,7 +151,6 @@ class DashboardStatsView(APIView):
 
             print(stats['factures'])   
 
-        # 6. Bons de Commande
         if role in ['comptable', 'directeur_operations', 'directeur_general']:
             stats['bons_commande'] = {
                 'en_attente': BonCommande.objects.filter(status='attente').count(),
@@ -195,13 +180,11 @@ class StockStatusView(APIView):
             }
 
             for type_mat in types_mat:
-                # Calcul des entrées
                 total_entrees = RotationEntrante.objects.filter(
                     client=client,
                     type_materiel=type_mat
                 ).aggregate(Sum('quantite'))['quantite__sum'] or 0
 
-                # Calcul des sorties
                 total_sorties = RotationSortante.objects.filter(
                     client=client,
                     type_materiel=type_mat
@@ -209,7 +192,6 @@ class StockStatusView(APIView):
 
                 disponible = total_entrees - total_sorties
 
-                # On n'ajoute que si le client a déjà eu ce matériel en stock
                 if total_entrees > 0:
                     client_stock['types'].append({
                         'type_materiel': type_mat.nom,
@@ -224,7 +206,6 @@ class StockStatusView(APIView):
         return Response(stocks)
 
 
-# ==================== TYPE MATERIEL (Spec 5) ====================
 
 class TypeMaterielListCreateView(generics.ListCreateAPIView):
     """Liste tous les types de matériel ou crée un nouveau - Spec 5"""
@@ -252,7 +233,6 @@ class TypeMaterielRechercheView(generics.ListAPIView):
         ).order_by('nom')
 
 
-# ==================== ROTATION ====================
 
 class RotationListCreateView(generics.ListCreateAPIView):
     """Liste toutes les rotations ou crée une nouvelle"""
@@ -298,10 +278,8 @@ class TerminerToutesLesRotationsView(APIView):
     """
     def post(self, request):
         try:
-            # Mise à jour massive des entrantes
             nb_entrantes = RotationEntrante.objects.filter(status='en_cours').update(status='termine')
 
-            # Mise à jour massive des sortantes
             nb_sortantes = RotationSortante.objects.filter(status='en_cours').update(status='termine')
 
             return Response({
@@ -319,7 +297,6 @@ class TerminerToutesLesRotationsView(APIView):
             )
 
 
-# ==================== ROTATIONS ENTRANTES (Spec 6) ====================
 
 class RotationEntranteListCreateView(generics.ListCreateAPIView):
     """Liste les rotations entrantes EN COURS ou crée une nouvelle - Spec 6"""
@@ -327,7 +304,6 @@ class RotationEntranteListCreateView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # On filtre pour ne retourner que les rotations "en cours"
         return RotationEntrante.objects.filter(status='en_cours').order_by('-date_arrivee')
 
     def get_serializer_class(self):
@@ -362,7 +338,6 @@ class RotationEntranteRapportView(APIView):
         if date_fin:
             queryset = queryset.filter(date_arrivee__lte=date_fin)
 
-        # Grouper par client et type
         rapport = {}
         for rotation in queryset:
             client_nom = rotation.client.nom
@@ -396,7 +371,6 @@ class RotationEntranteRapportView(APIView):
         })
 
 
-# ==================== ROTATIONS SORTANTES (Spec 7) ====================
 
 class RotationSortanteListCreateView(generics.ListCreateAPIView):
     """Liste les rotations sortantes EN COURS ou crée une nouvelle - Spec 7"""
@@ -404,7 +378,6 @@ class RotationSortanteListCreateView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # On filtre pour ne retourner que les rotations "en cours"
         return RotationSortante.objects.filter(status='en_cours').order_by('-date_sortie')
 
     def get_serializer_class(self):
@@ -439,7 +412,6 @@ class RotationSortanteRapportView(APIView):
         if date_fin:
             queryset = queryset.filter(date_sortie__lte=date_fin)
 
-        # Grouper par client et type
         rapport = {}
         total_rotations = queryset.count()
 
@@ -476,7 +448,6 @@ class RotationSortanteRapportView(APIView):
         })
 
 
-# ==================== CLIENT ====================
 
 class ClientListCreateView(generics.ListCreateAPIView):
     """Liste tous les clients ou crée un nouveau client"""
@@ -507,7 +478,6 @@ class ClientRechercheView(generics.ListAPIView):
         ).order_by('nom')
 
 
-# ==================== FOURNISSEUR (Spec 9) ====================
 
 class FournisseurListCreateView(generics.ListCreateAPIView):
     """Liste tous les fournisseurs ou crée un nouveau - Spec 9"""
@@ -538,7 +508,6 @@ class FournisseurRechercheView(generics.ListAPIView):
         ).order_by('nom')
 
 
-# ==================== EXPRESSION DE BESOIN (Spec 1) ====================
 
 class ExpressionBesoinListCreateView(generics.ListCreateAPIView):
     """Liste toutes les expressions de besoin ou crée une nouvelle - Spec 1"""
@@ -553,9 +522,7 @@ class ExpressionBesoinListCreateView(generics.ListCreateAPIView):
         user = self.request.user
         queryset = ExpressionBesoin.objects.all().order_by('-date_creation')
 
-        # Visibilité restreinte (Spec 1)
         if user.type not in ['directeur_operations', 'comptable', 'directeur_general']:
-            # Utilisateur ne voit que ses propres expressions
             queryset = queryset.filter(createur=user)
 
         return queryset
@@ -574,7 +541,6 @@ class ExpressionBesoinRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPI
         user = self.request.user
         queryset = ExpressionBesoin.objects.all()
 
-        # Visibilité restreinte (Spec 1)
         if user.type not in ['directeur_operations', 'comptable']:
             queryset = queryset.filter(createur=user)
 
@@ -586,7 +552,6 @@ class ExpressionBesoinValiderView(APIView):
     permission_classes = [IsAuthenticated]
 
     def patch(self, request, pk):
-        # Vérification des permissions
         if request.user.type not in ['directeur_operations', 'comptable', 'directeur_general']:
             return Response(
                 {"error": "Vous n'avez pas la permission de valider"},
@@ -604,30 +569,24 @@ class ExpressionBesoinValiderView(APIView):
 
         try:
             with transaction.atomic():
-                # 1. Mise à jour de l'expression de besoin
                 expression.status = nouveau_statut
                 expression.valideur = request.user
                 expression.date_validation = datetime.now()
                 expression.save()
 
                 note_frais = None
-                # 2. Création automatique de la Note de Frais si validée
                 if nouveau_statut == 'valide':
-                    # On vérifie si une note n'existe pas déjà pour éviter les doublons
                     if not NoteDeFrais.objects.filter(expression_besoin=expression).exists():
                         note_frais = NoteDeFrais.objects.create(
                             expression_besoin=expression,
-                            createur=expression.createur, # Le créateur de l'EB reste le bénéficiaire de la NF
-                            status='attente' # La NF commence son propre cycle de validation
+                            createur=expression.createur, 
+                            status='attente' 
                         )
 
-                        # 3. Duplication des items (EB -> NF)
                         items_eb = expression.items.all()
                         items_nf = []
 
                         for item in items_eb:
-                            # Note: On mappe les types de l'EB vers les types de la NF
-                            # Si les types sont identiques, c'est direct.
                             items_nf.append(ItemNoteDeFrais(
                                 note_de_frais=note_frais,
                                 libelle=item.libelle,
@@ -638,7 +597,6 @@ class ExpressionBesoinValiderView(APIView):
                         if items_nf:
                             ItemNoteDeFrais.objects.bulk_create(items_nf)
 
-            # Préparation du message de retour
             msg = f"Expression de besoin {nouveau_statut}e avec succès"
             if note_frais:
                 msg += f". Note de frais {note_frais.reference} générée."
@@ -656,7 +614,6 @@ class ExpressionBesoinValiderView(APIView):
             )
 
 
-# ==================== NOTE DE FRAIS (Spec 2) ====================
 
 class NoteDeFraisListCreateView(generics.ListCreateAPIView):
     """Liste toutes les notes de frais ou crée une nouvelle - Spec 2"""
@@ -673,7 +630,6 @@ class NoteDeFraisListCreateView(generics.ListCreateAPIView):
         user = self.request.user
         queryset = NoteDeFrais.objects.all().order_by('-date_creation')
 
-        # Logic for "Comptable": only show validated notes
         if hasattr(user, 'type') and user.type == 'comptable':
             return queryset.filter(status='valide')
 
@@ -725,13 +681,11 @@ class NoteDeFraisCreerDepuisExpressionView(APIView):
         expression = get_object_or_404(ExpressionBesoin, pk=expression_id)
 
         with db_transaction.atomic():
-            # Créer la note de frais (le client, navire, etc. sont portés par l'EB)
             note = NoteDeFrais.objects.create(
                 expression_besoin=expression,
                 createur=request.user
             )
 
-            # Copier les items de l'EB vers la NF pour permettre l'ajustement ultérieur
             for item_eb in expression.items.all():
                 ItemNoteDeFrais.objects.create(
                     note_de_frais=note,
@@ -759,7 +713,6 @@ class NoteDeFraisParDeviseView(generics.ListAPIView):
         queryset = NoteDeFrais.objects.all().order_by('-date_creation')
 
         if devise:
-            # Filtrage à travers la relation ForeignKey
             queryset = queryset.filter(expression_besoin__devise=devise)
 
         return queryset
@@ -904,7 +857,6 @@ class NoteDeFraisExportPdfView(APIView):
             )
 
 
-# ==================== DEVIS (Spec 4) ====================
 
 class DevisListCreateView(generics.ListCreateAPIView):
     """Liste tous les devis ou crée un nouveau devis - Spec 4"""
@@ -948,7 +900,6 @@ class DevisValiderView(APIView):
 
         try:
             with transaction.atomic():
-                # 1. Mise à jour du devis
                 devis.status = nouveau_statut
                 devis.valideur = request.user
                 devis.date_validation = datetime.now()
@@ -1082,7 +1033,6 @@ class DevisConvertirEnFactureView(APIView):
         )
 
 
-# ==================== FACTURE (Spec 3) ====================
 
 class FactureListCreateView(generics.ListCreateAPIView):
     """Liste toutes les factures ou crée une nouvelle - Spec 3"""
@@ -1120,7 +1070,6 @@ class FactureRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
         user = self.request.user
         queryset = Facture.objects.all()
 
-        # Factures privées visibles uniquement par le DG (Spec 3)
         if user.type != 'directeur_general':
             queryset = queryset.filter(est_privee=False)
 
@@ -1132,7 +1081,6 @@ class FactureValiderView(APIView):
     permission_classes = [IsAuthenticated]
 
     def patch(self, request, pk):
-        # Validation par DG ou Comptable (Spec 3)
         if request.user.type not in ['directeur_general', 'comptable']:
             return Response(
                 {"error": "Vous n'avez pas la permission de valider"},
@@ -1160,7 +1108,7 @@ class FactureValiderView(APIView):
     
 
 
-from django.utils import timezone # Préférable à datetime.now() pour Django
+from django.utils import timezone 
 
 class FacturePayerView(APIView):
     permission_classes = [IsAuthenticated]
@@ -1174,11 +1122,9 @@ class FacturePayerView(APIView):
 
         facture = get_object_or_404(Facture, pk=pk)
         
-        # On récupère le moyen de paiement depuis la requête (optionnel mais recommandé)
         moyen_paiement = request.data.get('moyen')
         reference_recu = request.data.get('reference_recu')
 
-        # Logique de paiement
         facture.status = 'paye'
         facture.date_paiement = timezone.now()
         
@@ -1188,7 +1134,6 @@ class FacturePayerView(APIView):
         if reference_recu:
             facture.reference_recu = reference_recu
 
-        # Attribution du numéro de reçu seulement s'il n'existe pas encore
         if not facture.numero_recu:
             facture.numero_recu = facture.generer_numero_recu()
         
@@ -1213,7 +1158,6 @@ class FactureParClientView(generics.ListAPIView):
 
         queryset = Facture.objects.filter(client_id=client_id).order_by('-date_creation')
 
-        # Filtrer les factures privées
         if user.type != 'directeur_general':
             queryset = queryset.filter(est_privee=False)
 
@@ -1244,7 +1188,6 @@ class FactureAjouterItemView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# ==================== BON DE COMMANDE (Spec 10) ====================
 
 class BonCommandeListCreateView(generics.ListCreateAPIView):
     """Liste tous les bons de commande ou crée un nouveau - Spec 10"""
@@ -1321,7 +1264,6 @@ class BonCommandeAjouterItemView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# ==================== UTILISATEUR ====================
 
 class UtilisateurListCreateView(generics.ListCreateAPIView):
     """Liste tous les utilisateurs ou crée un nouvel utilisateur"""
@@ -1352,7 +1294,6 @@ class UtilisateurParTypeView(generics.ListAPIView):
         return queryset
 
 
-# ==================== AUTHENTIFICATION ====================
 
 class SeConnecter(TokenObtainPairView):
     """Connexion de l'utilisateur avec username et mot de passe"""
@@ -1458,7 +1399,6 @@ def modifier_mot_de_passe(request):
         )
 
 
-# ==================== STATISTIQUES ====================
 
 class StatistiquesGeneralesView(APIView):
     """Retourne les statistiques générales du système"""
@@ -1482,7 +1422,6 @@ class StatistiquesGeneralesView(APIView):
             'total_utilisateurs': Utilisateur.objects.count(),
         }
 
-        # Montants par devise (Devis)
         devis_par_devise = {}
         for devise_code, devise_nom in Devis.DEVISES:
             devis = Devis.objects.filter(devise=devise_code)
@@ -1493,7 +1432,6 @@ class StatistiquesGeneralesView(APIView):
                 'nombre': devis.count()
             }
 
-        # Montants par devise (Factures)
         factures_par_devise = {}
         for devise_code, devise_nom in Facture.DEVISES:
             factures = Facture.objects.filter(devise=devise_code)
@@ -1540,7 +1478,6 @@ class StatistiquesClientView(APIView):
 
 
 
-# ==================== BON À DÉLIVRER (BAD) ====================
 
 class BADListCreateView(generics.ListCreateAPIView):
     """Liste tous les BAD ou crée un nouveau BAD"""
@@ -1557,7 +1494,6 @@ class BADListCreateView(generics.ListCreateAPIView):
         user = self.request.user
         queryset = BAD.objects.all().order_by('-date_creation')
 
-        # Filtre optionnel par client via query params
         client_id = self.request.query_params.get('client')
         if client_id:
             queryset = queryset.filter(client_id=client_id)
@@ -1583,7 +1519,6 @@ class BADValiderItemView(APIView):
     def patch(self, request, item_id):
         item = get_object_or_404(ItemBAD, pk=item_id)
 
-        # Seuls certains rôles peuvent valider les items logistiques
         if request.user.type not in ['agent_port', 'directeur_operations', 'directeur_general']:
             return Response(
                 {"error": "Vous n'avez pas la permission de valider cet item"},
@@ -1619,15 +1554,12 @@ class BADExportPdfView(APIView):
     def get(self, request, pk):
         bad = get_object_or_404(BAD, pk=pk)
 
-        # Ici vous pourriez utiliser un template Excel spécifique au BAD
-        # similaire à votre NoteDeFraisExportPdfView
 
         return Response({"message": "Fonctionnalité d'export en cours de déploiement pour le format BAD"})
 
 
 
 
-# ==================== ARCHIVES DOCUMENTAIRES (GED) ====================
 
 class DocumentArchiveListCreateView(generics.ListCreateAPIView):
     """Liste tous les documents archivés ou upload un nouveau document"""
@@ -1642,14 +1574,10 @@ class DocumentArchiveListCreateView(generics.ListCreateAPIView):
         user = self.request.user
         queryset = DocumentArchive.objects.all().order_by('-date_upload')
 
-        # Filtrage par type si spécifié dans l'URL (?type_doc=BL)
         type_doc = self.request.query_params.get('type_doc')
         if type_doc:
             queryset = queryset.filter(type_doc=type_doc)
 
-        # Optionnel : Si vous voulez que les assistants ne voient que leurs propres uploads
-        # if user.type == 'assistant':
-        #     queryset = queryset.filter(cree_par=user)
 
         return queryset
 
@@ -1688,7 +1616,6 @@ class RapportJournalierStatsView(APIView):
         if not target_date:
             return Response({"error": "Date manquante"}, status=400)
 
-        # 1. Filtrage de base
         if mouvement == 'entrees':
             qs = RotationEntrante.objects.filter(date_arrivee__date=target_date)
         else:
@@ -1696,12 +1623,9 @@ class RapportJournalierStatsView(APIView):
 
         qs = qs.select_related('client', 'type_materiel')
 
-        # 2. Récapitulatif Global (Déjà correct dans votre code, on le garde)
         stats_par_type = qs.values('type_materiel__nom').annotate(total=Sum('quantite'))
         recapitulatif = {item['type_materiel__nom']: item['total'] for item in stats_par_type}
 
-        # 3. Structure par client avec REGROUPEMENT (Addition)
-        # On utilise un dictionnaire : { "Nom Client": { "Type Materiel": Quantité_Totale } }
         clients_map = {}
 
         for item in qs:
@@ -1712,16 +1636,13 @@ class RapportJournalierStatsView(APIView):
             if c_nom not in clients_map:
                 clients_map[c_nom] = {}
 
-            # Si le type de matériel existe déjà pour ce client, on additionne
             if t_nom in clients_map[c_nom]:
                 clients_map[c_nom][t_nom] += qte
             else:
                 clients_map[c_nom][t_nom] = qte
 
-        # 4. Formatage de la réponse pour le frontend
         detailed_stats = []
         for client_nom, materiels in clients_map.items():
-            # Transformer le sous-dictionnaire en liste de mouvements groupés
             mouvements_groupes = [
                 {"type": t_nom, "quantite": qte_totale}
                 for t_nom, qte_totale in materiels.items()
@@ -1739,7 +1660,6 @@ class RapportJournalierStatsView(APIView):
         })
 
 
-# --- Statistiques Globales ---
 class StatistiquesGlobalesView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -1796,15 +1716,12 @@ class PDAListCreateView(generics.ListCreateAPIView):
         return PDASerializer
 
     def get_queryset(self):
-        # Tri par date de création décroissante
         queryset = PDA.objects.all().order_by('-date')
 
-        # Recherche par nom du client (lié via ForeignKey)
         client_name = self.request.query_params.get('client')
         if client_name:
             queryset = queryset.filter(client__nom__icontains=client_name)
 
-        # Filtre par navire
         vessel = self.request.query_params.get('vessel')
         if vessel:
             queryset = queryset.filter(vessel_name__icontains=vessel)
@@ -1816,8 +1733,6 @@ class PDAListCreateView(generics.ListCreateAPIView):
         Cette méthode intercepte la sauvegarde pour ajouter l'utilisateur actuel.
         Assure-toi que ton modèle PDA possède : createur = models.ForeignKey(User, ...)
         """
-        # Si ton modèle n'a PAS de champ 'createur', retire simplement cet argument.
-        # Si tu veux enregistrer qui a fait le PDA :
         serializer.save(createur=self.request.user)
 
 
@@ -1843,15 +1758,12 @@ class FDAListCreateView(generics.ListCreateAPIView):
         return FDASerializer
 
     def get_queryset(self):
-        # Tri par date de création décroissante
         queryset = FDA.objects.all().order_by('-date')
 
-        # Recherche par nom du client (lié via ForeignKey)
         client_name = self.request.query_params.get('client')
         if client_name:
             queryset = queryset.filter(client__nom__icontains=client_name)
 
-        # Filtre par navire
         vessel = self.request.query_params.get('vessel')
         if vessel:
             queryset = queryset.filter(vessel_name__icontains=vessel)
@@ -1863,8 +1775,6 @@ class FDAListCreateView(generics.ListCreateAPIView):
         Cette méthode intercepte la sauvegarde pour ajouter l'utilisateur actuel.
         Assure-toi que ton modèle FDA possède : createur = models.ForeignKey(User, ...)
         """
-        # Si ton modèle n'a PAS de champ 'createur', retire simplement cet argument.
-        # Si tu veux enregistrer qui a fait le FDA :
         serializer.save(createur=self.request.user)
 
 

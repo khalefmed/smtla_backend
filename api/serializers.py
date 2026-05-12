@@ -6,7 +6,6 @@ from django.db.models import Sum
 Utilisateur = get_user_model()
 
 
-# ==================== SERIALIZERS DE BASE ====================
 
 class ConnexionSerializer(serializers.Serializer):
     username = serializers.CharField()
@@ -67,7 +66,6 @@ class UtilisateurSimpleSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'prenom', 'nom', 'type', 'type_display']
 
 
-# ==================== CLIENT & FOURNISSEUR ====================
 
 class ClientSerializer(serializers.ModelSerializer):
     """Serializer pour les clients"""
@@ -94,7 +92,6 @@ class FournisseurSerializer(serializers.ModelSerializer):
         fields = ['id', 'nom', 'nif', 'adresse', 'email', 'raison_sociale', 'telephone']
 
 
-# ==================== TYPE MATERIEL ====================
 
 class TypeMaterielSerializer(serializers.ModelSerializer):
     """Serializer pour les types de matériel - Spec 5"""
@@ -105,7 +102,6 @@ class TypeMaterielSerializer(serializers.ModelSerializer):
         read_only_fields = ['date_creation']
 
 
-# ==================== ROTATION ====================
 
 class RotationSerializer(serializers.ModelSerializer):
     """Serializer pour les rotations (ancien Produit)"""
@@ -134,7 +130,6 @@ class RotationCreateSerializer(serializers.ModelSerializer):
                   'quantite', 'camion', 'date_rotation']
 
 
-# ==================== ROTATIONS ENTRANTES & SORTANTES ====================
 
 
 class RotationEntranteSerializer(serializers.ModelSerializer):
@@ -208,22 +203,18 @@ class RotationSortanteCreateSerializer(serializers.ModelSerializer):
         type_materiel = data.get('type_materiel')
         quantite_sortie_voulue = data.get('quantite')
 
-        # 1. Calculer le total des entrées pour ce client et ce matériel
         total_entrees = RotationEntrante.objects.filter(
             client=client,
             type_materiel=type_materiel
         ).aggregate(total=Sum('quantite'))['total'] or 0
 
-        # 2. Calculer le total des sorties déjà effectuées
         total_sorties_existantes = RotationSortante.objects.filter(
             client=client,
             type_materiel=type_materiel
         ).aggregate(total=Sum('quantite'))['total'] or 0
 
-        # 3. Calculer le stock disponible
         stock_disponible = total_entrees - total_sorties_existantes
 
-        # 4. Validation
         if quantite_sortie_voulue > stock_disponible:
             raise serializers.ValidationError({
                 "quantite": f"Stock insuffisant pour ce client. Disponible : {stock_disponible}, Demandé : {quantite_sortie_voulue}."
@@ -231,7 +222,6 @@ class RotationSortanteCreateSerializer(serializers.ModelSerializer):
 
         return data
 
-# ==================== EXPRESSION DE BESOIN ====================
 
 class ItemExpressionBesoinSerializer(serializers.ModelSerializer):
     """Serializer pour les items d'expression de besoin - Spec 1"""
@@ -247,7 +237,6 @@ class ExpressionBesoinSerializer(serializers.ModelSerializer):
     createur = UtilisateurSimpleSerializer(read_only=True)
     createur_nom = serializers.CharField(source='createur.get_full_name', read_only=True)
     valideur_nom = serializers.CharField(source='valideur.get_full_name', read_only=True)
-    # Ajout du type pour la gestion automatique des signatures PDF
     valideur_type = serializers.CharField(source='valideur.type', read_only=True)
     devise_display = serializers.CharField(source='get_devise_display', read_only=True)
     status_display = serializers.CharField(source='get_status_display', read_only=True)
@@ -282,7 +271,6 @@ class ExpressionBesoinCreateSerializer(serializers.ModelSerializer):
         
         from django.db import transaction
         with transaction.atomic():
-            # Récupération du créateur via le contexte de la requête
             validated_data['createur'] = self.context['request'].user
             expression = ExpressionBesoin.objects.create(**validated_data)
             
@@ -299,12 +287,10 @@ class ExpressionBesoinCreateSerializer(serializers.ModelSerializer):
         
         from django.db import transaction
         with transaction.atomic():
-            # Mise à jour des champs (incluant nom_demandeur, direction, affectation)
             for attr, value in validated_data.items():
                 setattr(instance, attr, value)
             instance.save()
             
-            # Mise à jour synchronisée des items
             if items_data is not None:
                 instance.items.all().delete()
                 
@@ -317,7 +303,6 @@ class ExpressionBesoinCreateSerializer(serializers.ModelSerializer):
         return instance
 
 
-# ==================== NOTE DE FRAIS ====================
 
 class ItemNoteDeFraisSerializer(serializers.ModelSerializer):
     """Serializer pour les items de note de frais"""
@@ -331,7 +316,6 @@ class NoteDeFraisSerializer(serializers.ModelSerializer):
     """Serializer pour l'affichage des notes de frais - Spec 2 (Optimisé)"""
     items = ItemNoteDeFraisSerializer(many=True, read_only=True)
     
-    # Informations récupérées de l'Expression de Besoin parente
     expression_besoin_reference = serializers.CharField(source='expression_besoin.reference', read_only=True)
     client_beneficiaire_nom = serializers.CharField(source='expression_besoin.client_beneficiaire.nom', read_only=True)
     bl_awb = serializers.CharField(source='expression_besoin.bl_awb', read_only=True)
@@ -341,7 +325,6 @@ class NoteDeFraisSerializer(serializers.ModelSerializer):
     devise = serializers.CharField(source='expression_besoin.devise', read_only=True)
     devise_display = serializers.CharField(source='expression_besoin.get_devise_display', read_only=True)
     
-    # Traçabilité et Statut
     createur_nom = serializers.CharField(source='createur.get_full_name', read_only=True)
     valideur_nom = serializers.CharField(source='valideur.get_full_name', read_only=True)
     status_display = serializers.CharField(source='get_status_display', read_only=True)
@@ -362,13 +345,11 @@ class NoteFraisDetailSerializer(serializers.ModelSerializer):
     items = ItemNoteDeFraisSerializer(many=True, read_only=True)
     expression_besoin_detail = ExpressionBesoinSerializer(source='expression_besoin', read_only=True)
     
-    # Traçabilité
     createur = UtilisateurSimpleSerializer(read_only=True)
     createur_nom = serializers.CharField(source='createur.get_full_name', read_only=True)
     valideur_nom = serializers.CharField(source='valideur.get_full_name', read_only=True)
     status_display = serializers.CharField(source='get_status_display', read_only=True)
 
-    # Propriétés calculées (mises à plat pour un accès facile au premier niveau)
     tva = serializers.BooleanField(read_only=True)
     devise = serializers.CharField(read_only=True)
     devise_display = serializers.CharField(source='expression_besoin.get_devise_display', read_only=True)
@@ -389,8 +370,8 @@ class NoteFraisDetailSerializer(serializers.ModelSerializer):
             'createur_nom',
             'valideur_nom',
             'date_validation',
-            'items',                    # Items de la Note de Frais
-            'expression_besoin_detail'   # Détails de l'EB source (inclut ses propres items)
+            'items',                    
+            'expression_besoin_detail'   
         ]
 
 
@@ -401,12 +382,11 @@ class NoteDeFraisCreateSerializer(serializers.ModelSerializer):
         queryset=ExpressionBesoin.objects.all(),
         source='expression_besoin',
         write_only=True,
-        required=True # Obligatoire selon votre nouvelle logique
+        required=True 
     )
 
     class Meta:
         model = NoteDeFrais
-        # On ne garde que l'EB et les items
         fields = ['expression_besoin_id', 'items']
 
     def create(self, validated_data):
@@ -414,11 +394,9 @@ class NoteDeFraisCreateSerializer(serializers.ModelSerializer):
         
         from django.db import transaction
         with transaction.atomic():
-            # Le créateur est récupéré du contexte de la requête
             validated_data['createur'] = self.context['request'].user
             note = NoteDeFrais.objects.create(**validated_data)
 
-            # Création des items réels de la NF
             for item_data in items_data:
                 ItemNoteDeFrais.objects.create(
                     note_de_frais=note,
@@ -431,8 +409,6 @@ class NoteDeFraisCreateSerializer(serializers.ModelSerializer):
 
         from django.db import transaction
         with transaction.atomic():
-            # On ne change généralement pas l'EB une fois la NF créée
-            # On met à jour les items
             if items_data is not None:
                 instance.items.all().delete()
                 for item_data in items_data:
@@ -443,7 +419,6 @@ class NoteDeFraisCreateSerializer(serializers.ModelSerializer):
             instance.save()
         return instance
 
-# ==================== DEVIS ====================
 
 class ItemDevisSerializer(serializers.ModelSerializer):
     """Serializer pour les items de devis"""
@@ -498,7 +473,6 @@ class DevisDetailSerializer(serializers.ModelSerializer):
 
 class DevisCreateSerializer(serializers.ModelSerializer):
     items = ItemDevisSerializer(many=True)
-    # On définit client_id pour qu'il lise directement la clé 'client_id' du JSON
     client_id = serializers.IntegerField(write_only=True)
 
     class Meta:
@@ -509,13 +483,11 @@ class DevisCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         items_data = validated_data.pop('items')
-        # On récupère l'ID envoyé par le modal
         client_id = validated_data.pop('client_id')
         
         from django.db import transaction
         with transaction.atomic():
             validated_data['createur'] = self.context['request'].user
-            # On assigne manuellement l'ID au champ client_id du modèle
             devis = Devis.objects.create(client_id=client_id, **validated_data)
 
             for item_data in items_data:
@@ -524,7 +496,6 @@ class DevisCreateSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         items_data = validated_data.pop('items', None)
-        # Gestion de la mise à jour du client
         if 'client_id' in validated_data:
             instance.client_id = validated_data.pop('client_id')
 
@@ -539,7 +510,6 @@ class DevisCreateSerializer(serializers.ModelSerializer):
         return instance
 
 
-# ==================== FACTURE ====================
 
 class ItemFactureSerializer(serializers.ModelSerializer):
     """Serializer pour les items de facture"""
@@ -613,7 +583,6 @@ class FactureCreateSerializer(serializers.ModelSerializer):
 
         from django.db import transaction
         with transaction.atomic():
-            # Le créateur doit être passé via le context
             validated_data['createur'] = self.context['request'].user
             facture = Facture.objects.create(**validated_data)
 
@@ -630,12 +599,10 @@ class FactureCreateSerializer(serializers.ModelSerializer):
 
         from django.db import transaction
         with transaction.atomic():
-            # Champs simples
             for attr, value in validated_data.items():
                 setattr(instance, attr, value)
             instance.save()
 
-            # Items
             if items_data is not None:
                 instance.items.all().delete()
 
@@ -648,7 +615,6 @@ class FactureCreateSerializer(serializers.ModelSerializer):
         return instance
 
 
-# ==================== BON DE COMMANDE ====================
 
 class ItemBonCommandeSerializer(serializers.ModelSerializer):
     """Serializer pour les items de bon de commande - Spec 10"""
@@ -719,7 +685,6 @@ class BonCommandeCreateSerializer(serializers.ModelSerializer):
         
         from django.db import transaction
         with transaction.atomic():
-            # Le créateur doit être passé via le context
             validated_data['createur'] = self.context['request'].user
             bon_commande = BonCommande.objects.create(**validated_data)
             
@@ -736,12 +701,10 @@ class BonCommandeCreateSerializer(serializers.ModelSerializer):
         
         from django.db import transaction
         with transaction.atomic():
-            # Champs simples
             for attr, value in validated_data.items():
                 setattr(instance, attr, value)
             instance.save()
             
-            # Items
             if items_data is not None:
                 instance.items.all().delete()
                 
@@ -757,7 +720,6 @@ class BonCommandeCreateSerializer(serializers.ModelSerializer):
 
 
 
-# ==================== BON À DÉLIVRER (BAD) ====================
 
 class ItemBADSerializer(serializers.ModelSerializer):
     valideur_nom = serializers.CharField(source='valideur.get_full_name', read_only=True)
@@ -776,10 +738,8 @@ class BADSerializer(serializers.ModelSerializer):
     items = ItemBADSerializer(many=True, read_only=True)
     client_nom = serializers.CharField(source='client.nom', read_only=True)
     
-    # Changé 'facture_reference' en 'facture_ref' pour correspondre au Frontend
     facture_ref = serializers.CharField(source='facture.reference', read_only=True)
     
-    # On s'assure que l'ID de la facture est aussi renvoyé
     facture = serializers.PrimaryKeyRelatedField(read_only=True)
     
     class Meta:
@@ -793,7 +753,6 @@ class BADSerializer(serializers.ModelSerializer):
 
 class BADCreateSerializer(serializers.ModelSerializer):
     items = ItemBADSerializer(many=True)
-    # Pour l'écriture (POST/PUT)
     client_id = serializers.PrimaryKeyRelatedField(
         queryset=Client.objects.all(),
         source='client',
@@ -801,13 +760,12 @@ class BADCreateSerializer(serializers.ModelSerializer):
     )
     facture_id = serializers.PrimaryKeyRelatedField(
         queryset=Facture.objects.all(),
-        source='facture', # Indique à Django de remplir le champ 'facture' du modèle
+        source='facture', 
         write_only=True,
         required=False,
         allow_null=True
     )
     
-    # Pour la lecture (GET) - Utilisé par React pour afficher "Ref: FAC-001"
     client_nom = serializers.ReadOnlyField(source='client.nom')
     facture_ref = serializers.ReadOnlyField(source='facture.reference')
 
@@ -821,11 +779,10 @@ class BADCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         items_data = validated_data.pop('items')
-        user = self.context['request'].user # Optionnel si vous traquez le créateur
+        user = self.context['request'].user 
 
         from django.db import transaction
         with transaction.atomic():
-            # Ici, 'facture' est déjà dans validated_data grâce à source='facture'
             bad = BAD.objects.create(**validated_data)
             for item_data in items_data:
                 ItemBAD.objects.create(bad=bad, **item_data)
@@ -850,7 +807,6 @@ class BADCreateSerializer(serializers.ModelSerializer):
 
 
 
-# ==================== ARCHIVES DOCUMENTAIRES (GED) ====================
 
 class DocumentArchiveSerializer(serializers.ModelSerializer):
     """Serializer pour l'affichage des documents archivés"""
@@ -882,14 +838,12 @@ class DocumentArchiveCreateSerializer(serializers.ModelSerializer):
         fields = ['titre', 'fichier', 'type_doc', 'description']
 
     def create(self, validated_data):
-        # Récupération automatique de l'utilisateur connecté via le contexte de la requête
         validated_data['cree_par'] = self.context['request'].user
         return super().create(validated_data)
 
 
 
 
-# ==================== PRO-FORMA DISBURSEMENT ACCOUNT (PDA) ====================
 
 class PDAItemSerializer(serializers.ModelSerializer):
     """Serializer pour les lignes de détails du PDA (Port Dues, Expenses, etc.)"""
@@ -909,7 +863,6 @@ class PDASerializer(serializers.ModelSerializer):
     client = ClientSerializer(read_only=True)
     client_nom = serializers.CharField(source='client.nom', read_only=True)
 
-    # Calculs financiers calculés à la volée
     sub_total = serializers.SerializerMethodField()
     vat_amount = serializers.SerializerMethodField()
     grand_total = serializers.SerializerMethodField()
@@ -957,7 +910,6 @@ class PDACreateUpdateSerializer(serializers.ModelSerializer):
         
         from django.db import transaction
         with transaction.atomic():
-            # Association automatique du créateur via le contexte de la requête
             validated_data['createur'] = self.context['request'].user
             pda = PDA.objects.create(**validated_data)
             
@@ -971,12 +923,10 @@ class PDACreateUpdateSerializer(serializers.ModelSerializer):
         
         from django.db import transaction
         with transaction.atomic():
-            # Mise à jour des champs de base
             for attr, value in validated_data.items():
                 setattr(instance, attr, value)
             instance.save()
             
-            # Mise à jour dynamique des items (on remplace tout pour la simplicité du PDA)
             if items_data is not None:
                 instance.items.all().delete()
                 for item_data in items_data:
@@ -986,7 +936,6 @@ class PDACreateUpdateSerializer(serializers.ModelSerializer):
     
 
     
-# ==================== FINAL-FORMA DISBURSEMENT ACCOUNT (PDA) ====================
 
 class FDAItemSerializer(serializers.ModelSerializer):
     """Serializer pour les lignes de détails du FDA (Port Dues, Expenses, etc.)"""
@@ -1006,7 +955,6 @@ class FDASerializer(serializers.ModelSerializer):
     client = ClientSerializer(read_only=True)
     client_nom = serializers.CharField(source='client.nom', read_only=True)
 
-    # Calculs financiers calculés à la volée
     sub_total = serializers.SerializerMethodField()
     vat_amount = serializers.SerializerMethodField()
     grand_total = serializers.SerializerMethodField()
@@ -1054,7 +1002,6 @@ class FDACreateUpdateSerializer(serializers.ModelSerializer):
         
         from django.db import transaction
         with transaction.atomic():
-            # Association automatique du créateur via le contexte de la requête
             validated_data['createur'] = self.context['request'].user
             fda = FDA.objects.create(**validated_data)
             
@@ -1068,12 +1015,10 @@ class FDACreateUpdateSerializer(serializers.ModelSerializer):
         
         from django.db import transaction
         with transaction.atomic():
-            # Mise à jour des champs de base
             for attr, value in validated_data.items():
                 setattr(instance, attr, value)
             instance.save()
             
-            # Mise à jour dynamique des items (on remplace tout pour la simplicité du PDA)
             if items_data is not None:
                 instance.items.all().delete()
                 for item_data in items_data:
