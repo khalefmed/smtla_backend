@@ -54,6 +54,7 @@ from collections import defaultdict
 
 # ==================== DASHBOARD ====================
 
+
 class DashboardStatsView(APIView):
     """Statistiques du tableau de bord enrichies - Spec 8"""
     permission_classes = [IsAuthenticated]
@@ -63,16 +64,25 @@ class DashboardStatsView(APIView):
         role = user.type
         stats = {}
 
-        print(f"Utilisateur: {user.username}, Rôle: {role}")
+        # --- Fonctions utilitaires pour les totaux par devise ---
+        def get_totals_by_currency(queryset, sum_field):
+            """Retourne un dictionnaire {devise: total}"""
+            # Note: Si montant_total est une @property (comme dans Devis/Facture), 
+            # on doit parfois itérer si ce n'est pas un champ réel en BDD.
+            # Mais pour Note de Frais (items), on peut sommer directement.
+            results = {}
+            # On groupe par devise
+            data = queryset.values('devise').annotate(total=Sum(sum_field))
+            for entry in data:
+                results[entry['devise']] = entry['total'] or 0
+            return results
 
-        # 1. Statistiques Rotations & Stocks
+        # 1. Statistiques Rotations & Stocks (Inchangé)
         if role in ['agent_port', 'directeur_operations', 'directeur_general']:
             stats['rotations'] = {
-                'total_entrantes': RotationEntrante.objects.count(),
-                'total_sortantes': RotationSortante.objects.count(),
+                'total_entrantes': RotationEntrante.objects.filter(status='en_cours').count(),
+                'total_sortantes': RotationSortante.objects.filter(status='en_cours').count(),
             }
-
-            print(stats['rotations'])
 
             stocks = []
             for client in Client.objects.all():
@@ -94,7 +104,7 @@ class DashboardStatsView(APIView):
         if role in ['agent_port', 'comptable', 'directeur_operations', 'directeur_general']:
             stats['clients'] = { 'total': Client.objects.count() }
 
-        # 3. Expression de Besoin (Compteurs + Liste en attente)
+        # 3. Expression de Besoin
         if role in ['assistant', 'comptable', 'directeur_operations', 'directeur_general']:
             eb_attente_query = ExpressionBesoin.objects.filter(status='attente')
             stats['expressions_besoin'] = {
@@ -102,19 +112,28 @@ class DashboardStatsView(APIView):
                 'en_cours': ExpressionBesoin.objects.filter(status='en_cours').count(),
                 'validees': ExpressionBesoin.objects.filter(status='valide').count(),
                 'rejetees': ExpressionBesoin.objects.filter(status='rejete').count(),
-                # On ajoute la liste détaillée ici
                 'liste_en_attente': ExpressionBesoinSerializer(eb_attente_query, many=True).data
             }
 
-        # 4. Note de Frais
+        # 4. Note de Frais (Modifié : Totaux par devise)
         if role in ['assistant', 'comptable', 'directeur_operations', 'directeur_general']:
+            notes_validees = NoteDeFrais.objects.filter(status='valide')
+            
+            # Calcul par devise pour les notes de frais (basé sur la devise de l'EB liée)
+            # On utilise le champ expression_besoin__devise si c'est là qu'est stockée la devise
+            totals_nf = {}
+            for nf in notes_validees:
+                devise = nf.expression_besoin.devise if nf.expression_besoin else 'MRU'
+                montant_nf = nf.items.aggregate(Sum('montant'))['montant__sum'] or 0
+                totals_nf[devise] = totals_nf.get(devise, 0) + montant_nf
+
             stats['notes_frais'] = {
                 'en_attente': NoteDeFrais.objects.filter(status='attente').count(),
-                'validees': NoteDeFrais.objects.filter(status='valide').count(),
-                'total_montant': NoteDeFrais.objects.filter(status='valide').aggregate(Sum('items__montant'))['items__montant__sum'] or 0
+                'validees': notes_validees.count(),
+                'totaux_par_devise': totals_nf
             }
 
-        # 5. Devis & Factures (Compteurs + Liste Devis en attente)
+        # 5. Devis & Factures (Modifié : Totaux par devise pour factures payées)
         if role in ['comptable', 'directeur_operations', 'directeur_general']:
             devis_attente_query = Devis.objects.filter(status='attente')
             stats['devis'] = {
@@ -122,7 +141,6 @@ class DashboardStatsView(APIView):
                 'valides': Devis.objects.filter(status='valide').count(),
                 'total': Devis.objects.count(),
                 'somme_totale': sum(d.montant_total for d in Devis.objects.all()),
-                # On ajoute la liste détaillée ici
                 'liste_en_attente': DevisSerializer(devis_attente_query, many=True).data
             }
 
@@ -130,12 +148,22 @@ class DashboardStatsView(APIView):
             if role != 'directeur_general':
                 factures_query = factures_query.filter(est_privee=False)
 
+            # Calcul des totaux par devise pour les factures PAYÉES
+            factures_payees = factures_query.filter(status='paye')
+            totals_factures = {}
+            for f in factures_payees:
+                devise = f.devise or 'MRU'
+                totals_factures[devise] = totals_factures.get(devise, 0) + float(f.montant_total)
+
             stats['factures'] = {
                 'en_attente': factures_query.filter(status='attente').count(),
                 'validees': factures_query.filter(status='valide').count(),
+                'payees': factures_payees.count(),
                 'total': factures_query.count(),
-                'somme_totale': sum(f.montant_total for f in factures_query)
+                'totaux_payes_par_devise': totals_factures
             }
+
+            print(stats['factures'])   
 
         # 6. Bons de Commande
         if role in ['comptable', 'directeur_operations', 'directeur_general']:
@@ -526,7 +554,7 @@ class ExpressionBesoinListCreateView(generics.ListCreateAPIView):
         queryset = ExpressionBesoin.objects.all().order_by('-date_creation')
 
         # Visibilité restreinte (Spec 1)
-        if user.type not in ['directeur_operations', 'comptable']:
+        if user.type not in ['directeur_operations', 'comptable', 'directeur_general']:
             # Utilisateur ne voit que ses propres expressions
             queryset = queryset.filter(createur=user)
 
@@ -1802,3 +1830,50 @@ class PDARetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
         if self.request.method in ['PUT', 'PATCH']:
             return PDACreateUpdateSerializer
         return PDASerializer
+    
+
+
+class FDAListCreateView(generics.ListCreateAPIView):
+    """Liste tous les FDA ou crée un nouveau FDA"""
+    permission_classes = [IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return FDACreateUpdateSerializer
+        return FDASerializer
+
+    def get_queryset(self):
+        # Tri par date de création décroissante
+        queryset = FDA.objects.all().order_by('-date')
+
+        # Recherche par nom du client (lié via ForeignKey)
+        client_name = self.request.query_params.get('client')
+        if client_name:
+            queryset = queryset.filter(client__nom__icontains=client_name)
+
+        # Filtre par navire
+        vessel = self.request.query_params.get('vessel')
+        if vessel:
+            queryset = queryset.filter(vessel_name__icontains=vessel)
+
+        return queryset
+
+    def perform_create(self, serializer):
+        """
+        Cette méthode intercepte la sauvegarde pour ajouter l'utilisateur actuel.
+        Assure-toi que ton modèle FDA possède : createur = models.ForeignKey(User, ...)
+        """
+        # Si ton modèle n'a PAS de champ 'createur', retire simplement cet argument.
+        # Si tu veux enregistrer qui a fait le FDA :
+        serializer.save(createur=self.request.user)
+
+
+class FDARetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    """Récupère, modifie ou supprime un FDA"""
+    queryset = FDA.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.request.method in ['PUT', 'PATCH']:
+            return FDACreateUpdateSerializer
+        return FDASerializer

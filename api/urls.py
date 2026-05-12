@@ -90,6 +90,11 @@ urlpatterns = [
     path('pdas/', PDAListCreateView.as_view(), name='pda-list-create'),
     path('pdas/<int:pk>/', PDARetrieveUpdateDeleteView.as_view(), name='pda-detail'),
 
+
+    # ==================== FDA ====================
+    path('fdas/', FDAListCreateView.as_view(), name='fda-list-create'),
+    path('fdas/<int:pk>/', FDARetrieveUpdateDeleteView.as_view(), name='fda-detail'),
+
     # ==================== ARCHIVES DOCUMENTAIRES (GED) ====================
     path('archives/', DocumentArchiveListCreateView.as_view(), name='archive-list-create'),
     path('archives/<int:pk>/', DocumentArchiveRetrieveUpdateDeleteView.as_view(), name='archive-detail'),
