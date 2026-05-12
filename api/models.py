@@ -1007,3 +1007,102 @@ class PDAItem(models.Model):
         super().save(*args, **kwargs)
 
 
+
+class FDA(models.Model):
+    CURRENCY_CHOICES = [('EUR', 'Euro'), ('USD', 'Dollar')]
+    
+    # En-tête
+    fda_number = models.CharField(max_length=50, unique=True, verbose_name="FDA N°")
+    date = models.DateField(auto_now_add=True)
+    client = models.ForeignKey(
+        'Client', 
+        on_delete=models.CASCADE, 
+        related_name='fdas',
+        verbose_name="Client / Principal",
+        null=True, blank=True
+    )
+
+    createur = models.ForeignKey(
+        Utilisateur,
+        on_delete=models.PROTECT,
+        related_name='fdas_creees',
+        null=True,
+        blank=True
+    )
+
+    vessel_name = models.CharField(max_length=255)
+    port_of_arrival = models.CharField(max_length=255, default="NOUAKCHOTT")
+    cargo_description = models.TextField(blank=True)
+
+    weight = models.CharField(max_length=255, blank=True, null=True, verbose_name="Poids")
+    voyage = models.CharField(max_length=100, blank=True, null=True)
+    port_inv_number = models.CharField(max_length=100, blank=True, null=True)
+    
+    # Paramètres globaux
+    currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='EUR')
+    # number_of_days = models.IntegerField(default=1, validators=[MinValueValidator(1)])
+    apply_vat = models.BooleanField(default=True, verbose_name="Appliquer TVA (16%)")
+    
+    # Remarques dynamiques
+    # remarks = models.TextField(blank=True, help_text="Texte libre pour les remarques en bas de page")
+
+    def save(self, *args, **kwargs):
+        if not self.fda_number:
+            with transaction.atomic():
+                current_year = timezone.now().year
+                prefix = f"FDA-{current_year}-"
+                
+                # On cherche la dernière FDA de l'année en cours
+                last_fda = FDA.objects.filter(
+                    fda_number__startswith=prefix
+                ).order_by('-fda_number').first()
+
+                if last_fda:
+                    # On extrait le numéro de la fin (ex: de 'FDA-2026-001' on tire '001')
+                    try:
+                        last_number = int(last_fda.fda_number.split('-')[-1])
+                        new_number = last_number + 1
+                    except (ValueError, IndexError):
+                        new_number = 1
+                else:
+                    new_number = 1
+
+                # Formatage avec zfill(3) pour avoir '001' au lieu de '1'
+                self.fda_number = f"{prefix}{str(new_number).zfill(3)}"
+                
+        super(FDA, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.fda_number} - {self.vessel_name}"
+
+
+class FDAItem(models.Model):
+    CATEGORY_CHOICES = [
+        ('PORT_DUES', 'Ports Dues'),
+        ('OTHER_EXPENSES', 'Other Expenses (Port Call Tax, etc.)'),
+        ('STEVEDORING', 'Stevedoring/Handling on Board'),
+    ]
+
+    fda = models.ForeignKey(FDA, related_name='items', on_delete=models.CASCADE)
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
+    label = models.CharField(max_length=255) # Ex: "PILOTAGE IN & OUT"
+    
+    # Champs pour le calcul
+    grt_value = models.FloatField(default=0, help_text="Valeur GRT / Quantité / Tons")
+    rate = models.FloatField(default=0)
+    port_inv = models.FloatField(default=0, null=True, blank=True, verbose_name="Port invoice number")
+    devise = models.FloatField(default=0, null=True, blank=True, verbose_name="Port invoice number")
+    price_mru = models.FloatField(default=0, null=True, blank=True, verbose_name="Price in MRU")
+    price_devise = models.FloatField(default=0, null=True, blank=True, verbose_name="Price in Devise")
+    
+    # Pour les Port Dues, le calcul est souvent (GRT * Rate)
+    # Pour le Stevedoring, c'est (Tons * Rate)
+    # On stocke le total_item pour faciliter l'affichage
+    total_amount = models.FloatField(editable=False)
+
+    def save(self, *args, **kwargs):
+        # Logique de calcul simple par défaut
+        self.total_amount = self.grt_value * self.rate
+        super().save(*args, **kwargs)
+
+
