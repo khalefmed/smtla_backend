@@ -53,7 +53,6 @@ from collections import defaultdict
 
 
 
-
 class DashboardStatsView(APIView):
     """Statistiques du tableau de bord enrichies - Spec 8"""
     permission_classes = [IsAuthenticated]
@@ -72,9 +71,15 @@ class DashboardStatsView(APIView):
             return results
 
         if role in ['agent_port', 'directeur_operations', 'directeur_general']:
+            # Calcul de la somme des quantités en rotation non encore sorties
+            total_entrees_global = RotationEntrante.objects.aggregate(total=Sum('quantite'))['total'] or 0
+            total_sorties_global = RotationSortante.objects.aggregate(total=Sum('quantite'))['total'] or 0
+            quantite_non_sortie = total_entrees_global - total_sorties_global
+
             stats['rotations'] = {
                 'total_entrantes': RotationEntrante.objects.filter(status='en_cours').count(),
                 'total_sortantes': RotationSortante.objects.filter(status='en_cours').count(),
+                'quantite_en_stock_global': quantite_non_sortie, # Nouvelle information ajoutée ici
             }
 
             stocks = []
@@ -989,6 +994,56 @@ class DevisAjouterItemView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class DevisDupliquerView(APIView):
+    """Duplique un devis existant ainsi que ses items liés - Spec 4"""
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        user = request.user
+        
+        # Récupération du devis source
+        devis_source = get_object_or_404(Devis, pk=pk)
+
+        try:
+            with transaction.atomic():
+                # On récupère l'instance du devis source à cloner
+                devis_copie = Devis.objects.get(pk=devis_source.pk)
+                devis_copie.pk = None
+                devis_copie.id = None 
+                
+                # Réinitialisation pour forcer la création d'un nouveau numéro DV via le save()
+                devis_copie.reference = ""
+                
+                # Configuration des métadonnées de l'utilisateur courant
+                devis_copie.createur = user
+                devis_copie.valideur = None 
+                devis_copie.status = 'attente'  # Statut réinitialisé en attente
+                devis_copie.date_validation = None
+                
+                # Sauvegarde du devis parent pour générer la nouvelle clé primaire
+                devis_copie.save()
+
+                # Duplication isolée et sécurisée de chaque ligne d'item liée
+                for item in devis_source.items.all():
+                    ItemDevis.objects.create(
+                        devis=devis_copie,
+                        libelle=item.libelle,
+                        prix_unitaire=item.prix_unitaire,
+                        quantite=item.quantite
+                    )
+
+                # Renvoyer les données du nouveau devis avec le sérialiseur approprié
+                # (Adaptez le nom si votre sérialiseur s'appelle autrement, ex: DevisSerializer)
+                serializer = DevisDetailSerializer(devis_copie)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        except Exception as e:
+            return Response(
+                {"error": f"Erreur lors de la duplication : {str(e)}"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
 class DevisConvertirEnFactureView(APIView):
     """Convertit un devis en facture"""
     permission_classes = [IsAuthenticated]
@@ -1163,6 +1218,63 @@ class FactureParClientView(generics.ListAPIView):
 
         return queryset
 
+class FactureDupliquerView(APIView):
+    """Duplique une facture existante ainsi que ses items liés - Spec 3"""
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        user = request.user
+        queryset = Facture.objects.all()
+        
+        # Restriction de visibilité basée sur le type d'utilisateur
+        if user.type != 'directeur_general':
+            queryset = queryset.filter(est_privee=False)
+            
+        facture_source = get_object_or_404(queryset, pk=pk)
+
+        try:
+            with transaction.atomic():
+                # On récupère une instance propre pour la duplication
+                facture_copie = Facture.objects.get(pk=facture_source.pk)
+                facture_copie.pk = None
+                facture_copie.id = None 
+                
+                # Réinitialisation de la référence pour déclencher le générateur automatique dans .save()
+                facture_copie.reference = ""
+                
+                # Configuration des états par défaut demandés
+                facture_copie.createur = user
+                facture_copie.valideur = None 
+                facture_copie.status = 'attente'  # Corrigé selon vos choix de modèle ('attente')
+                
+                # Nettoyage complet des données de validation, paiements et reçus
+                facture_copie.date_validation = None
+                facture_copie.date_paiement = None
+                facture_copie.numero_recu = None
+                facture_copie.reference_recu = None
+                facture_copie.moyen = 'espece'  # Rebascule sur la valeur par défaut du modèle
+                
+                # Sauvegarde pour générer la nouvelle clé primaire et la référence unique
+                facture_copie.save()
+
+                # Duplication sécurisée des items liés
+                for item in facture_source.items.all():
+                    ItemFacture.objects.create(
+                        facture=facture_copie,
+                        libelle=item.libelle,
+                        prix_unitaire=item.prix_unitaire,
+                        quantite=item.quantite
+                    )
+
+                # Renvoi des détails via le sérialiseur
+                serializer = FactureDetailSerializer(facture_copie)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        except Exception as e:
+            return Response(
+                {"error": f"Erreur lors de la duplication : {str(e)}"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 class FactureAjouterItemView(APIView):
     """Ajoute un item à une facture existante"""

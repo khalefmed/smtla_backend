@@ -53,6 +53,7 @@ urlpatterns = [
     path('devis/client/<int:client_id>/', DevisParClientView.as_view(), name='devis-par-client'),
     path('devis/<int:pk>/ajouter-item/', DevisAjouterItemView.as_view(), name='devis-ajouter-item'),
     path('devis/<int:pk>/convertir-en-facture/', DevisConvertirEnFactureView.as_view(), name='devis-convertir-facture'),
+    path('devis/<int:pk>/dupliquer/', DevisDupliquerView.as_view(), name='devis-dupliquer'),
     
     path('factures/', FactureListCreateView.as_view(), name='facture-list-create'),
     path('factures/<int:pk>/', FactureRetrieveUpdateDeleteView.as_view(), name='facture-detail'),
@@ -60,6 +61,7 @@ urlpatterns = [
     path('factures/<int:pk>/payer/', FacturePayerView.as_view(), name='facture-payer'),
     path('factures/client/<int:client_id>/', FactureParClientView.as_view(), name='factures-par-client'),
     path('factures/<int:pk>/ajouter-item/', FactureAjouterItemView.as_view(), name='facture-ajouter-item'),
+    path('factures/<int:pk>/dupliquer/', FactureDupliquerView.as_view(), name='facture-dupliquer'),
     
     path('bons-commande/', BonCommandeListCreateView.as_view(), name='bon-commande-list-create'),
     path('bons-commande/<int:pk>/', BonCommandeRetrieveUpdateDeleteView.as_view(), name='bon-commande-detail'),
